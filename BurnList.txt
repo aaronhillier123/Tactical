@@ -1,0 +1,58 @@
+Week1:
+
+Create 3d model of a troop in blender.
+Rig model to a skeleton
+Create walking animation
+Map image to model to show color
+Import model and animation into unity
+Create a unity terrain (rough)
+Create script where on click, troop walks to location
+
+Week2:
+
+Create attack animation
+Create 3d model of bullet
+Import bullet into unity
+Create attack script
+Create accuracy system for attack
+Assign health varaible to troop script
+Create bullet collision script (health decrease)
+Create death script on health<0
+
+Week3:
+Create different players/terns
+Adjust player colors
+Adjust camera views
+End turn button
+Allow for multiple movements/attacks
+Freeze troop after attack
+
+Week4:
+Create currency system
+Create Store
+Grenade Anim/Script
+Invulnerable Anim/Script
+Movement/Range Modifiers
+
+Week5:
+Redo terrain
+Create "capture points"
+Capture point scripts
+Natural Cover 3d Modeling and Mapping
+Natural Cover scripts
+
+Week6:
+Create barriers/scripts
+Create barrier Placement scripts (first turn)
+Create GUI for first turn
+
+Week7:
+Introduce movement distance
+Introduce Vision distance
+Game Start and Game Over scenes/transitions
+
+Week8:
+Photon Networking?
+Sign in
+Backside Terrain map
+
