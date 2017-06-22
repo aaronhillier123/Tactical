@@ -1,10 +1,10 @@
 Week1:
 
-Create 3d model of a troop in blender.
-Rig model to a skeleton
-Create walking animation
-Map image to model to show color
-Import model and animation into unity
+Create 3d model of a troop in blender. X
+Rig model to a skeleton X
+Create walking animation X
+Map image to model to show color X
+Import model and animation into unity X
 Create a unity terrain (rough)
 Create script where on click, troop walks to location
 
