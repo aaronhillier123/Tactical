@@ -23,9 +23,11 @@ public class Trooper : MonoBehaviour {
 		} else if (Input.GetKey ("up")) {
 			rotateTo (270f);
 			move ();
-		} else if(Input.GetKey ("right")) {
+		} else if (Input.GetKey ("right")) {
 			rotateTo (0f);
 			move ();
+		} else if (Input.GetKey ("space")) {
+			shoot ();
 		} else {
 			stop();
 		}
@@ -45,5 +47,9 @@ public class Trooper : MonoBehaviour {
 	void move(){
 		animator.SetInteger ("AnimPar", 1);
 		gameObject.transform.Translate ( 0f, 0f, 0.25f);
+	}
+
+		void shoot(){
+		animator.SetInteger ("AnimPar", 2);
 	}
 }

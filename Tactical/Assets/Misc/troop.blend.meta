@@ -1,110 +1,107 @@
 fileFormatVersion: 2
-guid: 46582884da79bd4428959b8845b02c4b
-timeCreated: 1498093014
+guid: 53d097cade4d5ff4a9438ebffea96e07
+timeCreated: 1498107197
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Armature
-    100002: Bone
-    100004: Bone_001
-    100006: Bone_002
-    100008: Bone_003
-    100010: Bone_004
-    100012: Bone_005
-    100014: Bone_009
-    100016: Bone_012
-    100018: Bone_013
-    100020: Bone_014
-    100022: Bone_015
-    100024: Bone_016
-    100026: Bone_017
-    100028: Bone_018
-    100030: Bone_019
-    100032: Bone_020
-    100034: Bone_021
-    100036: Bone_023
-    100038: Bone_026
-    100040: Bone_027
-    100042: Bone_028
-    100044: Bone_029
-    100046: Bone_030
-    100048: Bone_031
-    100050: Bone_032
-    100052: Bone_033
-    100054: Bone_034
-    100056: Bone_035
-    100058: Bone_036
-    100060: Bone_037
-    100062: Head_001
-    100064: LeftFoot
-    100066: LeftFoot_001
-    100068: LeftHand
-    100070: LeftLowArm
-    100072: LeftUpArm
-    100074: LowArmRight
-    100076: LowLeftLeg
-    100078: RightHand
-    100080: ToeRight
-    100082: ToeRight_001
-    100084: //RootNode
-    100086: UpArmRight
-    100088: UpLegLeft
-    100090: UpLegRight
-    100092: UpperTorso
-    400000: Armature
-    400002: Bone
-    400004: Bone_001
-    400006: Bone_002
-    400008: Bone_003
-    400010: Bone_004
-    400012: Bone_005
-    400014: Bone_009
-    400016: Bone_012
-    400018: Bone_013
-    400020: Bone_014
-    400022: Bone_015
-    400024: Bone_016
-    400026: Bone_017
-    400028: Bone_018
-    400030: Bone_019
-    400032: Bone_020
-    400034: Bone_021
-    400036: Bone_023
-    400038: Bone_026
-    400040: Bone_027
-    400042: Bone_028
-    400044: Bone_029
-    400046: Bone_030
-    400048: Bone_031
-    400050: Bone_032
-    400052: Bone_033
-    400054: Bone_034
-    400056: Bone_035
-    400058: Bone_036
-    400060: Bone_037
-    400062: Head_001
-    400064: LeftFoot
-    400066: LeftFoot_001
-    400068: LeftHand
-    400070: LeftLowArm
-    400072: LeftUpArm
-    400074: LowArmRight
-    400076: LowLeftLeg
-    400078: RightHand
-    400080: ToeRight
-    400082: ToeRight_001
-    400084: //RootNode
-    400086: UpArmRight
-    400088: UpLegLeft
-    400090: UpLegRight
-    400092: UpperTorso
-    4300000: Head_001
+    100000: Base
+    100002: Body
+    100004: FootRight
+    100006: Head
+    100008: LeftClav
+    100010: LeftFoot
+    100012: LeftForearm
+    100014: LeftHand
+    100016: LeftToe
+    100018: LeftUpArm
+    100020: LMiddleBase
+    100022: LMiddleMid
+    100024: LowLeftLeg
+    100026: LowRightLeg
+    100028: LPinkyBase
+    100030: LPinkyMid
+    100032: LPointerBase
+    100034: LPointerMid
+    100036: LRingBase
+    100038: LRingMid
+    100040: LThumbBase
+    100042: LThumbMid
+    100044: Neck
+    100046: RightClav
+    100048: RightForearm
+    100050: RightHand
+    100052: RMiddleBase
+    100054: RMiddleMid
+    100056: RMiddleTip
+    100058: RPinkyBase
+    100060: RPinkyMid
+    100062: RPointerBase
+    100064: RPointerMid
+    100066: RRingBase
+    100068: RRingMid
+    100070: RRingTip
+    100072: RThumbBase
+    100074: RThumbMid
+    100076: Stomach
+    100078: ToeRight
+    100080: //RootNode
+    100082: Trooper
+    100084: UpArmRight
+    100086: UpLegLeft
+    100088: UpLegRight
+    100090: UpperTorso
+    400000: Base
+    400002: Body
+    400004: FootRight
+    400006: Head
+    400008: LeftClav
+    400010: LeftFoot
+    400012: LeftForearm
+    400014: LeftHand
+    400016: LeftToe
+    400018: LeftUpArm
+    400020: LMiddleBase
+    400022: LMiddleMid
+    400024: LowLeftLeg
+    400026: LowRightLeg
+    400028: LPinkyBase
+    400030: LPinkyMid
+    400032: LPointerBase
+    400034: LPointerMid
+    400036: LRingBase
+    400038: LRingMid
+    400040: LThumbBase
+    400042: LThumbMid
+    400044: Neck
+    400046: RightClav
+    400048: RightForearm
+    400050: RightHand
+    400052: RMiddleBase
+    400054: RMiddleMid
+    400056: RMiddleTip
+    400058: RPinkyBase
+    400060: RPinkyMid
+    400062: RPointerBase
+    400064: RPointerMid
+    400066: RRingBase
+    400068: RRingMid
+    400070: RRingTip
+    400072: RThumbBase
+    400074: RThumbMid
+    400076: Stomach
+    400078: ToeRight
+    400080: //RootNode
+    400082: Trooper
+    400084: UpArmRight
+    400086: UpLegLeft
+    400088: UpLegRight
+    400090: UpperTorso
+    4300000: Trooper
     7400000: Idle
     7400002: Run
-    7400004: StartRun
     9500000: //RootNode
-    13700000: Head_001
+    13700000: Trooper
   materials:
     importMaterials: 1
     materialName: 0
@@ -121,7 +118,7 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -131,7 +128,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Idle
       takeName: Default Take
-      firstFrame: 0
+      firstFrame: 1
       lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
@@ -141,9 +138,9 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
@@ -155,106 +152,104 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Armature
-        weight: 0
-      - path: Head_001
-        weight: 0
-      - path: LeftLowArm
+      - path: Body
         weight: 1
-      - path: LeftLowArm/Bone_004
+      - path: Body/Base
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone
+      - path: Body/Base/Stomach
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso
+      - path: Body/Base/Stomach/UpperTorso
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001
+      - path: Body/Base/Stomach/UpperTorso/LeftClav
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_012
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_012/Bone_013
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase/LMiddleMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_014
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_014/Bone_015
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase/LPinkyMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_016
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_016/Bone_017
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase/LPointerMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_018
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_018/Bone_019
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase/LRingMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_020
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_020/Bone_021
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase/LThumbMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_002
+      - path: Body/Base/Stomach/UpperTorso/Neck
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_002/Bone_003
+      - path: Body/Base/Stomach/UpperTorso/Neck/Head
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023
+      - path: Body/Base/Stomach/UpperTorso/RightClav
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_026
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_026/Bone_027
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_028
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_028/Bone_029
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_030
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_030/Bone_031
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_030/Bone_031/Bone_032
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_033
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_033/Bone_034
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_035
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_035/Bone_036
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_035/Bone_036/Bone_037
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/RightHand
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RMiddleBase
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft/LowLeftLeg
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RMiddleBase/RMiddleMid
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft/LowLeftLeg/LeftFoot
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RMiddleBase/RMiddleMid/RMiddleTip
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft/LowLeftLeg/LeftFoot/LeftFoot_001
-        weight: 0
-      - path: LeftLowArm/Bone_004/UpLegRight
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RPinkyBase
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegRight/Bone_009
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RPinkyBase/RPinkyMid
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegRight/Bone_009/ToeRight
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RPointerBase
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegRight/Bone_009/ToeRight/ToeRight_001
-        weight: 0
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RPointerBase/RPointerMid
+        weight: 1
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RRingBase
+        weight: 1
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RRingBase/RRingMid
+        weight: 1
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RRingBase/RRingMid/RRingTip
+        weight: 1
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RThumbBase
+        weight: 1
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RThumbBase/RThumbMid
+        weight: 1
+      - path: Body/Base/UpLegLeft
+        weight: 1
+      - path: Body/Base/UpLegLeft/LowLeftLeg
+        weight: 1
+      - path: Body/Base/UpLegLeft/LowLeftLeg/LeftFoot
+        weight: 1
+      - path: Body/Base/UpLegLeft/LowLeftLeg/LeftFoot/LeftToe
+        weight: 1
+      - path: Body/Base/UpLegRight
+        weight: 1
+      - path: Body/Base/UpLegRight/LowRightLeg
+        weight: 1
+      - path: Body/Base/UpLegRight/LowRightLeg/FootRight
+        weight: 1
+      - path: Body/Base/UpLegRight/LowRightLeg/FootRight/ToeRight
+        weight: 1
+      - path: Trooper
+        weight: 1
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Run
       takeName: LeftLowArmAction_002
-      firstFrame: 109
-      lastFrame: 134
+      firstFrame: 106
+      lastFrame: 121
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -277,220 +272,96 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Armature
-        weight: 0
-      - path: Head_001
-        weight: 0
-      - path: LeftLowArm
+      - path: Body
         weight: 1
-      - path: LeftLowArm/Bone_004
+      - path: Body/Base
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone
+      - path: Body/Base/Stomach
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso
+      - path: Body/Base/Stomach/UpperTorso
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001
+      - path: Body/Base/Stomach/UpperTorso/LeftClav
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_012
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_012/Bone_013
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase/LMiddleMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_014
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_014/Bone_015
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase/LPinkyMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_016
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_016/Bone_017
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase/LPointerMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_018
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_018/Bone_019
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase/LRingMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_020
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_020/Bone_021
+      - path: Body/Base/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase/LThumbMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_002
+      - path: Body/Base/Stomach/UpperTorso/Neck
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_002/Bone_003
+      - path: Body/Base/Stomach/UpperTorso/Neck/Head
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023
+      - path: Body/Base/Stomach/UpperTorso/RightClav
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_026
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_026/Bone_027
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_028
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_028/Bone_029
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_030
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_030/Bone_031
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_030/Bone_031/Bone_032
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_033
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_033/Bone_034
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_035
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_035/Bone_036
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_035/Bone_036/Bone_037
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/RightHand
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RMiddleBase
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft/LowLeftLeg
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RMiddleBase/RMiddleMid
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft/LowLeftLeg/LeftFoot
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RMiddleBase/RMiddleMid/RMiddleTip
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft/LowLeftLeg/LeftFoot/LeftFoot_001
-        weight: 0
-      - path: LeftLowArm/Bone_004/UpLegRight
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RPinkyBase
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegRight/Bone_009
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RPinkyBase/RPinkyMid
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegRight/Bone_009/ToeRight
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RPointerBase
         weight: 1
-      - path: LeftLowArm/Bone_004/UpLegRight/Bone_009/ToeRight/ToeRight_001
-        weight: 0
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: StartRun
-      takeName: LeftLowArmAction_002
-      firstFrame: 102
-      lastFrame: 109
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RPointerBase/RPointerMid
         weight: 1
-      - path: Armature
-        weight: 0
-      - path: Head_001
-        weight: 0
-      - path: LeftLowArm
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RRingBase
         weight: 1
-      - path: LeftLowArm/Bone_004
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RRingBase/RRingMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RRingBase/RRingMid/RRingTip
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RThumbBase
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001
+      - path: Body/Base/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RThumbBase/RThumbMid
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm
+      - path: Body/Base/UpLegLeft
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005
+      - path: Body/Base/UpLegLeft/LowLeftLeg
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand
+      - path: Body/Base/UpLegLeft/LowLeftLeg/LeftFoot
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_012
+      - path: Body/Base/UpLegLeft/LowLeftLeg/LeftFoot/LeftToe
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_012/Bone_013
+      - path: Body/Base/UpLegRight
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_014
+      - path: Body/Base/UpLegRight/LowRightLeg
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_014/Bone_015
+      - path: Body/Base/UpLegRight/LowRightLeg/FootRight
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_016
+      - path: Body/Base/UpLegRight/LowRightLeg/FootRight/ToeRight
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_016/Bone_017
+      - path: Trooper
         weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_018
-        weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_018/Bone_019
-        weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_020
-        weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_001/LeftUpArm/Bone_005/LeftHand/Bone_020/Bone_021
-        weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_002
-        weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_002/Bone_003
-        weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023
-        weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight
-        weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight
-        weight: 1
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_026
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_026/Bone_027
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_028
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_028/Bone_029
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_030
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_030/Bone_031
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_030/Bone_031/Bone_032
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_033
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_033/Bone_034
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_035
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_035/Bone_036
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/Bone_035/Bone_036/Bone_037
-        weight: 0
-      - path: LeftLowArm/Bone_004/Bone/UpperTorso/Bone_023/UpArmRight/LowArmRight/RightHand
-        weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft
-        weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft/LowLeftLeg
-        weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft/LowLeftLeg/LeftFoot
-        weight: 1
-      - path: LeftLowArm/Bone_004/UpLegLeft/LowLeftLeg/LeftFoot/LeftFoot_001
-        weight: 0
-      - path: LeftLowArm/Bone_004/UpLegRight
-        weight: 1
-      - path: LeftLowArm/Bone_004/UpLegRight/Bone_009
-        weight: 1
-      - path: LeftLowArm/Bone_004/UpLegRight/Bone_009/ToeRight
-        weight: 1
-      - path: LeftLowArm/Bone_004/UpLegRight/Bone_009/ToeRight/ToeRight_001
-        weight: 0
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
@@ -520,475 +391,8 @@ ModelImporter:
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
-    human:
-    - boneName: Bone_004
-      humanName: Hips
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: UpLegLeft
-      humanName: LeftUpperLeg
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: UpLegRight
-      humanName: RightUpperLeg
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: LowLeftLeg
-      humanName: LeftLowerLeg
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_009
-      humanName: RightLowerLeg
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: LeftFoot
-      humanName: LeftFoot
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: ToeRight
-      humanName: RightFoot
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone
-      humanName: Spine
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: UpperTorso
-      humanName: Chest
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_002
-      humanName: Neck
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_003
-      humanName: Head
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_001
-      humanName: LeftShoulder
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_023
-      humanName: RightShoulder
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: LeftUpArm
-      humanName: LeftUpperArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: UpArmRight
-      humanName: RightUpperArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_005
-      humanName: LeftLowerArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: LowArmRight
-      humanName: RightLowerArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: LeftHand
-      humanName: LeftHand
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: RightHand
-      humanName: RightHand
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_020
-      humanName: Left Thumb Proximal
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_021
-      humanName: Left Thumb Intermediate
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_018
-      humanName: Left Index Proximal
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_019
-      humanName: Left Index Intermediate
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_012
-      humanName: Left Middle Proximal
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_013
-      humanName: Left Middle Intermediate
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_014
-      humanName: Left Ring Proximal
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_015
-      humanName: Left Ring Intermediate
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_016
-      humanName: Left Little Proximal
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Bone_017
-      humanName: Left Little Intermediate
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    skeleton:
-    - name: troop(Clone)
-      parentName: 
-      position: {x: 0, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Armature
-      parentName: troop(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Head_001
-      parentName: troop(Clone)
-      position: {x: 0.000000014901161, y: 9.31323e-10, z: 0}
-      rotation: {x: -0.09639908, y: 0.27450714, z: -0.5915275, w: 0.75196296}
-      scale: {x: 0.09708672, y: 0.44709983, z: 0.40913233}
-    - name: LeftLowArm
-      parentName: troop(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Bone_004
-      parentName: LeftLowArm
-      position: {x: -0, y: 0, z: -0.054892782}
-      rotation: {x: 0.50000006, y: 0.49999997, z: -0.49999997, w: 0.50000006}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Bone
-      parentName: Bone_004
-      position: {x: -2.286044, y: 0.00000017259151, z: -0.10247358}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: UpperTorso
-      parentName: Bone
-      position: {x: -1, y: 0.000000075497894, z: 0}
-      rotation: {x: -0.01257457, y: -0.026895141, z: 0.051696148, w: 0.99822146}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Bone_023
-      parentName: UpperTorso
-      position: {x: -1.1654336, y: 0.15422285, z: 0.089126274}
-      rotation: {x: -0.24377418, y: 0.3157196, z: -0.71086484, w: 0.579281}
-      scale: {x: 1, y: 1, z: 1}
-    - name: UpArmRight
-      parentName: Bone_023
-      position: {x: -0.49543458, y: 0.066657946, z: 0.06558512}
-      rotation: {x: -0.6869468, y: -0.045166362, z: -0.0060721613, w: 0.72527736}
-      scale: {x: 1, y: 1, z: 1}
-    - name: LowArmRight
-      parentName: UpArmRight
-      position: {x: -0.9701909, y: -0.00000008940697, z: 0.00000017881393}
-      rotation: {x: 0.8554515, y: -0.0047738138, z: -0.007687752, w: 0.5178039}
-      scale: {x: 0.99999994, y: 1, z: 1}
-    - name: RightHand
-      parentName: LowArmRight
-      position: {x: -0.6243997, y: 0.000000044703484, z: 0.00000040233135}
-      rotation: {x: 0.06690042, y: 0.34275827, z: 0.02526024, w: 0.93669796}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Bone_028
-      parentName: LowArmRight
-      position: {x: -0.7100396, y: -0.023792043, z: 0.060877763}
-      rotation: {x: 0.70970523, y: 0.34088314, z: -0.4718679, w: 0.39680976}
-      scale: {x: 1.0000002, y: 1.0000001, z: 1}
-    - name: Bone_029
-      parentName: Bone_028
-      position: {x: -0.20174591, y: 0.000000014901161, z: -9.31323e-10}
-      rotation: {x: -0.5371247, y: -0.09144789, z: -0.0403437, w: 0.83756}
-      scale: {x: 1, y: 1, z: 0.99999994}
-    - name: Bone_030
-      parentName: LowArmRight
-      position: {x: -0.7352332, y: 0.009135462, z: 0.0603068}
-      rotation: {x: 0.8366999, y: 0.06760767, z: -0.24968027, w: 0.48272377}
-      scale: {x: 0.99999994, y: 1, z: 1.0000001}
-    - name: Bone_031
-      parentName: Bone_030
-      position: {x: -0.15898162, y: 0.00000020861626, z: 0.000000014901161}
-      rotation: {x: -0.41470143, y: -0.21314737, z: -0.16371478, w: 0.8693609}
-      scale: {x: 1, y: 0.9999999, z: 0.9999999}
-    - name: Bone_032
-      parentName: Bone_031
-      position: {x: -0.07441047, y: -0.000000048428774, z: 0.000000055879354}
-      rotation: {x: -0.369208, y: -0.2002585, z: -0.48547575, w: 0.76674336}
-      scale: {x: 1, y: 1, z: 0.9999999}
-    - name: Bone_033
-      parentName: LowArmRight
-      position: {x: -0.7617338, y: 0.037188426, z: 0.025383536}
-      rotation: {x: 0.81196284, y: -0.043499954, z: -0.30735654, w: 0.49432388}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Bone_034
-      parentName: Bone_033
-      position: {x: -0.22913018, y: -0.000000026077032, z: -0.00000019744039}
-      rotation: {x: -0.5298137, y: -0.59032565, z: -0.2000476, w: 0.5751469}
-      scale: {x: 0.99999994, y: 1, z: 0.99999994}
-    - name: Bone_035
-      parentName: LowArmRight
-      position: {x: -0.73313606, y: -0.0035571754, z: 0.08809359}
-      rotation: {x: 0.8179639, y: 0.25208232, z: -0.33310318, w: 0.39551467}
-      scale: {x: 0.9999999, y: 0.99999994, z: 1.0000001}
-    - name: Bone_036
-      parentName: Bone_035
-      position: {x: -0.13794765, y: -0.00000032782555, z: 0.000000052154064}
-      rotation: {x: -0.36834082, y: -0.23965394, z: -0.09137624, w: 0.8936115}
-      scale: {x: 0.9999999, y: 0.99999994, z: 0.9999999}
-    - name: Bone_037
-      parentName: Bone_036
-      position: {x: -0.10376349, y: -0.000000048428774, z: 0.000000017287675}
-      rotation: {x: -0.31098294, y: -0.33334973, z: -0.40985084, w: 0.7900569}
-      scale: {x: 1, y: 1.0000001, z: 1}
-    - name: Bone_026
-      parentName: LowArmRight
-      position: {x: -0.67349005, y: -0.03399892, z: 0.07406566}
-      rotation: {x: 0.65706825, y: 0.43958917, z: -0.51766545, w: 0.32717764}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Bone_027
-      parentName: Bone_026
-      position: {x: -0.1959334, y: 0.00000020861626, z: -0.000000011175871}
-      rotation: {x: -0.43552494, y: 0.14019476, z: -0.23995319, w: 0.8562044}
-      scale: {x: 0.99999994, y: 0.9999999, z: 0.9999999}
-    - name: Bone_002
-      parentName: UpperTorso
-      position: {x: -1.0477822, y: 0.00000008242205, z: -0.000000020023435}
-      rotation: {x: -9.313226e-10, y: 5.4210115e-20, z: -5.820767e-11, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Bone_003
-      parentName: Bone_002
-      position: {x: -0.5317512, y: -0.00000001071021, z: -0.000000017229468}
-      rotation: {x: -0.116369784, y: 0.08670157, z: -0.0049381, w: 0.9894021}
-      scale: {x: 1.0000001, y: 0.99999994, z: 1}
-    - name: Bone_001
-      parentName: UpperTorso
-      position: {x: -1.1535376, y: -0.13674174, z: 0.10247358}
-      rotation: {x: -0.010484891, y: 0.012762616, z: 0.7049232, w: 0.7090913}
-      scale: {x: 1.0000001, y: 1.0000001, z: 1}
-    - name: LeftUpArm
-      parentName: Bone_001
-      position: {x: -0.4825858, y: -0.107277974, z: -0.053773627}
-      rotation: {x: -0.28374115, y: 0.01212722, z: -0.036415048, w: 0.9581325}
-      scale: {x: 1, y: 1, z: 1.0000001}
-    - name: Bone_005
-      parentName: LeftUpArm
-      position: {x: -1.0401213, y: -0.00000015646219, z: -0.000000074505806}
-      rotation: {x: -0.14261666, y: 0.0043300176, z: -0.012026693, w: 0.9896954}
-      scale: {x: 0.99999994, y: 1, z: 0.99999994}
-    - name: LeftHand
-      parentName: Bone_005
-      position: {x: -0.5746956, y: 0.00000014901161, z: -0.00000027567148}
-      rotation: {x: -0.38787624, y: 0.07334797, z: 0.18851785, w: 0.8992403}
-      scale: {x: 0.9999999, y: 1.0000001, z: 1}
-    - name: Bone_012
-      parentName: LeftHand
-      position: {x: -0.21418265, y: 0.008974016, z: 0.022518754}
-      rotation: {x: -0.8384867, y: 0.00078694784, z: 0.10246729, w: 0.5352009}
-      scale: {x: 1, y: 0.9999999, z: 0.9999998}
-    - name: Bone_013
-      parentName: Bone_012
-      position: {x: -0.16365239, y: 0.000000067055225, z: -0.000000037252903}
-      rotation: {x: 0.27505827, y: -0.52456635, z: 0.16394578, w: 0.7888567}
-      scale: {x: 0.9999999, y: 1, z: 1}
-    - name: Bone_014
-      parentName: LeftHand
-      position: {x: -0.21305099, y: 0.04203385, z: 0.072567016}
-      rotation: {x: -0.84235644, y: 0.024074612, z: 0.109277725, w: 0.527176}
-      scale: {x: 1, y: 0.99999994, z: 0.99999994}
-    - name: Bone_015
-      parentName: Bone_014
-      position: {x: -0.14920367, y: 0.00000011175871, z: -0.000000037252903}
-      rotation: {x: 0.16432703, y: -0.3248628, z: 0.18201399, w: 0.9134176}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Bone_016
-      parentName: LeftHand
-      position: {x: -0.2025561, y: 0.07015756, z: 0.109219044}
-      rotation: {x: 0.8512919, y: -0.062169924, z: -0.1079648, w: -0.5096868}
-      scale: {x: 1.0000001, y: 0.99999994, z: 0.99999994}
-    - name: Bone_017
-      parentName: Bone_016
-      position: {x: -0.14073311, y: 0.000000052154064, z: 0.000000044703484}
-      rotation: {x: 0.024533467, y: 0.026743393, z: 0.35951808, w: 0.9324321}
-      scale: {x: 0.99999994, y: 0.9999998, z: 1}
-    - name: Bone_018
-      parentName: LeftHand
-      position: {x: -0.24411467, y: -0.02810511, z: -0.011583418}
-      rotation: {x: -0.8326492, y: -0.0112069165, z: 0.082375646, w: 0.54752535}
-      scale: {x: 0.9999999, y: 1, z: 0.99999994}
-    - name: Bone_019
-      parentName: Bone_018
-      position: {x: -0.15295681, y: -0.00000027567148, z: -0.000000040978193}
-      rotation: {x: 0.27369586, y: -0.46352157, z: 0.19179402, w: 0.8206421}
-      scale: {x: 0.9999999, y: 0.99999994, z: 0.9999998}
-    - name: Bone_020
-      parentName: LeftHand
-      position: {x: -0.27457508, y: -0.063025385, z: -0.056443304}
-      rotation: {x: -0.7767184, y: -0.24865538, z: 0.1449849, w: 0.56023073}
-      scale: {x: 1.0000001, y: 0.99999994, z: 1}
-    - name: Bone_021
-      parentName: Bone_020
-      position: {x: -0.09720367, y: 0.00000028312206, z: -0.000000067055225}
-      rotation: {x: 0.18086495, y: -0.5704848, z: 0.15715697, w: 0.78558046}
-      scale: {x: 0.99999994, y: 0.99999994, z: 1}
-    - name: UpLegLeft
-      parentName: Bone_004
-      position: {x: -2.5570161, y: -0.36393738, z: -0.111985706}
-      rotation: {x: 0.09616653, y: 0.99470526, z: 0.033663806, w: 0.0134227965}
-      scale: {x: 1.0000001, y: 1.0000007, z: 1.0000006}
-    - name: LowLeftLeg
-      parentName: UpLegLeft
-      position: {x: -1.1594133, y: 0.00000015832484, z: -0.00000000372529}
-      rotation: {x: -0.46980786, y: 0.06880755, z: -0.059325155, w: 0.8780812}
-      scale: {x: 1.0000002, y: 1, z: 1.0000001}
-    - name: LeftFoot
-      parentName: LowLeftLeg
-      position: {x: -1.2327316, y: 0.00000013317913, z: -0.000000009735231}
-      rotation: {x: 0.62848085, y: -0.25839427, z: 0.58159876, w: -0.4471992}
-      scale: {x: 0.9999999, y: 0.99999994, z: 0.99999994}
-    - name: LeftFoot_001
-      parentName: LeftFoot
-      position: {x: -0.40236953, y: 0.00000007543713, z: 0.000000007450581}
-      rotation: {x: -0.10076878, y: 0.13364828, z: 0.015274951, w: 0.98577404}
-      scale: {x: 0.99999994, y: 1.0000001, z: 1}
-    - name: UpLegRight
-      parentName: Bone_004
-      position: {x: -2.5642264, y: 0.31836766, z: -0.17299852}
-      rotation: {x: -0.11602456, y: 0.7967655, z: 0.5916492, w: -0.0406745}
-      scale: {x: 1.0000004, y: 1.0000014, z: 1.0000004}
-    - name: Bone_009
-      parentName: UpLegRight
-      position: {x: -1.0313109, y: 0.000000074505806, z: 0.000000020489097}
-      rotation: {x: 0.10675838, y: -0.07114116, z: 0.09364427, w: 0.9873056}
-      scale: {x: 1, y: 0.99999994, z: 1}
-    - name: ToeRight
-      parentName: Bone_009
-      position: {x: -1.3999257, y: 0.00000009662472, z: 0.000000052154064}
-      rotation: {x: 0.664823, y: -0.33631706, z: 0.5467037, w: -0.38212076}
-      scale: {x: 0.9999998, y: 0.99999994, z: 0.9999999}
-    - name: ToeRight_001
-      parentName: ToeRight
-      position: {x: -0.4401542, y: -0.000000026484486, z: 0.000000009313226}
-      rotation: {x: 0.013765144, y: 0.052219603, z: 0.0077366787, w: 0.9985108}
-      scale: {x: 1.0000001, y: 1, z: 1}
+    human: []
+    skeleton: []
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -999,10 +403,10 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 3
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
