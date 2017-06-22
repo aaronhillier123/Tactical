@@ -1,0 +1,765 @@
+fileFormatVersion: 2
+guid: ed6a624cbee983c45bc13de66ee81b7e
+timeCreated: 1498158193
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Body
+    100002: FootRight
+    100004: Head
+    100006: LeftClav
+    100008: LeftFoot
+    100010: LeftForearm
+    100012: LeftHand
+    100014: LeftToe
+    100016: LeftUpArm
+    100018: LMiddleBase
+    100020: LMiddleMid
+    100022: LowLeftLeg
+    100024: LowRightLeg
+    100026: LPinkyBase
+    100028: LPinkyMid
+    100030: LPointerBase
+    100032: LPointerMid
+    100034: LRingBase
+    100036: LRingMid
+    100038: LThumbBase
+    100040: LThumbMid
+    100042: Neck
+    100044: RightClav
+    100046: RightForearm
+    100048: RightHand
+    100050: RMiddleBase
+    100052: RMiddleMid
+    100054: RMiddleTip
+    100056: RPinkyBase
+    100058: RPinkyMid
+    100060: RPointerBase
+    100062: RPointerMid
+    100064: RRingBase
+    100066: RRingMid
+    100068: RRingTip
+    100070: RThumbBase
+    100072: RThumbMid
+    100074: Stomach
+    100076: ToeRight
+    100078: //RootNode
+    100080: Trooper
+    100082: UpArmRight
+    100084: UpLegLeft
+    100086: UpLegRight
+    100088: UpperTorso
+    400000: Body
+    400002: FootRight
+    400004: Head
+    400006: LeftClav
+    400008: LeftFoot
+    400010: LeftForearm
+    400012: LeftHand
+    400014: LeftToe
+    400016: LeftUpArm
+    400018: LMiddleBase
+    400020: LMiddleMid
+    400022: LowLeftLeg
+    400024: LowRightLeg
+    400026: LPinkyBase
+    400028: LPinkyMid
+    400030: LPointerBase
+    400032: LPointerMid
+    400034: LRingBase
+    400036: LRingMid
+    400038: LThumbBase
+    400040: LThumbMid
+    400042: Neck
+    400044: RightClav
+    400046: RightForearm
+    400048: RightHand
+    400050: RMiddleBase
+    400052: RMiddleMid
+    400054: RMiddleTip
+    400056: RPinkyBase
+    400058: RPinkyMid
+    400060: RPointerBase
+    400062: RPointerMid
+    400064: RRingBase
+    400066: RRingMid
+    400068: RRingTip
+    400070: RThumbBase
+    400072: RThumbMid
+    400074: Stomach
+    400076: ToeRight
+    400078: //RootNode
+    400080: Trooper
+    400082: UpArmRight
+    400084: UpLegLeft
+    400086: UpLegRight
+    400088: UpperTorso
+    4300000: Trooper
+    7400000: Idle
+    7400002: Shoot
+    7400004: Run
+    7400006: ThrowGrenade
+    7400008: Stab
+    9500000: //RootNode
+    13700000: Trooper
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Default Take
+      firstFrame: 1
+      lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: Body/Stomach
+        weight: 1
+      - path: Body/Stomach/UpperTorso
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase/LMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase/LPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase/LPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase/LRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase/LThumbMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck/Head
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid/RMiddleTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase/RPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase/RPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid/RRingTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase/RThumbMid
+        weight: 1
+      - path: Body/UpLegLeft
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot/LeftToe
+        weight: 1
+      - path: Body/UpLegRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight/ToeRight
+        weight: 1
+      - path: Trooper
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Shoot
+      takeName: LeftLowArmAction_002
+      firstFrame: 40
+      lastFrame: 90
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: Body/Stomach
+        weight: 1
+      - path: Body/Stomach/UpperTorso
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase/LMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase/LPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase/LPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase/LRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase/LThumbMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck/Head
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid/RMiddleTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase/RPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase/RPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid/RRingTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase/RThumbMid
+        weight: 1
+      - path: Body/UpLegLeft
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot/LeftToe
+        weight: 1
+      - path: Body/UpLegRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight/ToeRight
+        weight: 1
+      - path: Trooper
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Run
+      takeName: LeftLowArmAction_002
+      firstFrame: 106
+      lastFrame: 121
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: Body/Stomach
+        weight: 1
+      - path: Body/Stomach/UpperTorso
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase/LMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase/LPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase/LPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase/LRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase/LThumbMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck/Head
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid/RMiddleTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase/RPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase/RPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid/RRingTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase/RThumbMid
+        weight: 1
+      - path: Body/UpLegLeft
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot/LeftToe
+        weight: 1
+      - path: Body/UpLegRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight/ToeRight
+        weight: 1
+      - path: Trooper
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ThrowGrenade
+      takeName: LeftLowArmAction_002
+      firstFrame: 130
+      lastFrame: 158
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: Body/Stomach
+        weight: 1
+      - path: Body/Stomach/UpperTorso
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase/LMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase/LPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase/LPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase/LRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase/LThumbMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck/Head
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid/RMiddleTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase/RPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase/RPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid/RRingTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase/RThumbMid
+        weight: 1
+      - path: Body/UpLegLeft
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot/LeftToe
+        weight: 1
+      - path: Body/UpLegRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight/ToeRight
+        weight: 1
+      - path: Trooper
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Stab
+      takeName: Default Take
+      firstFrame: 171
+      lastFrame: 221
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: Body/Stomach
+        weight: 1
+      - path: Body/Stomach/UpperTorso
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase/LMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase/LPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase/LPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase/LRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase/LThumbMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck/Head
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid/RMiddleTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase/RPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase/RPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid/RRingTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase/RThumbMid
+        weight: 1
+      - path: Body/UpLegLeft
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot/LeftToe
+        weight: 1
+      - path: Body/UpLegRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight/ToeRight
+        weight: 1
+      - path: Trooper
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
