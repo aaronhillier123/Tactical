@@ -5,12 +5,12 @@ Rig model to a skeleton X
 Create walking animation X
 Map image to model to show color X
 Import model and animation into unity X
-Create a unity terrain (rough)
-Create script where on click, troop walks to location
+Create a unity terrain (rough) X
+Create script where on click, troop walks to location X
 
 Week2:
 
-Create attack animation
+Create attack animation X
 Create 3d model of bullet
 Import bullet into unity
 Create attack script
