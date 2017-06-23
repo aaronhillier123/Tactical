@@ -20,10 +20,10 @@ Create bullet collision script (health decrease)
 Create death script on health<0
 
 Week3:
-Create different players/terns
-Adjust player colors
-Adjust camera views
-End turn button
+Create different players/terns X
+Adjust player colors X
+Adjust camera views X
+End turn button X
 Allow for multiple movements/attacks
 Freeze troop after attack
 
