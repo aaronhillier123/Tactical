@@ -11,6 +11,8 @@ public class Trooper : MonoBehaviour {
 	public int id;
 	public Material BlueTroopSelected;
 	public Material BlueTroop;
+
+	public bool moving;
 	// Use this for initialization
 	void Start () {
 		myPlayer = GetComponentInParent<Player>();
@@ -19,26 +21,16 @@ public class Trooper : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey ("left")) {
-			rotateTo (180.0f);
-			move ();
-		} else if (Input.GetKey ("down")) {
-			rotateTo (90f);
-			move ();
-		} else if (Input.GetKey ("up")) {
-			rotateTo (270f);
-			move ();
-		} else if (Input.GetKey ("right")) {
-			rotateTo (0f);
-			move ();
-		} else if (Input.GetKey ("space")) {
-			shoot ();
-		} else if (Input.GetKey ("g")) {
+		if (Input.GetKey ("g")) {
 			throwGrenade ();
 		} else if (Input.GetKey ("s")) {
 			stab ();
-		}else {
-			//stop();
+		} else if (Input.GetKey ("space")) {
+			shoot ();
+		} else{
+			if (moving != true) {
+				stop ();
+			}
 		}
 	}
 
@@ -50,6 +42,7 @@ public class Trooper : MonoBehaviour {
 	}
 
 	void stop(){
+		moving = false;
 		animator.SetInteger ("AnimPar", 0);
 	}
 
@@ -60,6 +53,7 @@ public class Trooper : MonoBehaviour {
 
 	public IEnumerator moveToPosition(Vector3 destination, float speed)
 	{
+		moving = true;
 		Vector3 direction = (destination - transform.position).normalized;
 		Quaternion lookRotation = Quaternion.LookRotation (direction);
 		while (Quaternion.Angle (transform.rotation, lookRotation) < 1) {
