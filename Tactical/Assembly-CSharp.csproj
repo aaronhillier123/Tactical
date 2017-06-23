@@ -49,6 +49,7 @@
      <Compile Include="Assets\Assets\Scripts\CameraPan.cs" />
      <Compile Include="Assets\Assets\Scripts\CameraZoom.cs" />
      <Compile Include="Assets\Assets\Scripts\Game.cs" />
+     <Compile Include="Assets\Assets\Scripts\Hud.cs" />
      <Compile Include="Assets\Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Assets\Scripts\Trooper.cs" />
      <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />

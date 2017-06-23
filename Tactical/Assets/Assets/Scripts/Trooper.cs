@@ -9,14 +9,19 @@ public class Trooper : MonoBehaviour {
 	private Animator animator;
 	private int animInt;
 	public int id;
+	public int team;
 	public Material BlueTroopSelected;
 	public Material BlueTroop;
+	public Material RedTroop;
+	public Material OrangeTroop;
+	public Material GreenTroop;
 
 	public bool moving;
 	// Use this for initialization
 	void Start () {
 		myPlayer = GetComponentInParent<Player>();
 		animator = gameObject.GetComponentInChildren<Animator> ();
+		assignColor ();
 	}
 	
 	// Update is called once per frame
@@ -84,11 +89,41 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void select(){
-		Debug.Log ("This trooper is now selected");
+		if (myPlayer.Selected != null) {
+			myPlayer.Selected.unselect ();
+		}
+		myPlayer.Selected = this;
 		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
 		mats[0] = BlueTroopSelected;
 		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
 	}
-		
+
+	public void unselect(){
+		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
+		mats[0] = BlueTroop;
+		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+	}
+
+	void assignColor(){
+		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
+		switch (team) {
+		case 0:
+			mats [0] = BlueTroop;
+			break;
+		case 1:
+			mats [0] = RedTroop;
+			break;
+		case 2:
+			mats [0] = GreenTroop;
+			break;
+		case 3:
+			mats [0] = OrangeTroop;
+			break;
+		default:
+			break;
+		}
+		//Debug.Log ("assigning color");
+		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+	}
 
 }
