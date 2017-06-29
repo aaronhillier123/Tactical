@@ -5,8 +5,9 @@ using UnityEngine;
 public class Trooper : MonoBehaviour {
 
 	public Player myPlayer;
+	public float health = 100;
 
-	private Animator animator;
+	public Animator animator;
 	private int animInt;
 	public int id;
 	public int team;
@@ -15,13 +16,15 @@ public class Trooper : MonoBehaviour {
 	public Material RedTroop;
 	public Material OrangeTroop;
 	public Material GreenTroop;
-
 	public bool moving;
+	public bool frozen = false;
 	// Use this for initialization
 	void Start () {
+		
 		myPlayer = GetComponentInParent<Player>();
 		animator = gameObject.GetComponentInChildren<Animator> ();
 		assignColor ();
+		PhotonNetwork.OnEventCall += move;
 	}
 	
 	// Update is called once per frame
@@ -34,49 +37,53 @@ public class Trooper : MonoBehaviour {
 			shoot ();
 		} else{
 			if (moving != true) {
-				stop ();
+				//stop ();
 			}
 		}
 	}
 
-	void rotateTo (float a){
-		float rotationPerMinute;
-		Quaternion myRotation = gameObject.transform.rotation;
-		float moveSpeed = .01f;
-		gameObject.transform.rotation = Quaternion.Lerp(myRotation, Quaternion.Euler(0, a, 0), moveSpeed * Time.time);
-	}
-
-	void stop(){
+	public void stop(){
 		moving = false;
 		animator.SetInteger ("AnimPar", 0);
 	}
 
-	void move(){
-		animator.SetInteger ("AnimPar", 1);
-		gameObject.transform.Translate ( 0f, 0f, 0.25f);
+	public void move(byte id, object content, int senderID){
+		if (id == 2) {
+			float[] conList = (float[])content;
+			int selectedID = (int)conList[0];
+			float newPosx = conList [1];
+			float newPosy = conList [2];
+			float newPosz = conList [3];
+			Vector3 newPos = new Vector3 (newPosx, newPosy, newPosz);
+			Trooper myTroop = Game.GetTroop (selectedID);
+			if (myTroop.moving == false) {
+				myTroop.StopAllCoroutines();
+				StartCoroutine (moveToPosition (myTroop.gameObject, newPos, 10f)); 
+			}
+		}
 	}
 
-	public IEnumerator moveToPosition(Vector3 destination, float speed)
+	public IEnumerator moveToPosition(GameObject t, Vector3 destination, float speed)
 	{
-		moving = true;
-		Vector3 direction = (destination - transform.position).normalized;
+		t.GetComponent<Trooper>().moving = true;
+		Vector3 direction = (destination - t.transform.position).normalized;
 		Quaternion lookRotation = Quaternion.LookRotation (direction);
-		while (Quaternion.Angle (transform.rotation, lookRotation) < 1) {
-			transform.rotation = Quaternion.Slerp (transform.rotation, lookRotation, Time.deltaTime * .001f);
-		}
-		transform.rotation = lookRotation;
-		animator.SetInteger ("AnimPar", 1);
-		Vector3 currentPos = transform.position;
-		while(Vector3.Distance(transform.position, destination) > 1f)
+		t.transform.rotation = lookRotation;
+		t.GetComponent<Trooper>().animator.SetInteger ("AnimPar", 1);
+		Vector3 currentPos = t.transform.position;
+		while(Vector3.Distance(t.transform.position, destination) > 1f)
 		{
-			transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
+			t.transform.position = Vector3.MoveTowards (t.transform.position, destination, speed * Time.deltaTime);
 			yield return null;
 		}
-		transform.position = destination;
-		stop ();
+		t.transform.position = destination;
+		t.GetComponent<Trooper> ().stop ();
 	}
 
-	void shoot(){
+	//public IEnumerator rotateAndShoot(GameObject t, Vector3 destination){
+	//	Vector3 direction = (destination - t.transform.positionfd
+
+	public void shoot(){
 	animator.SetInteger ("AnimPar", 2);
 	}
 
@@ -92,31 +99,45 @@ public class Trooper : MonoBehaviour {
 		if (myPlayer.Selected != null) {
 			myPlayer.Selected.unselect ();
 		}
-		myPlayer.Selected = this;
-		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
-		mats[0] = BlueTroopSelected;
-		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+			myPlayer.Selected = this;
+			Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
+			mats [0] = BlueTroopSelected;
+			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+
+	}
+
+	public void rotateTo(Vector3 point){
+		Vector3 direction = (point - gameObject.transform.position).normalized;
+		Quaternion lookRotation = Quaternion.LookRotation (direction);
+		gameObject.transform.rotation = lookRotation;
 	}
 
 	public void unselect(){
+		if (myPlayer.Selected = this) {
+			myPlayer.Selected = null;
+		}
 		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
 		mats[0] = BlueTroop;
 		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
 	}
 
+	public void freeze(){
+		frozen = true;
+	}
+
 	void assignColor(){
 		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
 		switch (team) {
-		case 0:
+		case 1:
 			mats [0] = BlueTroop;
 			break;
-		case 1:
+		case 2:
 			mats [0] = RedTroop;
 			break;
-		case 2:
+		case 3:
 			mats [0] = GreenTroop;
 			break;
-		case 3:
+		case 4:
 			mats [0] = OrangeTroop;
 			break;
 		default:

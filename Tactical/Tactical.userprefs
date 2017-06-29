@@ -1,8 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Assets\Scripts\Hud.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Assets/Scripts/Player.cs">
     <Files>
-      <File FileName="Assets\Assets\Scripts\Hud.cs" Line="5" Column="1" />
+      <File FileName="Assets/Assets/Scripts/Game.cs" Line="90" Column="40" />
+      <File FileName="Assets/Assets/Scripts/Trooper.cs" Line="122" Column="3" />
+      <File FileName="Assets/Assets/Scripts/HealthBar.cs" Line="35" Column="3" />
+      <File FileName="Assets/Assets/Scripts/WaitForPlayers.cs" Line="15" Column="41" />
+      <File FileName="Assets/Assets/Scripts/Player.cs" Line="65" Column="3" />
+      <File FileName="Assets/Assets/Scripts/Hud.cs" Line="68" Column="3" />
+      <File FileName="Assets/Assets/Scripts/EventHandler.cs" Line="22" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -13,7 +13,7 @@ public class CameraZoom : MonoBehaviour {
 		deltaWheel = 0;
 		currentZoom = gameObject.transform.position.y;
 		originalZoom = gameObject.transform.position.y;
-		maxZoom = 5;
+		maxZoom = 15;
 	}
 	
 	// Update is called once per frame
