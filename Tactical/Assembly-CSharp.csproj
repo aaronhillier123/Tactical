@@ -56,6 +56,7 @@
      <Compile Include="Assets\Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Assets\Scripts\Trooper.cs" />
      <Compile Include="Assets\Assets\Scripts\WaitForPlayers.cs" />
+     <Compile Include="Assets\Chance.cs" />
      <Compile Include="Assets\HitMiss.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs" />

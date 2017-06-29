@@ -7,9 +7,13 @@ public class Hud : MonoBehaviour {
 
 	public Game game;
 	public GameObject HealthObject;
-	private bool healthbars = false;
+	public GameObject ChanceObject;
+	public static GameObject ChanceObjectS;
+	public static GameObject HealthObjectS;
+	private static bool healthbars = false;
 	// Use this for initialization
 	void Start () {
+		HealthObjectS = HealthObject;
 		PhotonNetwork.OnEventCall += changeTurn;
 		GameObject GO = GameObject.FindGameObjectWithTag ("GameController");
 		if (GO != null) {
@@ -30,8 +34,10 @@ public class Hud : MonoBehaviour {
 	public void attackMode(){
 		Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
 		if (myPlayer.attacking == true) {
+			myPlayer.removeChances ();
 			myPlayer.attacking = false;
 		} else {
+			myPlayer.showAllChances ();
 			myPlayer.attacking = true;
 		}
 	}
@@ -54,11 +60,12 @@ public class Hud : MonoBehaviour {
 		}
 	}
 
+	//show all health bars
 	public void showHealthBars(){
 		if (healthbars == false) {
 			hideHealthBars ();
 			foreach (Trooper t in Game.allTroopers) {
-				GameObject myHealth = Instantiate (HealthObject) as GameObject;
+				GameObject myHealth = Instantiate (HealthObjectS) as GameObject;
 				myHealth.GetComponent<HealthBar> ().id = t.id;
 			}
 			healthbars = true;
@@ -67,13 +74,22 @@ public class Hud : MonoBehaviour {
 		}
 	}
 
-	public void hideHealthBars(){
+	//single health bar
+	public static void showHealthBar(int id){
+		hideHealthBars ();
+		GameObject myHealth = Instantiate (HealthObjectS) as GameObject;
+		myHealth.GetComponent<HealthBar>().id = id;
+	}
+
+	//hide all health bars
+	public static void hideHealthBars(){
 		Slider[] healthbarsList = GameObject.FindObjectsOfType<Slider> ();
 		foreach (Slider s in healthbarsList) {
 			Destroy (s.gameObject);
 		}
 		healthbars = false;
 	}
+		
 
 
 }

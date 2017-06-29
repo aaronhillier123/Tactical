@@ -97,7 +97,15 @@ public class Trooper : MonoBehaviour {
 			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, finalPos, 60 * Time.deltaTime);
 			yield return null;
 		}
+		target.GetComponent<Trooper> ().rotateTo (transform.position);
+		target.GetComponent<Trooper>().gotShot ();
 		Destroy (mybullet);
+	}
+
+	public void gotShot(){
+		animator.SetInteger ("AnimPar", 5);
+		health -= 10;
+		Invoke("stop", 1f);
 	}
 
 	IEnumerator missThis(GameObject target){
@@ -118,6 +126,7 @@ public class Trooper : MonoBehaviour {
 			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, finalPos, 60 * Time.deltaTime);
 			yield return null;
 		}
+
 		Destroy (mybullet);
 	}
 
@@ -127,6 +136,10 @@ public class Trooper : MonoBehaviour {
 
 	void stab(){
 		animator.SetInteger ("AnimPar", 4);
+	}
+
+	public float distanceTo(Vector3 target){
+		return (Vector3.Distance(gameObject.transform.position, target));
 	}
 
 	public void select(){

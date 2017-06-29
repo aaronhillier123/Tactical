@@ -1,9 +1,6 @@
 
 Week2:
 
-Shot animation on hit
-Accuracy gui element on enemies when attack on
-Enemy health bars on select
 Outline shader on select
 Create death script on health=0
 Death animation
@@ -36,3 +33,7 @@ Create barrier Placement scripts (first turn)
 Create GUI for first turn
 Game Start and Game Over scenes/transitions
 PlayerFab Integration
+	-JSON string creation based on 
+		-Troopers
+		-DogTags
+		-CapturePoints

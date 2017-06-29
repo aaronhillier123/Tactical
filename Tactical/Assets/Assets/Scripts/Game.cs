@@ -82,20 +82,31 @@ public class Game : MonoBehaviour {
 					if (hit.collider.CompareTag ("Player")) {
 						Trooper clickedOn = hit.collider.gameObject.GetComponent<Trooper> ();
 						if (PhotonNetwork.player.ID == clickedOn.team) {
+							//if it is an ally trooper
 							myPlayer.selectTrooper (clickedOn);
 						} else {
-							float[] targets = new float[3];
-							targets [0] = myPlayer.Selected.id;
-							targets [1] = clickedOn.id;
-							targets [2] = Random.Range (0, 100);
-							object target = (object)targets;
-							PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
+							//if it is an enemy player
+							if (myPlayer.attacking == true) {
+								//if current player is attacking
+								myPlayer.attacking = false;
+								float[] targets = new float[3];
+								targets [0] = myPlayer.Selected.id;
+								targets [1] = clickedOn.id;
+								targets [2] = Random.Range (0, 100);
+								object target = (object)targets;
+								PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
+							} else {
+								//if current player is not attacking
+								Hud.showHealthBar(clickedOn.id);
+							}
 						}
 					} else if (hit.collider.CompareTag ("Terrain")) {
 						if (myPlayer.Selected != null) {
 
 
 							//if terrain is clicked while player is selected
+							myPlayer.removeChances();
+							myPlayer.attacking = false;
 							RaiseEventOptions ops = RaiseEventOptions.Default;
 							ops.Receivers = ReceiverGroup.All;
 							///////send to server
@@ -114,7 +125,16 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-
+	public static List<Trooper> notMyTroopers(Player p){
+		List<Trooper> nmt = new List<Trooper> ();
+		foreach(Trooper t in allTroopers){
+			if(t.team != p.team){
+				nmt.Add(t);
+			}
+		}
+		return nmt;
+	}
+			
 
 	public static void CreatePlayer(byte id, object content, int senderID){
 		if (id == 1) {

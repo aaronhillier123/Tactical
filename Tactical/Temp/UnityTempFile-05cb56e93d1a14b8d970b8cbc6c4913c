@@ -83,6 +83,7 @@
 'Assets/Assets/Scripts/Player.cs'
 'Assets/Assets/Scripts/Trooper.cs'
 'Assets/Assets/Scripts/WaitForPlayers.cs'
+'Assets/Chance.cs'
 'Assets/HitMiss.cs'
 'Assets/Photon Unity Networking/Plugins/PhotonNetwork/CustomTypes.cs'
 'Assets/Photon Unity Networking/Plugins/PhotonNetwork/Enums.cs'

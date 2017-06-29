@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
 	public int team;
 	public GameObject TrooperObject;
 	public GameObject HealthObject;
+	public GameObject ChanceObject;
 	public List<Trooper> roster = new List<Trooper>();
 	public Trooper Selected;
 	public Game game;
@@ -48,6 +49,22 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public void showAllChances(){
+		List<Trooper> others = Game.notMyTroopers (this);
+		foreach (Trooper t in others) {
+			GameObject chanceO = Instantiate (ChanceObject, GameObject.Find ("Canvas").transform);
+			chanceO.GetComponent<Chance>().target = Selected.transform.position;
+			chanceO.GetComponent<Chance> ().id = t.id;
+		}
+	}
+
+	public void removeChances(){
+		Chance[] all = GameObject.FindObjectsOfType<Chance> ();
+		foreach (Chance c in all) {
+			Destroy (c.gameObject);
+		}
+	}
+
 	public void attack(byte id, object content, int senderID){
 		if(id == 4){
 			//unpack objects for attacker and target
@@ -64,7 +81,6 @@ public class Player : MonoBehaviour {
 				myTroop.rotateTo (enemy.gameObject.transform.position);
 				myTroop.animator.SetInteger ("AnimPar", 2);
 				myTroop.shoot (enemy.gameObject);
-				enemy.health -= 20;
 			
 			} else {
 				//Debug.Log ("its a miss,  distance is " + distance + " and random is " + random);
