@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Trooper : MonoBehaviour {
 
+	public GameObject hitmisOb;
 	public Player myPlayer;
 	public float health = 100;
 	public GameObject bullet;
@@ -60,6 +61,7 @@ public class Trooper : MonoBehaviour {
 		t.transform.rotation = lookRotation;
 		t.GetComponent<Trooper>().animator.SetInteger ("AnimPar", 1);
 		Vector3 currentPos = t.transform.position;
+
 		while(Vector3.Distance(t.transform.position, destination) > 1f)
 		{
 			t.transform.position = Vector3.MoveTowards (t.transform.position, destination, speed * Time.deltaTime);
@@ -87,6 +89,10 @@ public class Trooper : MonoBehaviour {
 		GameObject mybullet = Instantiate (bullet, startpos, Quaternion.identity);
 		Vector3 t = target.transform.position;
 		Vector3 finalPos = new Vector3 (t.x, t.y + 5, t.z);
+		Vector2 location = Camera.main.WorldToScreenPoint (new Vector3(p.x, p.y+7, p.z));
+		Vector2 alocation = new Vector2 (location.x + 50, location.y);
+		GameObject misser = Instantiate (hitmisOb, alocation, Quaternion.identity, GameObject.Find("Canvas").transform);
+		misser.GetComponent<HitMiss> ().hitmis = "Hit";
 		while (Vector3.Distance (mybullet.transform.position, finalPos) > 1f) {
 			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, finalPos, 60 * Time.deltaTime);
 			yield return null;
@@ -104,6 +110,10 @@ public class Trooper : MonoBehaviour {
 		GameObject mybullet = Instantiate (bullet, startpos, Quaternion.identity);
 		Vector3 t = target.transform.position;
 		Vector3 finalPos = new Vector3 (t.x+xoff, t.y+yoff + 5, t.z+zoff);
+		Vector2 location = Camera.main.WorldToScreenPoint (new Vector3(p.x, p.y+7, p.z));
+		Vector2 alocation = new Vector2 (location.x + 50, location.y);
+		GameObject misser = Instantiate (hitmisOb, alocation, Quaternion.identity, GameObject.Find("Canvas").transform);
+		misser.GetComponent<HitMiss> ().hitmis = "Missed";
 		while (Vector3.Distance (mybullet.transform.position, finalPos) > 1f) {
 			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, finalPos, 60 * Time.deltaTime);
 			yield return null;

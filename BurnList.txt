@@ -1,7 +1,6 @@
 
 Week2:
 
-Hit/Miss Text animation
 Shot animation on hit
 Accuracy gui element on enemies when attack on
 Enemy health bars on select
