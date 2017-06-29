@@ -6,7 +6,7 @@ public class Trooper : MonoBehaviour {
 
 	public Player myPlayer;
 	public float health = 100;
-
+	public GameObject bullet;
 	public Animator animator;
 	private int animInt;
 	public int id;
@@ -29,17 +29,6 @@ public class Trooper : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey ("g")) {
-			throwGrenade ();
-		} else if (Input.GetKey ("s")) {
-			stab ();
-		} else if (Input.GetKey ("space")) {
-			shoot ();
-		} else{
-			if (moving != true) {
-				//stop ();
-			}
-		}
 	}
 
 	public void stop(){
@@ -83,8 +72,43 @@ public class Trooper : MonoBehaviour {
 	//public IEnumerator rotateAndShoot(GameObject t, Vector3 destination){
 	//	Vector3 direction = (destination - t.transform.positionfd
 
-	public void shoot(){
-	animator.SetInteger ("AnimPar", 2);
+	public void shoot(GameObject target){
+		StartCoroutine (shootThis (target));
+	}
+
+	public void miss(GameObject target){
+		StartCoroutine (missThis (target));
+	}
+
+	IEnumerator shootThis(GameObject target){
+		yield return new WaitForSeconds (1f);
+		Vector3 p = gameObject.transform.position;
+		Vector3 startpos = new Vector3 (p.x, p.y + 5, p.z);
+		GameObject mybullet = Instantiate (bullet, startpos, Quaternion.identity);
+		Vector3 t = target.transform.position;
+		Vector3 finalPos = new Vector3 (t.x, t.y + 5, t.z);
+		while (Vector3.Distance (mybullet.transform.position, finalPos) > 1f) {
+			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, finalPos, 60 * Time.deltaTime);
+			yield return null;
+		}
+		Destroy (mybullet);
+	}
+
+	IEnumerator missThis(GameObject target){
+		yield return new WaitForSeconds (1f);
+		Vector3 p = gameObject.transform.position;
+		float xoff = Random.Range (-4, 4);
+		float yoff = Random.Range (-4, 4);
+		float zoff = Random.Range (-4, 4);
+		Vector3 startpos = new Vector3 (p.x, p.y + 5, p.z);
+		GameObject mybullet = Instantiate (bullet, startpos, Quaternion.identity);
+		Vector3 t = target.transform.position;
+		Vector3 finalPos = new Vector3 (t.x+xoff, t.y+yoff + 5, t.z+zoff);
+		while (Vector3.Distance (mybullet.transform.position, finalPos) > 1f) {
+			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, finalPos, 60 * Time.deltaTime);
+			yield return null;
+		}
+		Destroy (mybullet);
 	}
 
 	void throwGrenade(){

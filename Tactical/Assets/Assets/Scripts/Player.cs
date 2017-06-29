@@ -50,14 +50,34 @@ public class Player : MonoBehaviour {
 
 	public void attack(byte id, object content, int senderID){
 		if(id == 4){
+			//unpack objects for attacker and target
 			Debug.Log ("attack recieved by all");
 			float[] contents = (float[])content;
 			Trooper myTroop = Game.GetTroop ((int)contents [0]);
 			Trooper enemy = Game.GetTroop((int)contents[1]);
-			Debug.Log (myTroop.id + " is shooting " + enemy.id);
-			myTroop.rotateTo (enemy.gameObject.transform.position);
-			myTroop.animator.SetInteger ("AnimPar", 2);
-			enemy.health -= 20;
+
+			//find distance and see if attack is a hit
+			float distance = Vector3.Distance(myTroop.gameObject.transform.position, enemy.gameObject.transform.position);
+			float random = contents [2];
+			if (random - distance > 0) {
+				//Debug.Log ("its a hit, distance is " + distance + " and random is " + random);
+				myTroop.rotateTo (enemy.gameObject.transform.position);
+				myTroop.animator.SetInteger ("AnimPar", 2);
+				myTroop.shoot (enemy.gameObject);
+				enemy.health -= 20;
+			
+			} else {
+				//Debug.Log ("its a miss,  distance is " + distance + " and random is " + random);
+				myTroop.rotateTo (enemy.gameObject.transform.position);
+				myTroop.animator.SetInteger ("AnimPar", 2);
+				myTroop.miss (enemy.gameObject);
+			
+			
+			
+			}
+
+
+
 			myTroop.Invoke ("stop", 1f);
 			myTroop.unselect ();
 			myTroop.freeze ();

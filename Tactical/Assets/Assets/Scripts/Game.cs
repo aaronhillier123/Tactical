@@ -84,9 +84,10 @@ public class Game : MonoBehaviour {
 						if (PhotonNetwork.player.ID == clickedOn.team) {
 							myPlayer.selectTrooper (clickedOn);
 						} else {
-							float[] targets = new float[2];
+							float[] targets = new float[3];
 							targets [0] = myPlayer.Selected.id;
 							targets [1] = clickedOn.id;
+							targets [2] = Random.Range (0, 100);
 							object target = (object)targets;
 							PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
 						}

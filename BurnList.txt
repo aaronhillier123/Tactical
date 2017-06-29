@@ -1,58 +1,39 @@
-Week1:
-
-Create 3d model of a troop in blender. X
-Rig model to a skeleton X
-Create walking animation X
-Map image to model to show color X
-Import model and animation into unity X
-Create a unity terrain (rough) X
-Create script where on click, troop walks to location X
 
 Week2:
 
-Create attack animation X
-Create 3d model of bullet
-Import bullet into unity
-Create attack script
-Create accuracy system for attack
-Assign health varaible to troop script
-Create bullet collision script (health decrease)
-Create death script on health<0
-
-Week3:
-Create different players/terns X
-Adjust player colors X
-Adjust camera views X
-End turn button X
-Allow for multiple movements/attacks
-Freeze troop after attack
-
-Week4:
-Create currency system
-Create Store
-Grenade Anim/Script
-Invulnerable Anim/Script
-Movement/Range Modifiers
-
-Week5:
+Hit/Miss Text animation
+Shot animation on hit
+Accuracy gui element on enemies when attack on
+Enemy health bars on select
+Outline shader on select
+Create death script on health=0
+Death animation
+Create store UI;
+	-panel (retractable to left of screen)
+		-panel (one for each item)
+			-name
+			-description
+			-Buy button
+Create Virtual Currency
+On new turn function
+	-unfreeze
+	-add turns currency
+	-record starting positions (local)
+Add grenade store item
+	-animation
+	-script
+	-explosion
+Add spawn rectangle
+Add movement parameters
+Invulnerable Script/Texturing
 Redo terrain
 Create "capture points"
 Capture point scripts
+Capture point animations
 Natural Cover 3d Modeling and Mapping
 Natural Cover scripts
-
-Week6:
 Create barriers/scripts
 Create barrier Placement scripts (first turn)
 Create GUI for first turn
-
-Week7:
-Introduce movement distance
-Introduce Vision distance
 Game Start and Game Over scenes/transitions
-
-Week8:
-Photon Networking?
-Sign in
-Backside Terrain map
-
+PlayerFab Integration
