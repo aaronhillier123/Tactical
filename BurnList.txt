@@ -1,8 +1,5 @@
 
 Week2:
-
-Create store UI;
-	-panel (retractable to left of screen)
 		-panel (one for each item)
 			-name
 			-description
