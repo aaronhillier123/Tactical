@@ -5,38 +5,55 @@ using UnityEngine.UI;
 
 public class Trooper : MonoBehaviour {
 
+	//miscellaneous
 	public GameObject hitmisOb;
-	public Player myPlayer;
 	public float health = 100;
-	public GameObject bullet;
+
+	//animation
 	public Animator animator;
 	private int animInt;
+
+	//Seperate Objects
+	public GameObject bullet;
+	public GameObject grenade;
+
+
+	//identification
 	public int id;
 	public int team;
+	public Player myPlayer;
+
+	//Blue Troop Materials
 	public Material BlueTroopSelected;
 	public Material BlueTroop;
 	public Material BlueTroopFrozen;
 
+	//Red Troop Materials
 	public Material RedTroop;
 	public Material RedTroopSelected;
 	public Material RedTroopFrozen;
 
+	//Orange Troop Materials
 	public Material OrangeTroop;
 	public Material OrangeTroopFrozen;
 	public Material OrangeTroopSelected;
 
+	//Green Troop Materials
 	public Material GreenTroop;
 	public Material GreenTroopFrozen;
 	public Material GreenTroopSelected;
 
+	//state of availability
 	public bool moving;
 	public bool frozen = false;
 	// Use this for initialization
 
-
-
 	//bools for abilities
 	public bool hasGrenade = false;
+	public bool isSniper = false;
+	public bool isInvulnerable = false;
+	public bool canMarathon = false;
+
 
 	void Start () {
 		
@@ -45,15 +62,18 @@ public class Trooper : MonoBehaviour {
 		assignColor ();
 		PhotonNetwork.OnEventCall += move;
 	}
-	
+
+
 	// Update is called once per frame
 	void Update () {
 	}
+
 
 	public void stop(){
 		moving = false;
 		animator.SetInteger ("AnimPar", 0);
 	}
+
 
 	public void move(byte id, object content, int senderID){
 		if (id == 2) {
@@ -70,6 +90,7 @@ public class Trooper : MonoBehaviour {
 			}
 		}
 	}
+
 
 	public IEnumerator moveToPosition(GameObject t, Vector3 destination, float speed)
 	{
@@ -88,9 +109,7 @@ public class Trooper : MonoBehaviour {
 		t.transform.position = destination;
 		t.GetComponent<Trooper> ().stop ();
 	}
-
-	//public IEnumerator rotateAndShoot(GameObject t, Vector3 destination){
-	//	Vector3 direction = (destination - t.transform.positionfd
+		
 
 	public void shoot(GameObject target){
 		StartCoroutine (shootThis (target));
@@ -119,6 +138,7 @@ public class Trooper : MonoBehaviour {
 		target.GetComponent<Trooper>().gotShot ();
 		Destroy (mybullet);
 	}
+
 
 	public void gotShot(){
 		animator.SetInteger ("AnimPar", 5);
@@ -163,12 +183,57 @@ public class Trooper : MonoBehaviour {
 		Destroy (mybullet);
 	}
 
-	void throwGrenade(){
-		animator.SetInteger ("AnimPar", 3);
+	public void throwGrenade(Vector3 target){
+		StartCoroutine (throwthis (target));
 	}
 
-	void stab(){
+	public IEnumerator throwthis(Vector3 positio){
+		hasGrenade = false;
+		rotateTo (positio);
+		yield return new WaitForSeconds (1f);
+		Vector3 position = new Vector3 (positio.x, 0, positio.z);
+		//animator.SetInteger ("AnimPar", 3);
+		Vector3 p = gameObject.transform.position;
+		Vector3 pos = new Vector3 (p.x, p.y + 3, p.z);
+		GameObject myGrenade = Instantiate (grenade, pos, Quaternion.identity); 
+		Vector3 mid = midPoint (pos, position);
+		Vector3 midup = new Vector3 (mid.x, mid.y + 5, mid.z);
+		Vector3 fq = midPoint (pos, mid);
+		Vector3 fqup = new Vector3 (fq.x, fq.y + 3, fq.z);
+		Vector3 lq = midPoint (mid, position);
+		Vector3 lqup = new Vector3 (lq.x, lq.y + 3, lq.z);
+		while (Vector3.Distance (myGrenade.transform.position, fqup) > 1f) {
+			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, fqup, 30 * Time.deltaTime);
+			yield return null;
+		}
+		while (Vector3.Distance (myGrenade.transform.position, midup) > 1f) {
+			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, midup, 30 * Time.deltaTime);
+			yield return null;
+		}
+		while (Vector3.Distance (myGrenade.transform.position, lqup) > 1f) {
+			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, lqup, 30 * Time.deltaTime);
+			yield return null;
+		}
+		while (Vector3.Distance (myGrenade.transform.position, position) > 1f) {
+			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, position, 30 * Time.deltaTime);
+			yield return null;
+		}
+		yield return new WaitForSeconds (.5f);
+		Destroy (myGrenade);
+		Invoke ("stop", .5f);
+	}
+
+	public void stab(){
 		animator.SetInteger ("AnimPar", 4);
+		Invoke ("stop", 1f);
+	}
+
+	public Vector3 midPoint(Vector3 start, Vector3 finish){
+		Vector3 mp = new Vector3();
+		mp.x = (start.x + finish.x) / 2;
+		mp.y = (start.y + finish.y) / 2;
+		mp.z = (start.z + finish.z) / 2;
+		return mp;
 	}
 
 	public float distanceTo(Vector3 target){
@@ -281,7 +346,6 @@ public class Trooper : MonoBehaviour {
 		default:
 			break;
 		}
-		//Debug.Log ("assigning color");
 		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
 	}
 

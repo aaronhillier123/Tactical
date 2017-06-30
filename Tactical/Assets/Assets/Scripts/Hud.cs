@@ -6,15 +6,19 @@ using UnityEngine.UI;
 public class Hud : MonoBehaviour {
 
 	public Game game;
+
+	//trooper statistics
 	public GameObject HealthObject;
 	public GameObject ChanceObject;
 	public static GameObject ChanceObjectS;
 	public static GameObject HealthObjectS;
 	private static bool healthbars = false;
+
+	//GUI prefabs
 	public static bool retracted = false;
 	public GameObject buyPanel;
 
-	//Store Images
+	//Store Images and Items
 	public Sprite grenadeImage;
 	public Sprite sniperImage;
 	public Sprite marathon;
@@ -40,7 +44,7 @@ public class Hud : MonoBehaviour {
 		
 	}
 		
-
+	//set player to attackmode
 	public void attackMode(){
 		Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
 		if (myPlayer.attacking == true) {
@@ -52,12 +56,14 @@ public class Hud : MonoBehaviour {
 		}
 	}
 
+	//Send change turn function to network
 	public void ClickChangeTurn(){
 		RaiseEventOptions ops = RaiseEventOptions.Default;
 		ops.Receivers = ReceiverGroup.All;
 		PhotonNetwork.RaiseEvent (3, null, true, ops);
 	}
 
+	//change turn function
 	public void changeTurn(byte id, object content, int senderID){
 		if (id == 3) {
 			Debug.Log ("Changing turns");
@@ -84,7 +90,7 @@ public class Hud : MonoBehaviour {
 		}
 	}
 
-	//single health bar
+	//show single health bar
 	public static void showHealthBar(int id){
 		hideHealthBars ();
 		GameObject myHealth = Instantiate (HealthObjectS) as GameObject;
@@ -100,6 +106,7 @@ public class Hud : MonoBehaviour {
 		healthbars = false;
 	}
 
+	//hide single health bar
 	public static void removeHealthBar(int id){
 		Slider[] healthbarsList = GameObject.FindObjectsOfType<Slider> ();
 		foreach (Slider s in healthbarsList) {
@@ -108,15 +115,11 @@ public class Hud : MonoBehaviour {
 			}
 		}
 	}
-		
+
+	//send store panel to off screen or on screen
 	public void retractStore()
 	{
 		GameObject sp = GameObject.Find ("StorePanel");
-		//GameObject spp = GameObject.Find ("Store");
-		//GameObject ret = GameObject.Find ("Retract");
-		//float dist = Camera.main.WorldToScreenPoint (ret.transform.position).x;
-		//float leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).x;
-		//float width = spp.GetComponent<RectTransform> ().rect.width - (ret.GetComponent<RectTransform>().rect.width);
 		if (retracted == false) {
 			sp.transform.Find ("Retract").GetChild (0).GetComponent<Text> ().text = ">";
 			sp.transform.Translate (-1 * Screen.width/5, 0f, 0f);
@@ -128,6 +131,7 @@ public class Hud : MonoBehaviour {
 		}
 	}
 
+	//grenade information
 	public void buyGrenade(){
 		currentItem = "Grenade";
 		string item = "Grenade";
@@ -136,6 +140,7 @@ public class Hud : MonoBehaviour {
 		showBuyPanel (item, description, grenadeImage);
 		}
 
+	//show grenade information
 	public void showBuyPanel(string item, string description, Sprite image){
 		float menuwidth = GameObject.Find ("Store").GetComponent<RectTransform> ().rect.width;
 		Vector2 pos = new Vector2 ((Screen.width / 2), Screen.width / 3);
@@ -145,12 +150,21 @@ public class Hud : MonoBehaviour {
 		buyPanelObject.transform.Find ("Image").GetComponent<Image> ().sprite = image;
 	}
 
+	//do not purchase item and exit store
 	public void cancelPurchase(){
 		GameObject pan = GameObject.Find ("SurePanel(Clone)");
 		Destroy (pan);
 	}
 
+	public void turnOffActionButtons(){
+		GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
+		foreach (GameObject g in itemButtons) {
+			g.GetComponent<Button> ().interactable = false;
+		}
+	}
+	//purchase a specific item
 	public void buy(){
+		//turnOffActionButtons ();
 		if (currentItem == "Grenade") {
 			Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
 			myPlayer.Selected.hasGrenade = true;

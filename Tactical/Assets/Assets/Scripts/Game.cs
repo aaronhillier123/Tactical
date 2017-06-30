@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Game : MonoBehaviour {
 
-	// Use this for initialization
+	// Static variables for game state
 	public static List<Player> GamePlayers = new List<Player>();
 	public GameObject PlayerObject;
 	public static GameObject Player1;
 	public static List<Trooper> allTroopers = new List<Trooper> ();
 	public static int playersTurn;
 
-
+	//for click and drag differential
 	private float firstTime;
 	private float secondTime;
 	private float timeDiff;
@@ -39,26 +39,21 @@ public class Game : MonoBehaviour {
 				previousMousePosition = previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 			}
 		}
-		//first click time
+
+		//decide if click or drag happens
 		if (Input.GetMouseButtonDown (0)) {
-
-
 			previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 			firstTime = Time.time;
 			mouseDown = true;
 		}
-
 		if (mouseDown == true) {
 			timeDiff = Time.time - firstTime;
 		}
-
-
 		if (timeDiff > 0f) {
 			if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject ()) {
 				dragOccuring = true;
 			}
 		}
-
 		if (Input.GetMouseButtonUp (0)) {
 			mouseDown = false;
 			dragOccuring = false;
@@ -69,7 +64,7 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-
+	//if click happens
 	void OnClick (){
 		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject (-1)) {
 
@@ -99,27 +94,47 @@ public class Game : MonoBehaviour {
 								PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
 							} else {
 								//if current player is not attacking
-								Hud.showHealthBar(clickedOn.id);
+								if (myPlayer.Selected.hasGrenade) {
+									//if player is carrying a grenade
+									float[] contents1 = new float[4];
+									contents1 [0] = (float)myPlayer.Selected.id;
+									contents1 [1] = hit.point.x;
+									contents1 [2] = hit.point.y;
+									contents1 [3] = hit.point.z;
+									object contents = (object)contents1;
+									PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
+								} else {
+									Hud.showHealthBar (clickedOn.id);
+								}
 							}
 						}
 					} else if (hit.collider.CompareTag ("Terrain")) {
+						//if player clicked on terrain/ground
 						if (myPlayer.Selected != null) {
-
-
-							//if terrain is clicked while player is selected
-							myPlayer.removeChances();
-							myPlayer.attacking = false;
-							RaiseEventOptions ops = RaiseEventOptions.Default;
-							ops.Receivers = ReceiverGroup.All;
-							///////send to server
-							Debug.Log ("Trying to move now");
-							float[] contents1 = new float[4];
-							contents1 [0] = (float)myPlayer.Selected.id;
-							contents1 [1] = hit.point.x;
-							contents1 [2] = hit.point.y;
-							contents1 [3] = hit.point.z;
-							object contents = (object)contents1;
-							PhotonNetwork.RaiseEvent ((byte)2, contents, true, ops);
+							//if player is selected
+							if (myPlayer.Selected.hasGrenade) {
+								float[] contents1 = new float[4];
+								contents1 [0] = (float)myPlayer.Selected.id;
+								contents1 [1] = hit.point.x;
+								contents1 [2] = hit.point.y;
+								contents1 [3] = hit.point.z;
+								object contents = (object)contents1;
+								PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
+							} else {
+								myPlayer.removeChances ();
+								myPlayer.attacking = false;
+								RaiseEventOptions ops = RaiseEventOptions.Default;
+								ops.Receivers = ReceiverGroup.All;
+								///////send movement to server
+								Debug.Log ("Trying to move now");
+								float[] contents1 = new float[4];
+								contents1 [0] = (float)myPlayer.Selected.id;
+								contents1 [1] = hit.point.x;
+								contents1 [2] = hit.point.y;
+								contents1 [3] = hit.point.z;
+								object contents = (object)contents1;
+								PhotonNetwork.RaiseEvent ((byte)2, contents, true, ops);
+							}
 						}
 					}
 				}
@@ -127,6 +142,8 @@ public class Game : MonoBehaviour {
 		}
 	}
 
+
+	//list of all troopers who are NOT a specifc player's
 	public static List<Trooper> notMyTroopers(Player p){
 		List<Trooper> nmt = new List<Trooper> ();
 		foreach(Trooper t in allTroopers){
@@ -137,7 +154,7 @@ public class Game : MonoBehaviour {
 		return nmt;
 	}
 			
-
+	//create and initialize a global player
 	public static void CreatePlayer(byte id, object content, int senderID){
 		if (id == 1) {
 			Vector3 pos = new Vector3 (0, 0, senderID * 50);
@@ -153,6 +170,7 @@ public class Game : MonoBehaviour {
 		}
 	}
 
+	//End current turn and go to next player
 	public void changeTurn(){
 		Debug.Log ("Changing turn");
 		if (playersTurn < 4) {
@@ -162,6 +180,7 @@ public class Game : MonoBehaviour {
 		}
 	}
 
+	//Return trooper based on ID
 	public static Trooper GetTroop(int id){
 		foreach (Trooper t in allTroopers){
 			if(t.id == id){
@@ -171,6 +190,7 @@ public class Game : MonoBehaviour {
 		return null;
 	}
 
+	//Return player based on ID
 	public static Player getPlayer(int id){
 		foreach (Player p in GamePlayers) {
 			if (p.team == id) {
