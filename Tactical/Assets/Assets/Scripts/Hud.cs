@@ -89,6 +89,15 @@ public class Hud : MonoBehaviour {
 		}
 		healthbars = false;
 	}
+
+	public static void removeHealthBar(int id){
+		Slider[] healthbarsList = GameObject.FindObjectsOfType<Slider> ();
+		foreach (Slider s in healthbarsList) {
+			if (s.GetComponent<HealthBar> ().id == id) {
+				Destroy (s.gameObject);
+			}
+		}
+	}
 		
 
 

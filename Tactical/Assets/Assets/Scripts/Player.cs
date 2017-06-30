@@ -95,6 +95,7 @@ public class Player : MonoBehaviour {
 
 
 			myTroop.Invoke ("stop", 1f);
+			removeChances ();
 			myTroop.unselect ();
 			myTroop.freeze ();
 		}

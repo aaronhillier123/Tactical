@@ -104,9 +104,24 @@ public class Trooper : MonoBehaviour {
 
 	public void gotShot(){
 		animator.SetInteger ("AnimPar", 5);
-		health -= 10;
-		Invoke("stop", 1f);
+		health -= 50;
+		if (health > 0) {
+			Invoke ("stop", 1f);
+		} else {
+			animator.SetInteger ("AnimPar", 6);
+			//Hud.hideHealthBars ();
+			Invoke ("die", 2f);
+		}
 	}
+
+	public void die(){
+		
+		myPlayer.roster.Remove (this);
+		Game.allTroopers.Remove (this);
+		Hud.removeHealthBar (id);
+		Destroy (gameObject);
+	}
+
 
 	IEnumerator missThis(GameObject target){
 		yield return new WaitForSeconds (1f);

@@ -28,6 +28,7 @@ public class Chance : MonoBehaviour {
 	}
 
 	void showOnHead(){
+		try{
 		myTroopScript = Game.GetTroop (id);
 		myTroop = myTroopScript.gameObject;
 		troopPos = Camera.main.WorldToScreenPoint (myTroop.transform.position);
@@ -40,5 +41,7 @@ public class Chance : MonoBehaviour {
 		string chance = per.ToString() + "%";
 		gameObject.GetComponent<Text> ().text = chance;
 		gameObject.GetComponent<Text> ().color = Color.white;
+		} catch{
+		}
 	}
 }

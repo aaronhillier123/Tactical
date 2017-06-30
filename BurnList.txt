@@ -1,9 +1,6 @@
 
 Week2:
 
-Outline shader on select
-Create death script on health=0
-Death animation
 Create store UI;
 	-panel (retractable to left of screen)
 		-panel (one for each item)
@@ -19,6 +16,8 @@ Add grenade store item
 	-animation
 	-script
 	-explosion
+
+
 Add spawn rectangle
 Add movement parameters
 Invulnerable Script/Texturing
