@@ -1,35 +1,49 @@
 
 Week2:
-		-panel (one for each item)
-			-name
-			-description
-			-Buy button
-Create Virtual Currency
-On new turn function
-	-unfreeze
-	-add turns currency
-	-record starting positions (local)
-Add grenade store item
+
+FULL DAY
+-panel (one for each item)
+-name
+-description
+-Buy button
+Add 3 store item (sniper, grenade, invulnerable)
 	-animation
 	-script
 	-explosion
+On new turn function
+-unfreeze
+-record starting positions (local)
+-movement limiter scripts
+-Add marathon menu item
+Create Virtual Currency
+-add turns currency
 
 
-Add spawn rectangle
-Add movement parameters
-Invulnerable Script/Texturing
+//FULL DAY
 Redo terrain
 Create "capture points"
 Capture point scripts
 Capture point animations
 Natural Cover 3d Modeling and Mapping
 Natural Cover scripts
+
+
+//FULL DAY
 Create barriers/scripts
 Create barrier Placement scripts (first turn)
 Create GUI for first turn
 Game Start and Game Over scenes/transitions
+
+
+//FULL DAY
 PlayerFab Integration
 	-JSON string creation based on 
 		-Troopers
 		-DogTags
 		-CapturePoints
+
+
+//2 DAYS
+MENU GUI
+
+//ALPHA TEST

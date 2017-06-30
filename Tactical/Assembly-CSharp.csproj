@@ -48,16 +48,16 @@
   <ItemGroup>
      <Compile Include="Assets\Assets\Scripts\CameraPan.cs" />
      <Compile Include="Assets\Assets\Scripts\CameraZoom.cs" />
+     <Compile Include="Assets\Assets\Scripts\Chance.cs" />
      <Compile Include="Assets\Assets\Scripts\EventHandler.cs" />
      <Compile Include="Assets\Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Assets\Scripts\HealthBar.cs" />
+     <Compile Include="Assets\Assets\Scripts\HitMiss.cs" />
      <Compile Include="Assets\Assets\Scripts\Hud.cs" />
      <Compile Include="Assets\Assets\Scripts\MenuScript.cs" />
      <Compile Include="Assets\Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Assets\Scripts\Trooper.cs" />
      <Compile Include="Assets\Assets\Scripts\WaitForPlayers.cs" />
-     <Compile Include="Assets\Chance.cs" />
-     <Compile Include="Assets\HitMiss.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs" />

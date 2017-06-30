@@ -15,9 +15,20 @@ public class Trooper : MonoBehaviour {
 	public int team;
 	public Material BlueTroopSelected;
 	public Material BlueTroop;
+	public Material BlueTroopFrozen;
+
 	public Material RedTroop;
+	public Material RedTroopSelected;
+	public Material RedTroopFrozen;
+
 	public Material OrangeTroop;
+	public Material OrangeTroopFrozen;
+	public Material OrangeTroopSelected;
+
 	public Material GreenTroop;
+	public Material GreenTroopFrozen;
+	public Material GreenTroopSelected;
+
 	public bool moving;
 	public bool frozen = false;
 	// Use this for initialization
@@ -168,13 +179,30 @@ public class Trooper : MonoBehaviour {
 		if (myPlayer.Selected != null) {
 			myPlayer.Selected.unselect ();
 		}
+		if (this.frozen == false) {
 			myPlayer.Selected = this;
 			Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
-			mats [0] = BlueTroopSelected;
+			switch(team){
+			case 1:
+				mats [0] = BlueTroopSelected;
+				break;
+			case 2:
+				mats [0] = RedTroopSelected;
+				break;
+			case 3:
+				mats [0] = GreenTroopSelected;
+				break;
+			case 4:
+				mats [0] = OrangeTroopSelected;
+				break;
+			default:
+				break;
+			}
 			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
-		GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
-		foreach (GameObject g in itemButtons) {
-			g.GetComponent<Button> ().interactable = true;
+			GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
+			foreach (GameObject g in itemButtons) {
+				g.GetComponent<Button> ().interactable = true;
+			}
 		}
 	}
 
@@ -194,11 +222,44 @@ public class Trooper : MonoBehaviour {
 		}
 
 		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
-		mats[0] = BlueTroop;
+		switch (team) {
+		case 1:
+			mats [0] = BlueTroop;
+			break;
+		case 2:
+			mats [0] = RedTroop;
+			break;
+		case 3:
+			mats [0] = GreenTroop;
+			break;
+		case 4:
+			mats [0] = OrangeTroop;
+			break;
+		default:
+			break;
+		}
 		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
 	}
 
 	public void freeze(){
+		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
+		switch (team) {
+		case 1:
+			mats [0] = BlueTroopFrozen;
+			break;
+		case 2:
+			mats [0] = RedTroopFrozen;
+			break;
+		case 3:
+			mats [0] = GreenTroopFrozen;
+			break;
+		case 4:
+			mats [0] = OrangeTroopFrozen;
+			break;
+		default:
+			break;
+		}
+		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
 		frozen = true;
 	}
 
