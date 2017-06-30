@@ -54,7 +54,9 @@ public class Game : MonoBehaviour {
 
 
 		if (timeDiff > 0f) {
-			dragOccuring = true;
+			if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject ()) {
+				dragOccuring = true;
+			}
 		}
 
 		if (Input.GetMouseButtonUp (0)) {

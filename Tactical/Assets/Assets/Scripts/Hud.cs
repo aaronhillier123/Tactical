@@ -11,6 +11,7 @@ public class Hud : MonoBehaviour {
 	public static GameObject ChanceObjectS;
 	public static GameObject HealthObjectS;
 	private static bool healthbars = false;
+	public static bool retracted = false;
 	// Use this for initialization
 	void Start () {
 		HealthObjectS = HealthObject;
@@ -99,6 +100,23 @@ public class Hud : MonoBehaviour {
 		}
 	}
 		
-
+	public void retractStore()
+	{
+		GameObject sp = GameObject.Find ("StorePanel");
+		//GameObject spp = GameObject.Find ("Store");
+		//GameObject ret = GameObject.Find ("Retract");
+		//float dist = Camera.main.WorldToScreenPoint (ret.transform.position).x;
+		//float leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).x;
+		//float width = spp.GetComponent<RectTransform> ().rect.width - (ret.GetComponent<RectTransform>().rect.width);
+		if (retracted == false) {
+			sp.transform.Find ("Retract").GetChild (0).GetComponent<Text> ().text = ">";
+			sp.transform.Translate (-1 * Screen.width/5, 0f, 0f);
+			retracted = true;
+		} else {
+			sp.transform.Find ("Retract").GetChild (0).GetComponent<Text> ().text = "<";
+			sp.transform.Translate (Screen.width/5, 0f, 0f);
+			retracted = false;
+		}
+	}
 
 }
