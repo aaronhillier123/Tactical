@@ -12,6 +12,15 @@ public class Hud : MonoBehaviour {
 	public static GameObject HealthObjectS;
 	private static bool healthbars = false;
 	public static bool retracted = false;
+	public GameObject buyPanel;
+
+	//Store Images
+	public Sprite grenadeImage;
+	public Sprite sniperImage;
+	public Sprite marathon;
+	public Sprite invulnerableImage;
+	public static string currentItem;
+
 	// Use this for initialization
 	void Start () {
 		HealthObjectS = HealthObject;
@@ -116,6 +125,36 @@ public class Hud : MonoBehaviour {
 			sp.transform.Find ("Retract").GetChild (0).GetComponent<Text> ().text = "<";
 			sp.transform.Translate (Screen.width/5, 0f, 0f);
 			retracted = false;
+		}
+	}
+
+	public void buyGrenade(){
+		currentItem = "Grenade";
+		string item = "Grenade";
+		string description = "Throw an explosive device to the point clicked to injure all enemies around the detonation. Cost is 2 Dog Tags";
+		Sprite myImage = grenadeImage;
+		showBuyPanel (item, description, grenadeImage);
+		}
+
+	public void showBuyPanel(string item, string description, Sprite image){
+		float menuwidth = GameObject.Find ("Store").GetComponent<RectTransform> ().rect.width;
+		Vector2 pos = new Vector2 ((Screen.width / 2), Screen.width / 3);
+		GameObject buyPanelObject = Instantiate(buyPanel, pos, Quaternion.identity, GameObject.Find("Canvas").gameObject.transform);
+		buyPanelObject.transform.Find ("SureItem").GetComponent<Text> ().text = item;
+		buyPanelObject.transform.Find ("Description").GetComponent<Text> ().text = description;
+		buyPanelObject.transform.Find ("Image").GetComponent<Image> ().sprite = image;
+	}
+
+	public void cancelPurchase(){
+		GameObject pan = GameObject.Find ("SurePanel(Clone)");
+		Destroy (pan);
+	}
+
+	public void buy(){
+		if (currentItem == "Grenade") {
+			Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
+			myPlayer.Selected.hasGrenade = true;
+			cancelPurchase ();
 		}
 	}
 

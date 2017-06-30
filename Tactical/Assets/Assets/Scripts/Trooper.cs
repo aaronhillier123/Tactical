@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Trooper : MonoBehaviour {
 
@@ -20,6 +21,12 @@ public class Trooper : MonoBehaviour {
 	public bool moving;
 	public bool frozen = false;
 	// Use this for initialization
+
+
+
+	//bools for abilities
+	public bool hasGrenade = false;
+
 	void Start () {
 		
 		myPlayer = GetComponentInParent<Player>();
@@ -165,7 +172,10 @@ public class Trooper : MonoBehaviour {
 			Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
 			mats [0] = BlueTroopSelected;
 			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
-
+		GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
+		foreach (GameObject g in itemButtons) {
+			g.GetComponent<Button> ().interactable = true;
+		}
 	}
 
 	public void rotateTo(Vector3 point){
@@ -178,6 +188,11 @@ public class Trooper : MonoBehaviour {
 		if (myPlayer.Selected = this) {
 			myPlayer.Selected = null;
 		}
+		GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
+		foreach (GameObject g in itemButtons) {
+			g.GetComponent<Button> ().interactable = false;
+		}
+
 		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
 		mats[0] = BlueTroop;
 		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
