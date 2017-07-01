@@ -1,51 +1,47 @@
+BurnList:
 
-Week2:
+1
+Record starting positions (local)
+movement limiter scripts
+Add marathon menu item
+-script(local)
 
-FULL DAY
-Add 3 store item (invulnerable)
-	-animation
-	-script
-On new turn function
--unfreeze
--uninvulnerable
--record starting positions (local)
--movement limiter scripts
--Add marathon menu item
+2
 Create Virtual Currency
--add turns currency
+-add currency onTurnStart()
+-adjust shop scripting for money
 
-
-//FULL DAY
+3
 Redo terrain
+
+4
 Create "capture points"
 Capture point scripts
 Capture point animations
+
+5
 Natural Cover 3d Modeling and Mapping
 Natural Cover scripts
 
-
-//FULL DAY
+6
 Create barriers/scripts
 Create barrier Placement scripts (first turn)
 Create GUI for first turn
-Game Start and Game Over scenes/transitions
-//camera follow “active object”
 
-//FULL DAY
-PlayerFab Integration
-	-JSON string creation based on 
-		-Troopers
-			-position
-			-health
-		-players
-			-money
-		-DogTags
-			-positions
-		-CapturePoints
-			-team id
+7
+Game Start and Game Over scenes/transitions/GUIS
 
+8
+camera follow “active object”
+-send an active troop change
+-local camera follows active troop
 
-//2 DAYS
-MENU GUI
+9
+PlayerFab Integration (Facebook)
+-JSON string creation and PlayFab integrations
 
-//ALPHA TEST
+10
+NETWORKING MENU GUI
+
+11
+ALPHA READY
