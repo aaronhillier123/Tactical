@@ -1,14 +1,5 @@
 BurnList:
 
-1
-Add marathon menu item
--script(local)
-
-2
-Create Virtual Currency
--add currency onTurnStart()
--adjust shop scripting for money
-
 3
 Redo terrain
 

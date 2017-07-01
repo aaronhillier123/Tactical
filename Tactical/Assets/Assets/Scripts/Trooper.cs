@@ -12,7 +12,7 @@ public class Trooper : MonoBehaviour {
 	//animation
 	public Animator animator;
 	private int animInt;
-
+	public float maxDistance = 50f;
 	//Seperate Objects
 	public GameObject bullet;
 	public GameObject grenade;
@@ -308,6 +308,7 @@ public class Trooper : MonoBehaviour {
 		if (this.frozen == false) {
 			myPlayer.Selected = this;
 			GameObject limiter = Instantiate (moveLimit, initialPosition, Quaternion.identity);
+			limiter.transform.localScale = new Vector3 (2 * maxDistance, 1, 2 * maxDistance);
 			Material[] lim = new Material[1];
 			Material[] mats = new Material[1];
 			switch(team){

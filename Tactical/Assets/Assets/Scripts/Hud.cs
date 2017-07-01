@@ -21,7 +21,7 @@ public class Hud : MonoBehaviour {
 	//Store Images and Items
 	public Sprite grenadeImage;
 	public Sprite sniperImage;
-	public Sprite marathon;
+	public Sprite marathonImage;
 	public Sprite invulnerableImage;
 	public static string currentItem;
 
@@ -138,33 +138,48 @@ public class Hud : MonoBehaviour {
 		currentItem = "Grenade";
 		string item = "Grenade";
 		string description = "Throw an explosive device to the point clicked to injure all enemies around the detonation. Cost is 2 Dog Tags";
-		//Sprite myImage = grenadeImage;
-		showBuyPanel (item, description, grenadeImage);
+		int cost = 1;
+		showBuyPanel (item, description, grenadeImage, cost);
 		}
 
 	public void buySniper(){
 		currentItem = "Sniper";
 		string item = "Sniper";
 		string description = "Hit targets with twice the accuracy and increase your attack range by 100%.";
+		int cost = 2;
 		//Sprite myImage = sniperImage;
-		showBuyPanel(item, description, sniperImage);
+		showBuyPanel(item, description, sniperImage, cost);
 	}
 
 	public void buyInvulnerable(){
 		currentItem = "Invulnerability";
 		string item = "Invulnerability";
 		string description = "Makes the selected troop invulnerable to all damage until your next turn";
-		showBuyPanel (item, description, invulnerableImage);
+		int cost = 3;
+		showBuyPanel (item, description, invulnerableImage, cost);
 	}
 
+	public void buyMarathon(){
+		currentItem = "Marathon";
+		string item = "Marathon";
+		string description = "Increase the distance your troop can move by 2x for the remainder of this turn.";
+		int cost = 2;
+		showBuyPanel (item, description, marathonImage, cost);
+	}
 	//show grenade information
-	public void showBuyPanel(string item, string description, Sprite image){
+	public void showBuyPanel(string item, string description, Sprite image, int cost){
+		Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
 		float menuwidth = GameObject.Find ("Store").GetComponent<RectTransform> ().rect.width;
 		Vector2 pos = new Vector2 ((Screen.width / 2), Screen.width / 3);
 		GameObject buyPanelObject = Instantiate(buyPanel, pos, Quaternion.identity, GameObject.Find("Canvas").gameObject.transform);
 		buyPanelObject.transform.Find ("SureItem").GetComponent<Text> ().text = item;
 		buyPanelObject.transform.Find ("Description").GetComponent<Text> ().text = description;
 		buyPanelObject.transform.Find ("Image").GetComponent<Image> ().sprite = image;
+		buyPanelObject.transform.Find ("Cost").GetComponent<Text> ().text = ("x " + cost.ToString());
+		if (myPlayer.dogtags < cost) {
+			buyPanelObject.transform.Find ("Buy").transform.Find ("BuyText").GetComponent<Text> ().text = "Not enough tags";
+			buyPanelObject.transform.Find ("Buy").GetComponent<Button> ().interactable = false;
+		}
 	}
 
 	//do not purchase item and exit store
@@ -181,21 +196,31 @@ public class Hud : MonoBehaviour {
 	}
 	//purchase a specific item
 	public void buy(){
+		Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
 		if (currentItem == "Grenade") {
-			Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
+			myPlayer.spendDogTags (1);
 			myPlayer.Selected.hasGrenade = true;
 			cancelPurchase ();
 		} else if (currentItem == "Sniper") {
-			Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
+			myPlayer.spendDogTags (2);
 			myPlayer.Selected.isSniper = true;
 			cancelPurchase ();
 		} else if (currentItem == "Invulnerability") {
-			Player myp = Game.getPlayer (PhotonNetwork.player.ID);
-			int troopid = myp.Selected.id;
+			myPlayer.spendDogTags (3);
+			int troopid = myPlayer.Selected.id;
 			object con = (object)troopid;
 			PhotonNetwork.RaiseEvent (7, con, true, EventHandler.ops);
 			cancelPurchase ();
+		} else if (currentItem == "Marathon") {
+			myPlayer.spendDogTags (2);
+			myPlayer.Selected.maxDistance *= 2f;
+			cancelPurchase();
 		}
+		myPlayer.Selected.select ();
+	}
+
+	public static void updateDogTags(int amount){
+		GameObject.Find ("DogTagsText").GetComponent<Text> ().text = "x " + amount.ToString ();
 	}
 
 }

@@ -123,6 +123,7 @@ public class Game : MonoBehaviour {
 						if (myPlayer.Selected != null) {
 							//if player is selected
 							if (myPlayer.Selected.hasGrenade) {
+								//if grenade is equipped
 								float[] contents1 = new float[4];
 								contents1 [0] = (float)myPlayer.Selected.id;
 								contents1 [1] = hit.point.x;
@@ -131,6 +132,7 @@ public class Game : MonoBehaviour {
 								object contents = (object)contents1;
 								PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
 							} else {
+								//regular player movement
 								myPlayer.removeChances ();
 								myPlayer.attacking = false;
 								RaiseEventOptions ops = RaiseEventOptions.Default;
@@ -138,14 +140,14 @@ public class Game : MonoBehaviour {
 								///////send movement to server
 								float[] contents1 = new float[4];
 								contents1 [0] = (float)myPlayer.Selected.id;
-								if (Vector3.Distance (hit.point, myPlayer.Selected.initialPosition) <= 50f) {
+								if (Vector3.Distance (hit.point, myPlayer.Selected.initialPosition) <= myPlayer.Selected.maxDistance) {
 									contents1 [1] = hit.point.x;
 									contents1 [2] = hit.point.y;
 									contents1 [3] = hit.point.z;
 								} else {
 									//find farthest point
 									Trooper myTroop = GetTroop(myPlayer.Selected.id);
-									Vector3 myPoint = ((hit.point - myTroop.initialPosition).normalized) * 50f;
+									Vector3 myPoint = ((hit.point - myTroop.initialPosition).normalized) * myTroop.maxDistance;
 									contents1 [1] = myTroop.initialPosition.x + myPoint.x;
 									contents1 [2] = myTroop.initialPosition.y + myPoint.y;
 									contents1 [3] = myTroop.initialPosition.z + myPoint.z;

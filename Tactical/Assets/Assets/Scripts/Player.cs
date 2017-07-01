@@ -21,9 +21,9 @@ public class Player : MonoBehaviour {
 
 	public Game game;
 
-	//number of starting trops
+	//general player variables
 	public static int numberOfTroops = 2;
-
+	public int dogtags = 3;
 
 	//booleans for player states
 	public bool attacking = false;
@@ -45,7 +45,15 @@ public class Player : MonoBehaviour {
 				t.makeNotInvulnerable ();
 			}
 			t.initialPosition = t.gameObject.transform.position;
+			t.maxDistance = 50f;
 		}
+		dogtags += 2;
+		Hud.updateDogTags (dogtags);
+	}
+
+	public void spendDogTags(int amount){
+		dogtags -= amount;
+		Hud.updateDogTags (dogtags);
 	}
 
 	//create a new troop at a certain location
