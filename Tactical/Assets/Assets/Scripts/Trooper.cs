@@ -18,7 +18,10 @@ public class Trooper : MonoBehaviour {
 	public GameObject grenade;
 	public GameObject explosion;
 	public GameObject shield;
+	public GameObject moveLimit;
 
+	//for movement
+	public Vector3 initialPosition;
 
 	//identification
 	public int id;
@@ -30,29 +33,32 @@ public class Trooper : MonoBehaviour {
 	public Material BlueTroop;
 	public Material BlueTroopFrozen;
 	public Material BlueTroopShield;
+	public Material BlueTroopLimit;
 
 	//Red Troop Materials
 	public Material RedTroop;
 	public Material RedTroopSelected;
 	public Material RedTroopFrozen;
 	public Material RedTroopShield;
+	public Material RedTroopLimit;
 
 	//Orange Troop Materials
 	public Material OrangeTroop;
 	public Material OrangeTroopFrozen;
 	public Material OrangeTroopSelected;
 	public Material OrangeTroopShield;
+	public Material OrangeTroopLimit;
 
 	//Green Troop Materials
 	public Material GreenTroop;
 	public Material GreenTroopFrozen;
 	public Material GreenTroopSelected;
 	public Material GreenTroopShield;
+	public Material GreenTroopLimit;
 
 	//state of availability
-	public bool moving;
+	public bool moving = false;
 	public bool frozen = false;
-	// Use this for initialization
 
 	//bools for abilities
 	public bool hasGrenade = false;
@@ -72,6 +78,8 @@ public class Trooper : MonoBehaviour {
 	void Update () {
 	}
 
+	public void showMovementLimit(){
+	}
 
 	public void stop(){
 		moving = false;
@@ -299,24 +307,31 @@ public class Trooper : MonoBehaviour {
 		}
 		if (this.frozen == false) {
 			myPlayer.Selected = this;
-			Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
+			GameObject limiter = Instantiate (moveLimit, initialPosition, Quaternion.identity);
+			Material[] lim = new Material[1];
+			Material[] mats = new Material[1];
 			switch(team){
 			case 1:
 				mats [0] = BlueTroopSelected;
+				lim [0] = BlueTroopLimit;
 				break;
 			case 2:
 				mats [0] = RedTroopSelected;
+				lim [0] = RedTroopLimit;
 				break;
 			case 3:
 				mats [0] = GreenTroopSelected;
+				lim [0] = GreenTroopLimit;
 				break;
 			case 4:
 				mats [0] = OrangeTroopSelected;
+				lim [0] = OrangeTroopLimit;
 				break;
 			default:
 				break;
 			}
 			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+			limiter.GetComponent<MeshRenderer> ().materials = lim;
 			GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
 			foreach (GameObject g in itemButtons) {
 				g.GetComponent<Button> ().interactable = true;
@@ -334,6 +349,12 @@ public class Trooper : MonoBehaviour {
 		if (myPlayer.Selected = this) {
 			myPlayer.Selected = null;
 		}
+
+		GameObject limiter = GameObject.Find ("MoveLimit(Clone)");
+		if (limiter != null) {
+			Destroy (limiter);
+		}
+
 		GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
 		foreach (GameObject g in itemButtons) {
 			g.GetComponent<Button> ().interactable = false;

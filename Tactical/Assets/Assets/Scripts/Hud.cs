@@ -30,13 +30,7 @@ public class Hud : MonoBehaviour {
 		HealthObjectS = HealthObject;
 		PhotonNetwork.OnEventCall += changeTurn;
 		GameObject GO = GameObject.FindGameObjectWithTag ("GameController");
-		if (GO != null) {
-			Debug.Log ("Found Game object");
-		}
 		game = GO.GetComponent<Game> ();
-		if (game != null) {
-			Debug.Log ("found game script1");
-		}
 	}
 	
 	// Update is called once per frame
@@ -187,7 +181,6 @@ public class Hud : MonoBehaviour {
 	}
 	//purchase a specific item
 	public void buy(){
-		Debug.Log("But button was clicked for " + currentItem + " by client " + PhotonNetwork.player.ID);
 		if (currentItem == "Grenade") {
 			Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
 			myPlayer.Selected.hasGrenade = true;
@@ -200,7 +193,6 @@ public class Hud : MonoBehaviour {
 			Player myp = Game.getPlayer (PhotonNetwork.player.ID);
 			int troopid = myp.Selected.id;
 			object con = (object)troopid;
-			Debug.Log ("Raising event for inv");
 			PhotonNetwork.RaiseEvent (7, con, true, EventHandler.ops);
 			cancelPurchase ();
 		}

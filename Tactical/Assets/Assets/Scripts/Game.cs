@@ -136,21 +136,29 @@ public class Game : MonoBehaviour {
 								RaiseEventOptions ops = RaiseEventOptions.Default;
 								ops.Receivers = ReceiverGroup.All;
 								///////send movement to server
-								Debug.Log ("Trying to move now");
 								float[] contents1 = new float[4];
 								contents1 [0] = (float)myPlayer.Selected.id;
-								contents1 [1] = hit.point.x;
-								contents1 [2] = hit.point.y;
-								contents1 [3] = hit.point.z;
-								object contents = (object)contents1;
-								PhotonNetwork.RaiseEvent ((byte)2, contents, true, ops);
+								if (Vector3.Distance (hit.point, myPlayer.Selected.initialPosition) <= 50f) {
+									contents1 [1] = hit.point.x;
+									contents1 [2] = hit.point.y;
+									contents1 [3] = hit.point.z;
+								} else {
+									//find farthest point
+									Trooper myTroop = GetTroop(myPlayer.Selected.id);
+									Vector3 myPoint = ((hit.point - myTroop.initialPosition).normalized) * 50f;
+									contents1 [1] = myTroop.initialPosition.x + myPoint.x;
+									contents1 [2] = myTroop.initialPosition.y + myPoint.y;
+									contents1 [3] = myTroop.initialPosition.z + myPoint.z;
+									}
+									object contents = (object)contents1;
+									PhotonNetwork.RaiseEvent ((byte)2, contents, true, ops);
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-	}
 
 
 	//list of all troopers who are NOT a specifc player's

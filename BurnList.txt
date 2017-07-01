@@ -1,8 +1,6 @@
 BurnList:
 
 1
-Record starting positions (local)
-movement limiter scripts
 Add marathon menu item
 -script(local)
 
@@ -18,6 +16,10 @@ Redo terrain
 Create "capture points"
 Capture point scripts
 Capture point animations
+
+4.1
+Create starting areas
+Players start here on game start
 
 5
 Natural Cover 3d Modeling and Mapping

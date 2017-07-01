@@ -44,6 +44,7 @@ public class Player : MonoBehaviour {
 			if (t.isInvulnerable) {
 				t.makeNotInvulnerable ();
 			}
+			t.initialPosition = t.gameObject.transform.position;
 		}
 	}
 
@@ -56,8 +57,8 @@ public class Player : MonoBehaviour {
 		if (firstTroop != null) {
 			firstTroop.team = troopTeam;
 			firstTroop.id = troopId;
+			firstTroop.initialPosition = firstTroop.gameObject.transform.position;
 			Game.allTroopers.Add (firstTroop);
-			Debug.Log ("Game size is now " + Game.allTroopers.Count);
 			roster.Add (firstTroop);
 		}
 	}
