@@ -5,7 +5,6 @@ using UnityEngine;
 public class EventHandler : MonoBehaviour {
 
 	public bool gameStarted = false;
-	private bool connected = false;
 	public static RaiseEventOptions ops;
 	// Use this for initialization
 	void Start () {

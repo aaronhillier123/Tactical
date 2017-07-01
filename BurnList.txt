@@ -2,16 +2,12 @@
 Week2:
 
 FULL DAY
--panel (one for each item)
--name
--description
--Buy button
-Add 3 store item (sniper, grenade, invulnerable)
+Add 3 store item (invulnerable)
 	-animation
 	-script
-	-explosion
 On new turn function
 -unfreeze
+-uninvulnerable
 -record starting positions (local)
 -movement limiter scripts
 -Add marathon menu item
@@ -33,14 +29,20 @@ Create barriers/scripts
 Create barrier Placement scripts (first turn)
 Create GUI for first turn
 Game Start and Game Over scenes/transitions
-
+//camera follow “active object”
 
 //FULL DAY
 PlayerFab Integration
 	-JSON string creation based on 
 		-Troopers
+			-position
+			-health
+		-players
+			-money
 		-DogTags
+			-positions
 		-CapturePoints
+			-team id
 
 
 //2 DAYS

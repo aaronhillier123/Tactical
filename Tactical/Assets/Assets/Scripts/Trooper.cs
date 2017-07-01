@@ -16,6 +16,8 @@ public class Trooper : MonoBehaviour {
 	//Seperate Objects
 	public GameObject bullet;
 	public GameObject grenade;
+	public GameObject explosion;
+	public GameObject shield;
 
 
 	//identification
@@ -27,21 +29,25 @@ public class Trooper : MonoBehaviour {
 	public Material BlueTroopSelected;
 	public Material BlueTroop;
 	public Material BlueTroopFrozen;
+	public Material BlueTroopShield;
 
 	//Red Troop Materials
 	public Material RedTroop;
 	public Material RedTroopSelected;
 	public Material RedTroopFrozen;
+	public Material RedTroopShield;
 
 	//Orange Troop Materials
 	public Material OrangeTroop;
 	public Material OrangeTroopFrozen;
 	public Material OrangeTroopSelected;
+	public Material OrangeTroopShield;
 
 	//Green Troop Materials
 	public Material GreenTroop;
 	public Material GreenTroopFrozen;
 	public Material GreenTroopSelected;
+	public Material GreenTroopShield;
 
 	//state of availability
 	public bool moving;
@@ -56,11 +62,9 @@ public class Trooper : MonoBehaviour {
 
 
 	void Start () {
-		
 		myPlayer = GetComponentInParent<Player>();
 		animator = gameObject.GetComponentInChildren<Animator> ();
 		assignColor ();
-		PhotonNetwork.OnEventCall += move;
 	}
 
 
@@ -74,8 +78,41 @@ public class Trooper : MonoBehaviour {
 		animator.SetInteger ("AnimPar", 0);
 	}
 
+	public static void makeInvulnerable(byte id, object content, int senderID){
+		if (id == 7) {
+			Trooper myTroop = Game.GetTroop ((int)content);
+			myTroop.isInvulnerable = true;
+			GameObject shieldO = Instantiate (myTroop.shield, myTroop.gameObject.transform);
+			Material[] mats = shieldO.GetComponent<MeshRenderer> ().materials;
+			switch (myTroop.team) {
+			case 1:
+				mats [0] = myTroop.BlueTroopShield;
+				break;
+			case 2:
+				mats [0] = myTroop.RedTroopShield;
+				break;
+			case 3:
+				mats [0] = myTroop.GreenTroopShield;
+				break;
+			case 4:
+				mats [0] = myTroop.OrangeTroopShield;
+				break;
+			default:
+				break;
+			}
+			shieldO.GetComponent<MeshRenderer> ().materials = mats;
+		}
+	}
 
-	public void move(byte id, object content, int senderID){
+	public void makeNotInvulnerable(){
+		isInvulnerable = false;
+		GameObject shieldO = gameObject.transform.Find("Shield(Clone)").gameObject;
+		if (shieldO != null) {
+			Destroy (shieldO);
+		}
+	}
+		
+	public static void move(byte id, object content, int senderID){
 		if (id == 2) {
 			float[] conList = (float[])content;
 			int selectedID = (int)conList[0];
@@ -86,12 +123,11 @@ public class Trooper : MonoBehaviour {
 			Trooper myTroop = Game.GetTroop (selectedID);
 			if (myTroop.moving == false) {
 				myTroop.StopAllCoroutines();
-				StartCoroutine (moveToPosition (myTroop.gameObject, newPos, 10f)); 
+				myTroop.StartCoroutine (myTroop.moveToPosition (myTroop.gameObject, newPos, 10f)); 
 			}
 		}
 	}
-
-
+		
 	public IEnumerator moveToPosition(GameObject t, Vector3 destination, float speed)
 	{
 		t.GetComponent<Trooper>().moving = true;
@@ -110,7 +146,6 @@ public class Trooper : MonoBehaviour {
 		t.GetComponent<Trooper> ().stop ();
 	}
 		
-
 	public void shoot(GameObject target){
 		StartCoroutine (shootThis (target));
 	}
@@ -138,29 +173,22 @@ public class Trooper : MonoBehaviour {
 		target.GetComponent<Trooper>().gotShot ();
 		Destroy (mybullet);
 	}
-
-
+		
 	public void gotShot(){
 		animator.SetInteger ("AnimPar", 5);
-		health -= 50;
-		if (health > 0) {
-			Invoke ("stop", 1f);
-		} else {
-			animator.SetInteger ("AnimPar", 6);
-			//Hud.hideHealthBars ();
-			Invoke ("die", 2f);
-		}
+		decreaseHealth (20f);
 	}
 
-	public void die(){
-		
+	public IEnumerator die(){
+		unselect ();
+		animator.SetInteger ("AnimPar", 6);
+		yield return new WaitForSeconds (2f);
 		myPlayer.roster.Remove (this);
 		Game.allTroopers.Remove (this);
 		Hud.removeHealthBar (id);
 		Destroy (gameObject);
 	}
-
-
+		
 	IEnumerator missThis(GameObject target){
 		yield return new WaitForSeconds (1f);
 		Vector3 p = gameObject.transform.position;
@@ -219,8 +247,22 @@ public class Trooper : MonoBehaviour {
 			yield return null;
 		}
 		yield return new WaitForSeconds (.5f);
+		hurtNearByEnemies (myGrenade.transform.position, 20f, 20f);
+		GameObject ex = GameObject.Instantiate (explosion, myGrenade.transform.position, Quaternion.identity);
 		Destroy (myGrenade);
-		Invoke ("stop", .5f);
+		yield return new WaitForSeconds (1f);
+		Destroy (ex);
+		stop ();
+	}
+
+	public void hurtNearByEnemies(Vector3 point, float distance, float damage){
+		Player myPlayer = Game.getPlayer (team);
+		List<Trooper> others = Game.notMyTroopers (myPlayer);
+		foreach(Trooper t in others){
+			if(Vector3.Distance(point, t.gameObject.transform.position) < distance){
+				t.decreaseHealth (damage);
+			}
+		}
 	}
 
 	public void stab(){
@@ -234,6 +276,17 @@ public class Trooper : MonoBehaviour {
 		mp.y = (start.y + finish.y) / 2;
 		mp.z = (start.z + finish.z) / 2;
 		return mp;
+	}
+
+	public void decreaseHealth(float dec){
+		if (isInvulnerable == false) {
+			health -= dec;
+			if (health <= 0) {
+				StartCoroutine (die ());
+			} else {
+				Invoke ("stop", 1f);
+			}
+		}
 	}
 
 	public float distanceTo(Vector3 target){
@@ -326,6 +379,28 @@ public class Trooper : MonoBehaviour {
 		}
 		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
 		frozen = true;
+	}
+
+	public void unFreeze(){
+		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
+		switch (team) {
+		case 1:
+			mats [0] = BlueTroop;
+			break;
+		case 2:
+			mats [0] = RedTroop;
+			break;
+		case 3:
+			mats [0] = GreenTroop;
+			break;
+		case 4:
+			mats [0] = OrangeTroop;
+			break;
+		default:
+			break;
+		}
+		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+		frozen = false;
 	}
 
 	void assignColor(){

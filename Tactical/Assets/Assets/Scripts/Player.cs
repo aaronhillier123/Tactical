@@ -31,14 +31,21 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		game = GameObject.FindObjectOfType(typeof(Game)) as Game;
-		PhotonNetwork.OnEventCall += attack;
-		PhotonNetwork.OnEventCall += throwGrenade;
+		//PhotonNetwork.OnEventCall += attack;
+		//PhotonNetwork.OnEventCall += throwGrenade;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	}
 
+	public void onStartTurn(){
+		foreach (Trooper t in roster) {
+			if (t.isInvulnerable) {
+				t.makeNotInvulnerable ();
+			}
+		}
+	}
 
 	//create a new troop at a certain location
 	public void CreateTroopAt(Vector3 location, int troopTeam, int troopId){
@@ -49,7 +56,6 @@ public class Player : MonoBehaviour {
 		if (firstTroop != null) {
 			firstTroop.team = troopTeam;
 			firstTroop.id = troopId;
-
 			Game.allTroopers.Add (firstTroop);
 			Debug.Log ("Game size is now " + Game.allTroopers.Count);
 			roster.Add (firstTroop);
@@ -61,7 +67,7 @@ public class Player : MonoBehaviour {
 		List<Trooper> others = Game.notMyTroopers (this);
 		foreach (Trooper t in others) {
 			GameObject chanceO = Instantiate (ChanceObject, GameObject.Find ("Canvas").transform);
-			chanceO.GetComponent<Chance>().target = Selected.transform.position;
+			chanceO.GetComponent<Chance> ().target = Selected;
 			chanceO.GetComponent<Chance> ().id = t.id;
 		}
 	}
@@ -75,14 +81,14 @@ public class Player : MonoBehaviour {
 	}
 
 	//network attack function
-	public void attack(byte id, object content, int senderID){
+	public static void attack(byte id, object content, int senderID){
 		if(id == 4){
 			//unpack objects for attacker and target
-			Debug.Log ("attack recieved by all");
+
 			float[] contents = (float[])content;
 			Trooper myTroop = Game.GetTroop ((int)contents [0]);
 			Trooper enemy = Game.GetTroop((int)contents[1]);
-
+			myTroop.isSniper = false;
 			//find distance and see if attack is a hit
 			float distance = Vector3.Distance(myTroop.gameObject.transform.position, enemy.gameObject.transform.position);
 			float random = contents [2];
@@ -99,13 +105,13 @@ public class Player : MonoBehaviour {
 				myTroop.miss (enemy.gameObject);
 			}
 			myTroop.Invoke ("stop", 1f);
-			removeChances ();
+
 			myTroop.unselect ();
 			myTroop.freeze ();
 		}
 	}
 
-	public void throwGrenade(byte id, object content, int senderID){
+	public static void throwGrenade(byte id, object content, int senderID){
 		if (id == 6) {
 			float[] conList = (float[])content;
 			int selectedID = (int)conList [0];

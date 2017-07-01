@@ -10,8 +10,8 @@ public class Chance : MonoBehaviour {
 	private GameObject myTroop;
 	private Trooper myTroopScript;
 	private Vector3 troopPos;
-	private bool found = false;
-	public Vector3 target;
+	//private bool found = false;
+	public Trooper target;
 	private GameObject canv;
 	// Use this for initialization
 	void Start () {
@@ -20,7 +20,7 @@ public class Chance : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (id != null && target!=null) {
+		if (target!=null) {
 			showOnHead ();
 			} else {
 			Debug.Log ("No id yet");
@@ -29,15 +29,22 @@ public class Chance : MonoBehaviour {
 
 	void showOnHead(){
 		try{
-		myTroopScript = Game.GetTroop (id);
-		myTroop = myTroopScript.gameObject;
-		troopPos = Camera.main.WorldToScreenPoint (myTroop.transform.position);
-		transform.position = new Vector2(troopPos.x, troopPos.y+50);
-		float dis = Vector3.Distance (target, myTroop.transform.position);
-		float per = (float)Math.Round((100f - dis), 2);
-		if (per < 0) {
-			per = 0;
-		}
+			myTroopScript = Game.GetTroop (id);
+			myTroop = myTroopScript.gameObject;
+			troopPos = Camera.main.WorldToScreenPoint (myTroop.transform.position);
+			transform.position = new Vector2(troopPos.x, troopPos.y+50);
+			float dis = Vector3.Distance (target.gameObject.transform.position, myTroop.transform.position);
+			float per;
+			if(target.isSniper == false){
+				per = (float)Math.Round((100f - dis), 2);
+			}
+			else{
+				per = (float)Math.Round((200f - dis), 2);
+				per = per / 2.0f;
+			}
+			if (per < 0) {
+				per = 0;
+			}
 		string chance = per.ToString() + "%";
 		gameObject.GetComponent<Text> ().text = chance;
 		gameObject.GetComponent<Text> ().color = Color.white;

@@ -66,15 +66,23 @@ public class Hud : MonoBehaviour {
 	//change turn function
 	public void changeTurn(byte id, object content, int senderID){
 		if (id == 3) {
-			Debug.Log ("Changing turns");
+			List<Trooper> troops = Game.allTroopers;
+			foreach (Trooper t in troops) {
+				t.unFreeze ();
+				t.unselect ();
+			}
 			int idd = Game.playersTurn;
 			if (idd == PhotonNetwork.room.PlayerCount) {
 				Game.playersTurn = 1;
 			} else {
 				++Game.playersTurn;
 			}
+			Player myPlayer = Game.getPlayer (Game.playersTurn);
+			myPlayer.onStartTurn ();
 		}
 	}
+
+
 
 	//show all health bars
 	public void showHealthBars(){
@@ -136,9 +144,24 @@ public class Hud : MonoBehaviour {
 		currentItem = "Grenade";
 		string item = "Grenade";
 		string description = "Throw an explosive device to the point clicked to injure all enemies around the detonation. Cost is 2 Dog Tags";
-		Sprite myImage = grenadeImage;
+		//Sprite myImage = grenadeImage;
 		showBuyPanel (item, description, grenadeImage);
 		}
+
+	public void buySniper(){
+		currentItem = "Sniper";
+		string item = "Sniper";
+		string description = "Hit targets with twice the accuracy and increase your attack range by 100%.";
+		//Sprite myImage = sniperImage;
+		showBuyPanel(item, description, sniperImage);
+	}
+
+	public void buyInvulnerable(){
+		currentItem = "Invulnerability";
+		string item = "Invulnerability";
+		string description = "Makes the selected troop invulnerable to all damage until your next turn";
+		showBuyPanel (item, description, invulnerableImage);
+	}
 
 	//show grenade information
 	public void showBuyPanel(string item, string description, Sprite image){
@@ -164,10 +187,21 @@ public class Hud : MonoBehaviour {
 	}
 	//purchase a specific item
 	public void buy(){
-		//turnOffActionButtons ();
+		Debug.Log("But button was clicked for " + currentItem + " by client " + PhotonNetwork.player.ID);
 		if (currentItem == "Grenade") {
 			Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
 			myPlayer.Selected.hasGrenade = true;
+			cancelPurchase ();
+		} else if (currentItem == "Sniper") {
+			Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
+			myPlayer.Selected.isSniper = true;
+			cancelPurchase ();
+		} else if (currentItem == "Invulnerability") {
+			Player myp = Game.getPlayer (PhotonNetwork.player.ID);
+			int troopid = myp.Selected.id;
+			object con = (object)troopid;
+			Debug.Log ("Raising event for inv");
+			PhotonNetwork.RaiseEvent (7, con, true, EventHandler.ops);
 			cancelPurchase ();
 		}
 	}

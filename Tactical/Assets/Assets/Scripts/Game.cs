@@ -22,6 +22,10 @@ public class Game : MonoBehaviour {
 	void Start () {
 		Player1 = PlayerObject;
 		PhotonNetwork.OnEventCall += CreatePlayer;
+		PhotonNetwork.OnEventCall += Player.throwGrenade;
+		PhotonNetwork.OnEventCall += Player.attack;
+		PhotonNetwork.OnEventCall += Trooper.makeInvulnerable;
+		PhotonNetwork.OnEventCall += Trooper.move;
 		playersTurn = 1;
 	}
 	
@@ -31,13 +35,13 @@ public class Game : MonoBehaviour {
 		if (dragOccuring == true) {
 
 			//adjust camera from drag
-			if (previousMousePosition == null) {
-				previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
-			} else {
+			//if (previousMousePosition == null) {
+			//	previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+			//} else {
 				Vector3 camDifference = Camera.main.ScreenToViewportPoint(Input.mousePosition) - previousMousePosition;
 				Camera.main.transform.parent.transform.Translate (camDifference.y * 20f, 0f, camDifference.x * -20f);
-				previousMousePosition = previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
-			}
+				previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+			//}
 		}
 
 		//decide if click or drag happens
@@ -85,13 +89,19 @@ public class Game : MonoBehaviour {
 							//if it is an enemy player
 							if (myPlayer.attacking == true) {
 								//if current player is attacking
+
 								myPlayer.attacking = false;
 								float[] targets = new float[3];
 								targets [0] = myPlayer.Selected.id;
 								targets [1] = clickedOn.id;
-								targets [2] = Random.Range (0, 100);
+								if (Game.GetTroop (myPlayer.Selected.id).isSniper == false) {
+									targets [2] = Random.Range (0, 100);
+								} else {
+									targets [2] = Random.Range (0, 200);
+								}
 								object target = (object)targets;
 								PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
+								myPlayer.removeChances ();
 							} else {
 								//if current player is not attacking
 								if (myPlayer.Selected.hasGrenade) {
@@ -153,6 +163,8 @@ public class Game : MonoBehaviour {
 		}
 		return nmt;
 	}
+		
+			
 			
 	//create and initialize a global player
 	public static void CreatePlayer(byte id, object content, int senderID){
