@@ -1,8 +1,5 @@
 BurnList:
 
-3
-Redo terrain
-
 4
 Create "capture points"
 Capture point scripts

@@ -168,6 +168,7 @@ public class Hud : MonoBehaviour {
 	}
 	//show grenade information
 	public void showBuyPanel(string item, string description, Sprite image, int cost){
+		cancelPurchase ();
 		Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
 		float menuwidth = GameObject.Find ("Store").GetComponent<RectTransform> ().rect.width;
 		Vector2 pos = new Vector2 ((Screen.width / 2), Screen.width / 3);
@@ -185,7 +186,9 @@ public class Hud : MonoBehaviour {
 	//do not purchase item and exit store
 	public void cancelPurchase(){
 		GameObject pan = GameObject.Find ("SurePanel(Clone)");
-		Destroy (pan);
+		if (pan != null) {
+			Destroy (pan);
+		}
 	}
 
 	public void turnOffActionButtons(){
