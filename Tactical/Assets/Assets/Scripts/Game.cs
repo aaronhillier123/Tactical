@@ -39,7 +39,7 @@ public class Game : MonoBehaviour {
 			//	previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 			//} else {
 				Vector3 camDifference = Camera.main.ScreenToViewportPoint(Input.mousePosition) - previousMousePosition;
-				Camera.main.transform.parent.transform.Translate (camDifference.y * 20f, 0f, camDifference.x * -20f);
+				Camera.main.transform.parent.transform.Translate (camDifference.y * 30f, 0f, camDifference.x * -30f);
 				previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 			//}
 		}
@@ -106,6 +106,7 @@ public class Game : MonoBehaviour {
 								//if current player is not attacking
 								if (myPlayer.Selected.hasGrenade) {
 									//if player is carrying a grenade
+									myPlayer.Selected.resetDistance();
 									float[] contents1 = new float[4];
 									contents1 [0] = (float)myPlayer.Selected.id;
 									contents1 [1] = hit.point.x;
@@ -124,6 +125,7 @@ public class Game : MonoBehaviour {
 							//if player is selected
 							if (myPlayer.Selected.hasGrenade) {
 								//if grenade is equipped
+								myPlayer.Selected.resetDistance();
 								float[] contents1 = new float[4];
 								contents1 [0] = (float)myPlayer.Selected.id;
 								contents1 [1] = hit.point.x;

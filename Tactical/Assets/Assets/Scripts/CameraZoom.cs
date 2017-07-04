@@ -13,7 +13,7 @@ public class CameraZoom : MonoBehaviour {
 		deltaWheel = 0;
 		currentZoom = gameObject.transform.position.y;
 		originalZoom = gameObject.transform.position.y;
-		maxZoom = 15;
+		maxZoom = 20;
 	}
 	
 	// Update is called once per frame
@@ -21,10 +21,10 @@ public class CameraZoom : MonoBehaviour {
 		currentZoom = gameObject.transform.position.y;
 		deltaWheel = Input.GetAxis ("Mouse ScrollWheel");
 		if(deltaWheel < 0f && currentZoom < originalZoom+maxZoom){
-			gameObject.transform.Translate(0f, 0f, -.5f);
+			gameObject.transform.Translate(0f, 0f, -.8f);
 		}
 		if(deltaWheel > 0f && currentZoom > originalZoom-maxZoom){
-			gameObject.transform.Translate(0f, 0f, .5f);
+			gameObject.transform.Translate(0f, 0f, .8f);
 		}
 	}
 }

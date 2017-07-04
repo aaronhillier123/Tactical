@@ -94,7 +94,7 @@ public class Hud : MonoBehaviour {
 
 	//show single health bar
 	public static void showHealthBar(int id){
-		hideHealthBars ();
+		removeHealthBar (id);
 		GameObject myHealth = Instantiate (HealthObjectS) as GameObject;
 		myHealth.GetComponent<HealthBar>().id = id;
 	}

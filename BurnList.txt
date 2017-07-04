@@ -1,17 +1,15 @@
 BurnList:
 
+
 4
 Create "capture points"
 Capture point scripts
 Capture point animations
-
-4.1
-Create starting areas
-Players start here on game start
-
-5
+Players start in starting areas on game start
 Natural Cover 3d Modeling and Mapping
-Natural Cover scripts
+Natural Cover scripts (ray cast between troops)
+
+
 
 6
 Create barriers/scripts

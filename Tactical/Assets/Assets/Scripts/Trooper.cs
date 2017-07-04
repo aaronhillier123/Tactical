@@ -153,6 +153,12 @@ public class Trooper : MonoBehaviour {
 		t.transform.position = destination;
 		t.GetComponent<Trooper> ().stop ();
 	}
+
+	public void resetDistance(){
+		float newDis = maxDistance - (Vector3.Distance(initialPosition, transform.position));
+		initialPosition = transform.position;
+		maxDistance = newDis;
+		}
 		
 	public void shoot(GameObject target){
 		StartCoroutine (shootThis (target));
@@ -268,9 +274,17 @@ public class Trooper : MonoBehaviour {
 		List<Trooper> others = Game.notMyTroopers (myPlayer);
 		foreach(Trooper t in others){
 			if(Vector3.Distance(point, t.gameObject.transform.position) < distance){
+				Hud.showHealthBar (t.id);
+				t.rotateTo (point);
+				t.naded ();
 				t.decreaseHealth (damage);
 			}
 		}
+	}
+		
+	public void naded(){
+		animator.SetInteger ("AnimPar", 7);
+		Invoke ("stop", 1f);
 	}
 
 	public void stab(){
@@ -305,13 +319,15 @@ public class Trooper : MonoBehaviour {
 		if (myPlayer.Selected != null) {
 			myPlayer.Selected.unselect ();
 		}
-		if (this.frozen == false) {
+		if (this.frozen == true) {
+			resetDistance ();
+		}
 			myPlayer.Selected = this;
 			GameObject limiter = Instantiate (moveLimit, initialPosition, Quaternion.identity);
 			limiter.transform.localScale = new Vector3 (2 * maxDistance, 1, 2 * maxDistance);
 			Material[] lim = new Material[1];
 			Material[] mats = new Material[1];
-			switch(team){
+			switch (team) {
 			case 1:
 				mats [0] = BlueTroopSelected;
 				lim [0] = BlueTroopLimit;
@@ -337,8 +353,10 @@ public class Trooper : MonoBehaviour {
 			foreach (GameObject g in itemButtons) {
 				g.GetComponent<Button> ().interactable = true;
 			}
+			if (frozen == true) {
+				GameObject.Find ("AttackButton").GetComponent<Button>().interactable = false;
+			}
 		}
-	}
 
 	public void rotateTo(Vector3 point){
 		Vector3 direction = (point - gameObject.transform.position).normalized;
