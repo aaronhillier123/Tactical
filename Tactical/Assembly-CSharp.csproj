@@ -49,6 +49,7 @@
      <Compile Include="Assets\Assets\Scripts\CameraPan.cs" />
      <Compile Include="Assets\Assets\Scripts\CameraZoom.cs" />
      <Compile Include="Assets\Assets\Scripts\Chance.cs" />
+     <Compile Include="Assets\Assets\Scripts\ControlPoint.cs" />
      <Compile Include="Assets\Assets\Scripts\EventHandler.cs" />
      <Compile Include="Assets\Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Assets\Scripts\HealthBar.cs" />

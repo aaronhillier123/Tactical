@@ -143,11 +143,12 @@ public class Game : MonoBehaviour {
 								float[] contents1 = new float[4];
 								contents1 [0] = (float)myPlayer.Selected.id;
 								if (Vector3.Distance (hit.point, myPlayer.Selected.initialPosition) <= myPlayer.Selected.maxDistance) {
+									//if the click point is within the troops walking distance
 									contents1 [1] = hit.point.x;
 									contents1 [2] = hit.point.y;
 									contents1 [3] = hit.point.z;
 								} else {
-									//find farthest point
+									//find farthest point that troop can currently travel
 									Trooper myTroop = GetTroop(myPlayer.Selected.id);
 									Vector3 myPoint = ((hit.point - myTroop.initialPosition).normalized) * myTroop.maxDistance;
 									contents1 [1] = myTroop.initialPosition.x + myPoint.x;
@@ -158,11 +159,18 @@ public class Game : MonoBehaviour {
 									PhotonNetwork.RaiseEvent ((byte)2, contents, true, ops);
 								}
 							}
+					} else if(hit.collider.CompareTag("ControlPoint")){
+						//if player clicks on control point
+						if (myPlayer.Selected != null) {
+							//if player is not selected
+							GameObject cp = hit.collider.gameObject.transform.parent.gameObject;
+							cp.GetComponent<ControlPoint>().setTeam(myPlayer.team);
 						}
 					}
 				}
 			}
 		}
+	}
 
 
 	//list of all troopers who are NOT a specifc player's
