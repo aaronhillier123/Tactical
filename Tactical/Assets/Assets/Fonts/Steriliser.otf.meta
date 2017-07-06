@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: ff88fc553bb544bf5b219e94e140cbea
+timeCreated: 1499295507
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Steriliser
+  fontNames:
+  - Steriliser
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

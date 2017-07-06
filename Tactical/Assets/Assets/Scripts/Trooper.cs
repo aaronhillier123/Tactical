@@ -86,6 +86,10 @@ public class Trooper : MonoBehaviour {
 		animator.SetInteger ("AnimPar", 0);
 	}
 
+	public void flagPull(){
+		animator.SetInteger ("AnimPar", 8);
+	}
+
 	public static void makeInvulnerable(byte id, object content, int senderID){
 		if (id == 7) {
 			Trooper myTroop = Game.GetTroop ((int)content);
@@ -127,13 +131,44 @@ public class Trooper : MonoBehaviour {
 			float newPosx = conList [1];
 			float newPosy = conList [2];
 			float newPosz = conList [3];
+			int cpID = (int)conList [4];
 			Vector3 newPos = new Vector3 (newPosx, newPosy, newPosz);
 			Trooper myTroop = Game.GetTroop (selectedID);
 			if (myTroop.moving == false) {
-				myTroop.StopAllCoroutines();
-				myTroop.StartCoroutine (myTroop.moveToPosition (myTroop.gameObject, newPos, 10f)); 
+				if (cpID != -1) {
+					Vector3 newPoss = new Vector3 (newPos.x, 0, newPos.z);
+					myTroop.StopAllCoroutines ();
+					myTroop.StartCoroutine (myTroop.moveAndCapture (myTroop.gameObject, newPoss, 10f, cpID));
+				} else {
+					myTroop.StopAllCoroutines ();
+					myTroop.StartCoroutine (myTroop.moveToPosition (myTroop.gameObject, newPos, 10f)); 
+				}
 			}
 		}
+	}
+
+	public IEnumerator moveAndCapture(GameObject t, Vector3 destination, float speed, int CPID){
+		t.GetComponent<Trooper>().moving = true;
+		Vector3 direction = (destination - t.transform.position).normalized;
+		Quaternion lookRotation = Quaternion.LookRotation (direction);
+		t.transform.rotation = lookRotation;
+		t.GetComponent<Trooper>().animator.SetInteger ("AnimPar", 1);
+		Vector3 currentPos = t.transform.position;
+
+		while(Vector3.Distance(t.transform.position, destination) > 1f)
+		{
+			t.transform.position = Vector3.MoveTowards (t.transform.position, destination, speed * Time.deltaTime);
+			yield return null;
+		}
+		t.transform.position = destination;
+		t.GetComponent<Trooper> ().unselect ();
+		t.GetComponent<Trooper> ().resetDistance ();
+		ControlPoint cp = Game.getConrolPoint (CPID);
+		if (cp != null) {
+			cp.setTeam (team, id);
+		}
+		Debug.Log ("Captured!");
+		//t.GetComponent<Trooper> ().stop ();
 	}
 		
 	public IEnumerator moveToPosition(GameObject t, Vector3 destination, float speed)
@@ -347,7 +382,9 @@ public class Trooper : MonoBehaviour {
 			default:
 				break;
 			}
+		if (this.frozen == false) {
 			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+		}
 			limiter.GetComponent<MeshRenderer> ().materials = lim;
 			GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
 			foreach (GameObject g in itemButtons) {
@@ -396,7 +433,9 @@ public class Trooper : MonoBehaviour {
 		default:
 			break;
 		}
-		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+		if (this.frozen == false) {
+			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+		}
 	}
 
 	public void freeze(){

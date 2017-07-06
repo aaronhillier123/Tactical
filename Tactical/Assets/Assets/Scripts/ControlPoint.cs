@@ -5,6 +5,7 @@ using UnityEngine;
 public class ControlPoint : MonoBehaviour {
 
 	public int id;
+	public int team;
 	public Material BlueFlag;
 	public Material RedFlag;
 	public Material GreenFlag;
@@ -13,7 +14,7 @@ public class ControlPoint : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		id = 0;
+		team = 0;
 	}
 	
 	// Update is called once per frame
@@ -21,22 +22,30 @@ public class ControlPoint : MonoBehaviour {
 		
 	}
 
-	public void setTeam(int a){
-		StartCoroutine (changeFlag(a));
-		if (id != a) {
-			id = a;
+	public void setTeam(int a, int b){
+		Trooper myTroop = Game.GetTroop (b);
+		if (team != a) {
+			myTroop.myPlayer.addControlPoint (this);
+			myTroop.myPlayer.dogtags += 2;
+			Hud.updateDogTags (myTroop.myPlayer.dogtags);
+			myTroop.flagPull ();
+			StartCoroutine (changeFlag(a, b));
+			team = a;
+		} else {
+			myTroop.stop ();
 		}
 	}
 
-	public IEnumerator changeFlag(int id){
+	public IEnumerator changeFlag(int team, int troopid){
 		
 		GameObject myFlag = gameObject.transform.Find ("Flag").gameObject;
+		Debug.Log ("CHANGING FLAG");
 		Vector3 og = myFlag.transform.position;
 		while(myFlag.transform.position.y > 0){
 				myFlag.transform.Translate (0f, -.2f, 0f);
 				yield return null;
 		}
-		switch (id) {
+		switch (team) {
 		case 1:
 			myFlag.GetComponent<MeshRenderer> ().materials [0].color = Color.blue;
 			break;
@@ -58,5 +67,7 @@ public class ControlPoint : MonoBehaviour {
 			yield return null;
 		}
 		myFlag.transform.position = og;
+		Trooper myTroop = Game.GetTroop (troopid);
+		myTroop.stop ();
 	}
 }

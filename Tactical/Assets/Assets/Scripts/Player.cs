@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
 	//general player variables
 	public static int numberOfTroops = 2;
 	public int dogtags = 3;
+	public List<ControlPoint> myControlPoints;
 
 	//booleans for player states
 	public bool attacking = false;
@@ -47,7 +48,7 @@ public class Player : MonoBehaviour {
 			t.initialPosition = t.gameObject.transform.position;
 			t.maxDistance = 50f;
 		}
-		dogtags += 2;
+		dogtags += (myControlPoints.Count * 2);
 		Hud.updateDogTags (dogtags);
 	}
 
@@ -69,6 +70,10 @@ public class Player : MonoBehaviour {
 			Game.allTroopers.Add (firstTroop);
 			roster.Add (firstTroop);
 		}
+	}
+
+	public void addControlPoint(ControlPoint cp){
+		myControlPoints.Add(cp);
 	}
 
 	//show all percentages of hits from selected troop to other players' troops

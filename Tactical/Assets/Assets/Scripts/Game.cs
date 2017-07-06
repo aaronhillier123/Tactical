@@ -119,7 +119,7 @@ public class Game : MonoBehaviour {
 								}
 							}
 						}
-					} else if (hit.collider.CompareTag ("Terrain")) {
+					} else if (hit.collider.CompareTag ("Terrain") || hit.collider.CompareTag("ControlPoint")) {
 						//if player clicked on terrain/ground
 						if (myPlayer.Selected != null) {
 							//if player is selected
@@ -139,14 +139,19 @@ public class Game : MonoBehaviour {
 								myPlayer.attacking = false;
 								RaiseEventOptions ops = RaiseEventOptions.Default;
 								ops.Receivers = ReceiverGroup.All;
-								///////send movement to server
-								float[] contents1 = new float[4];
+								float[] contents1 = new float[5];
 								contents1 [0] = (float)myPlayer.Selected.id;
 								if (Vector3.Distance (hit.point, myPlayer.Selected.initialPosition) <= myPlayer.Selected.maxDistance) {
 									//if the click point is within the troops walking distance
 									contents1 [1] = hit.point.x;
 									contents1 [2] = hit.point.y;
 									contents1 [3] = hit.point.z;
+									if (hit.collider.CompareTag ("ControlPoint")) {
+										//if click is also a control point
+										contents1 [4] = (float) hit.collider.gameObject.transform.parent.gameObject.GetComponent<ControlPoint> ().id;
+									} else {
+										contents1 [4] = -1f;
+									}
 								} else {
 									//find farthest point that troop can currently travel
 									Trooper myTroop = GetTroop(myPlayer.Selected.id);
@@ -154,18 +159,12 @@ public class Game : MonoBehaviour {
 									contents1 [1] = myTroop.initialPosition.x + myPoint.x;
 									contents1 [2] = myTroop.initialPosition.y + myPoint.y;
 									contents1 [3] = myTroop.initialPosition.z + myPoint.z;
+									contents1 [4] = -1f;
 									}
 									object contents = (object)contents1;
 									PhotonNetwork.RaiseEvent ((byte)2, contents, true, ops);
 								}
 							}
-					} else if(hit.collider.CompareTag("ControlPoint")){
-						//if player clicks on control point
-						if (myPlayer.Selected != null) {
-							//if player is not selected
-							GameObject cp = hit.collider.gameObject.transform.parent.gameObject;
-							cp.GetComponent<ControlPoint>().setTeam(myPlayer.team);
-						}
 					}
 				}
 			}
@@ -210,6 +209,18 @@ public class Game : MonoBehaviour {
 		} else {
 			playersTurn = 0;
 		}
+	}
+
+	public static ControlPoint getConrolPoint(int idd){
+		ControlPoint[] allObs = GameObject.FindObjectsOfType (typeof(ControlPoint)) as ControlPoint[];
+		foreach(ControlPoint g in allObs){
+			if(g.id == idd){
+				Debug.Log ("reutnring control point " + g.id);
+				return g;
+			}
+		}
+		Debug.Log("returning null because size is" + allObs.Length);
+		return null;
 	}
 
 	//Return trooper based on ID
