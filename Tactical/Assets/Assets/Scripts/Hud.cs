@@ -42,11 +42,11 @@ public class Hud : MonoBehaviour {
 	public void attackMode(){
 		Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
 		if (myPlayer.attacking == true) {
-			myPlayer.removeChances ();
-			myPlayer.attacking = false;
+			myPlayer.Selected.noAttackMode ();
 		} else {
-			myPlayer.showAllChances ();
-			myPlayer.attacking = true;
+			if (myPlayer.Selected != null) {
+				myPlayer.Selected.goAttackMode ();
+			}
 		}
 	}
 
@@ -60,6 +60,7 @@ public class Hud : MonoBehaviour {
 	//change turn function
 	public void changeTurn(byte id, object content, int senderID){
 		if (id == 3) {
+			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
 			List<Trooper> troops = Game.allTroopers;
 			foreach (Trooper t in troops) {
 				t.unFreeze ();
@@ -223,7 +224,9 @@ public class Hud : MonoBehaviour {
 	}
 
 	public static void updateDogTags(int amount){
-		GameObject.Find ("DogTagsText").GetComponent<Text> ().text = "x " + amount.ToString ();
+		if (PhotonNetwork.player.ID == Game.playersTurn) {
+			GameObject.Find ("DogTagsText").GetComponent<Text> ().text = "x " + amount.ToString ();
+		}
 	}
 
 }

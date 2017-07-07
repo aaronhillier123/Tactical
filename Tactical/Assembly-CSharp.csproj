@@ -50,6 +50,7 @@
      <Compile Include="Assets\Assets\Scripts\CameraZoom.cs" />
      <Compile Include="Assets\Assets\Scripts\Chance.cs" />
      <Compile Include="Assets\Assets\Scripts\ControlPoint.cs" />
+     <Compile Include="Assets\Assets\Scripts\DogTag.cs" />
      <Compile Include="Assets\Assets\Scripts\EventHandler.cs" />
      <Compile Include="Assets\Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Assets\Scripts\HealthBar.cs" />
@@ -129,6 +130,7 @@
      <Compile Include="Assets\PhotonChatApi\ChatState.cs" />
      <Compile Include="Assets\PhotonChatApi\ChatUserStatus.cs" />
      <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
+     <Compile Include="Assets\WaitingText.cs" />
      <None Include="Assets\Photon Unity Networking\link.xml" />
      <None Include="Assets\Plugins\Photon3Unity3D.xml" />
      <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />

@@ -18,6 +18,7 @@ public class Trooper : MonoBehaviour {
 	public GameObject grenade;
 	public GameObject explosion;
 	public GameObject shield;
+	public GameObject dogTag;
 	public GameObject moveLimit;
 
 	//for movement
@@ -225,15 +226,19 @@ public class Trooper : MonoBehaviour {
 		
 	public void gotShot(){
 		animator.SetInteger ("AnimPar", 5);
-		decreaseHealth (20f);
+		decreaseHealth (50f);
 	}
 
 	public IEnumerator die(){
 		unselect ();
+		Vector3 pos = gameObject.transform.position;
+		Vector3 newPos = new Vector3 (pos.x, pos.y + 3f, pos.z);
 		animator.SetInteger ("AnimPar", 6);
 		yield return new WaitForSeconds (2f);
 		myPlayer.roster.Remove (this);
 		Game.allTroopers.Remove (this);
+		GameObject newDogTag = Instantiate (dogTag, newPos, Quaternion.identity);
+		Game.allDogTags.Add(newDogTag.GetComponent<DogTag>());
 		Hud.removeHealthBar (id);
 		Destroy (gameObject);
 	}
@@ -384,15 +389,14 @@ public class Trooper : MonoBehaviour {
 			}
 		if (this.frozen == false) {
 			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+			noAttackMode ();
 		}
 			limiter.GetComponent<MeshRenderer> ().materials = lim;
 			GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
 			foreach (GameObject g in itemButtons) {
 				g.GetComponent<Button> ().interactable = true;
 			}
-			if (frozen == true) {
-				GameObject.Find ("AttackButton").GetComponent<Button>().interactable = false;
-			}
+
 		}
 
 	public void rotateTo(Vector3 point){
@@ -400,6 +404,29 @@ public class Trooper : MonoBehaviour {
 		Quaternion lookRotation = Quaternion.LookRotation (direction);
 		gameObject.transform.rotation = lookRotation;
 	}
+
+	public void goAttackMode(){
+		if (frozen == false) {
+			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
+			GameObject.Find ("AttackText").GetComponent<Text> ().text = "CHOSE PLAYER";
+			GameObject.Find ("AttackText").GetComponent<Text> ().fontSize = 10;
+			myPlayer.showAllChances ();
+			myPlayer.attacking = true;
+		}
+	}
+
+	public void noAttackMode(){
+		if (frozen == false) {
+			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = true;
+		} else {
+			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
+		}
+		GameObject.Find ("AttackText").GetComponent<Text> ().text = "ATTACK";
+		GameObject.Find ("AttackText").GetComponent<Text> ().fontSize = 14;
+		myPlayer.removeChances ();
+		myPlayer.attacking = false;
+	}
+
 
 	public void unselect(){
 		if (myPlayer.Selected = this) {
@@ -415,6 +442,8 @@ public class Trooper : MonoBehaviour {
 		foreach (GameObject g in itemButtons) {
 			g.GetComponent<Button> ().interactable = false;
 		}
+		noAttackMode ();
+		GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
 
 		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
 		switch (team) {

@@ -3,9 +3,6 @@ BurnList:
 
 4
 
-Players drop dog tags on death, picked up for +1 dt;
-
-——---
 Players start in starting areas on game start
 —————
 Natural Cover 3d Modeling and Mapping
@@ -26,8 +23,6 @@ Game Start and Game Over scenes/transitions/GUIS
 camera follow “active object”
 -send an active troop change
 -local camera follows active troop
--screen black tint if not turn
--waiting for players text animation
 ———————————————————————————————————————— END OF GAMEPLAY
 9
 PlayerFab Integration (Facebook)

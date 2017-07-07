@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
@@ -9,6 +10,7 @@ public class Game : MonoBehaviour {
 	public GameObject PlayerObject;
 	public static GameObject Player1;
 	public static List<Trooper> allTroopers = new List<Trooper> ();
+	public static List<DogTag> allDogTags = new List<DogTag> ();
 	public static int playersTurn;
 
 	//for click and drag differential
@@ -102,6 +104,7 @@ public class Game : MonoBehaviour {
 								object target = (object)targets;
 								PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
 								myPlayer.removeChances ();
+								//myPlayer.Selected.noAttackMode ();
 							} else {
 								//if current player is not attacking
 								if (myPlayer.Selected.hasGrenade) {
@@ -135,8 +138,7 @@ public class Game : MonoBehaviour {
 								PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
 							} else {
 								//regular player movement
-								myPlayer.removeChances ();
-								myPlayer.attacking = false;
+
 								RaiseEventOptions ops = RaiseEventOptions.Default;
 								ops.Receivers = ReceiverGroup.All;
 								float[] contents1 = new float[5];
@@ -163,6 +165,7 @@ public class Game : MonoBehaviour {
 									}
 									object contents = (object)contents1;
 									PhotonNetwork.RaiseEvent ((byte)2, contents, true, ops);
+									myPlayer.Selected.noAttackMode ();
 								}
 							}
 					}

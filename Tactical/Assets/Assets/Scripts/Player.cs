@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
@@ -12,7 +13,7 @@ public class Player : MonoBehaviour {
 	public GameObject TrooperObject;
 	public GameObject HealthObject;
 	public GameObject ChanceObject;
-
+	public GameObject WaitingScreen;
 
 	//state of player's troops
 	public List<Trooper> roster = new List<Trooper>();
@@ -47,6 +48,17 @@ public class Player : MonoBehaviour {
 			}
 			t.initialPosition = t.gameObject.transform.position;
 			t.maxDistance = 50f;
+		}
+		if (PhotonNetwork.player.ID == Game.playersTurn) {
+			GameObject.Find ("NextTurnButton").GetComponent<Button> ().interactable = true;
+			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
+			GameObject ws = GameObject.Find ("NotTurnPanel(Clone)");
+			if (ws != null) {
+				Destroy (ws);
+			}
+		} else {
+			Instantiate (WaitingScreen, GameObject.Find ("Canvas").transform);
+			GameObject.Find ("NextTurnButton").GetComponent<Button> ().interactable = false;
 		}
 		dogtags += (myControlPoints.Count * 2);
 		Hud.updateDogTags (dogtags);
@@ -122,6 +134,7 @@ public class Player : MonoBehaviour {
 
 			myTroop.unselect ();
 			myTroop.freeze ();
+			myTroop.noAttackMode ();
 		}
 	}
 
@@ -138,7 +151,6 @@ public class Player : MonoBehaviour {
 			myTroop.throwGrenade (newPos);
 			myTroop.unselect ();
 		}
-
 	}
 		
 	//select a specific trooper
