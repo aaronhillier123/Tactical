@@ -1,21 +1,15 @@
 BurnList:
-
-
-4
-
-Players start in starting areas on game start
-—————
 Natural Cover 3d Modeling and Mapping
 Natural Cover scripts (ray cast between troops)
-
-
 ————————————————————————————————————END OF MAIN GAME
 6
 Create barriers/scripts
 ——————
 Create barrier Placement scripts (first turn)
+-place, rotation, take-cover script
+——————
 Create GUI for first turn
-
+START PLAYFAB
 7
 Game Start and Game Over scenes/transitions/GUIS
 
@@ -25,11 +19,10 @@ camera follow “active object”
 -local camera follows active troop
 ———————————————————————————————————————— END OF GAMEPLAY
 9
-PlayerFab Integration (Facebook)
--JSON string creation and PlayFab integrations
-
-10
 NETWORKING MENU GUI
 
+PlayerFab Integration (Facebook)
+-JSON string creation and PlayFab integrations
+-troops(position, health, rotation), dog tags(position), control points(id, team), 
 11
 ALPHA READY

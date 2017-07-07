@@ -196,9 +196,17 @@ public class Game : MonoBehaviour {
 			Player newPlayer = newPlayerObject.GetComponent<Player> ();
 			newPlayer.team = senderID;
 			GamePlayers.Add (newPlayer);
+			GameObject[] spawns = GameObject.FindGameObjectsWithTag ("Respawn");
+			SpawnArea mySpawn = new SpawnArea ();
+			foreach (GameObject g in spawns) {
+				if (g.GetComponent<SpawnArea> ().team == newPlayer.team) {
+					mySpawn = g.GetComponent<SpawnArea>();
+				}
+			}
+
 			for (int i = 0; i < Player.numberOfTroops; ++i) {
 				Debug.Log("creating troop number " + i + " for team " + senderID);
-				Vector3 newPos = new Vector3 (pos.x + 5 + (5*i), pos.y, pos.z);
+				Vector3 newPos = mySpawn.spawnPoints [i];
 				newPlayer.CreateTroopAt (newPos, senderID, ((senderID-1) * Player.numberOfTroops) + i);
 			}
 		}

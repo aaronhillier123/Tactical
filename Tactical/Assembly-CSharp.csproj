@@ -58,8 +58,10 @@
      <Compile Include="Assets\Assets\Scripts\Hud.cs" />
      <Compile Include="Assets\Assets\Scripts\MenuScript.cs" />
      <Compile Include="Assets\Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Assets\Scripts\SpawnArea.cs" />
      <Compile Include="Assets\Assets\Scripts\Trooper.cs" />
      <Compile Include="Assets\Assets\Scripts\WaitForPlayers.cs" />
+     <Compile Include="Assets\Assets\Scripts\WaitingText.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs" />
@@ -130,7 +132,6 @@
      <Compile Include="Assets\PhotonChatApi\ChatState.cs" />
      <Compile Include="Assets\PhotonChatApi\ChatUserStatus.cs" />
      <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
-     <Compile Include="Assets\WaitingText.cs" />
      <None Include="Assets\Photon Unity Networking\link.xml" />
      <None Include="Assets\Plugins\Photon3Unity3D.xml" />
      <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
