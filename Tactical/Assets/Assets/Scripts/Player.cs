@@ -35,6 +35,20 @@ public class Player : MonoBehaviour {
 		game = GameObject.FindObjectOfType(typeof(Game)) as Game;
 		//PhotonNetwork.OnEventCall += attack;
 		//PhotonNetwork.OnEventCall += throwGrenade;
+		if (PhotonNetwork.player.ID == Game.playersTurn) {
+			GameObject.Find ("NextTurnButton").GetComponent<Button> ().interactable = true;
+			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
+			GameObject ws = GameObject.Find ("NotTurnPanel(Clone)");
+			if (ws != null) {
+				Destroy (ws);
+			}
+		} else {
+			GameObject ws = GameObject.Find ("NotTurnPanel(Clone)");
+			if (ws == null) {
+				Instantiate (WaitingScreen, GameObject.Find ("Canvas").transform);
+			}
+			GameObject.Find ("NextTurnButton").GetComponent<Button> ().interactable = false;
+		}
 	}
 	
 	// Update is called once per frame

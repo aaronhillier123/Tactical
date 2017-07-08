@@ -1,14 +1,25 @@
 BurnList:
+
+Item buttons for when an item is owned
+Choice to sell back
+Choice to use
+
+
+
 Natural Cover 3d Modeling and Mapping
 Natural Cover scripts (ray cast between troops)
 ————————————————————————————————————END OF MAIN GAME
+
+
 6
-Create barriers/scripts
+Create barriers/scripts(one barrier connected to others for more)
 ——————
 Create barrier Placement scripts (first turn)
 -place, rotation, take-cover script
 ——————
 Create GUI for first turn
+
+
 START PLAYFAB
 7
 Game Start and Game Over scenes/transitions/GUIS

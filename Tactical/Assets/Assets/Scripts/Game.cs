@@ -88,37 +88,41 @@ public class Game : MonoBehaviour {
 							//if it is an ally trooper
 							myPlayer.selectTrooper (clickedOn);
 						} else {
-							//if it is an enemy player
-							if (myPlayer.attacking == true) {
-								//if current player is attacking
+							if (myPlayer.Selected != null) {
+								//if it is an enemy player
+								if (myPlayer.attacking == true) {
+									//if current player is attacking
 
-								myPlayer.attacking = false;
-								float[] targets = new float[3];
-								targets [0] = myPlayer.Selected.id;
-								targets [1] = clickedOn.id;
-								if (Game.GetTroop (myPlayer.Selected.id).isSniper == false) {
-									targets [2] = Random.Range (0, 100);
-								} else {
-									targets [2] = Random.Range (0, 200);
+									myPlayer.attacking = false;
+									float[] targets = new float[3];
+									targets [0] = myPlayer.Selected.id;
+									targets [1] = clickedOn.id;
+									if (Game.GetTroop (myPlayer.Selected.id).isSniper == false) {
+										targets [2] = Random.Range (0, 100);
+									} else {
+										targets [2] = Random.Range (0, 200);
+									}
+									object target = (object)targets;
+									PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
+									myPlayer.removeChances ();
+									//myPlayer.Selected.noAttackMode ();
 								}
-								object target = (object)targets;
-								PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
-								myPlayer.removeChances ();
-								//myPlayer.Selected.noAttackMode ();
-							} else {
-								//if current player is not attacking
-								if (myPlayer.Selected.hasGrenade) {
-									//if player is carrying a grenade
-									myPlayer.Selected.resetDistance();
-									float[] contents1 = new float[4];
-									contents1 [0] = (float)myPlayer.Selected.id;
-									contents1 [1] = hit.point.x;
-									contents1 [2] = hit.point.y;
-									contents1 [3] = hit.point.z;
-									object contents = (object)contents1;
-									PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
-								} else {
-									Hud.showHealthBar (clickedOn.id);
+							}else {
+								if (myPlayer.Selected != null) {
+									//if current player is not attacking
+									if (myPlayer.Selected.hasGrenade) {
+										//if player is carrying a grenade
+										myPlayer.Selected.resetDistance ();
+										float[] contents1 = new float[4];
+										contents1 [0] = (float)myPlayer.Selected.id;
+										contents1 [1] = hit.point.x;
+										contents1 [2] = hit.point.y;
+										contents1 [3] = hit.point.z;
+										object contents = (object)contents1;
+										PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
+									} else {
+										Hud.showHealthBar (clickedOn.id);
+									}
 								}
 							}
 						}
@@ -209,6 +213,7 @@ public class Game : MonoBehaviour {
 				Vector3 newPos = mySpawn.spawnPoints [i];
 				newPlayer.CreateTroopAt (newPos, senderID, ((senderID-1) * Player.numberOfTroops) + i);
 			}
+
 		}
 	}
 
