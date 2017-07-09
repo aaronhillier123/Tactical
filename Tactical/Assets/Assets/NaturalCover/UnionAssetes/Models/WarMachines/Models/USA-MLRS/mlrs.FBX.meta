@@ -1,0 +1,193 @@
+fileFormatVersion: 2
+guid: 39ce77390c5834fdd968a0be463b9292
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: aerial
+    100002: aerial2
+    100004: launcher
+    100006: //RootNode
+    100008: Object009
+    100010: Object01
+    100012: Object010
+    100014: Object011
+    100016: Object012
+    100018: Object013
+    100020: Object014
+    100022: Object015
+    100024: Object016
+    100026: Object017
+    100028: Object018
+    100030: Object019
+    100032: Object020
+    100034: Object021
+    100036: Object022
+    100038: Object023
+    100040: Object024
+    100042: Object03
+    100044: platform
+    100046: stoyki
+    400000: aerial
+    400002: aerial2
+    400004: launcher
+    400006: //RootNode
+    400008: Object009
+    400010: Object01
+    400012: Object010
+    400014: Object011
+    400016: Object012
+    400018: Object013
+    400020: Object014
+    400022: Object015
+    400024: Object016
+    400026: Object017
+    400028: Object018
+    400030: Object019
+    400032: Object020
+    400034: Object021
+    400036: Object022
+    400038: Object023
+    400040: Object024
+    400042: Object03
+    400044: platform
+    400046: stoyki
+    2300000: aerial
+    2300002: aerial2
+    2300004: launcher
+    2300006: Object009
+    2300008: Object01
+    2300010: Object010
+    2300012: Object011
+    2300014: Object012
+    2300016: Object013
+    2300018: Object014
+    2300020: Object015
+    2300022: Object016
+    2300024: Object017
+    2300026: Object018
+    2300028: Object019
+    2300030: Object020
+    2300032: Object021
+    2300034: Object022
+    2300036: Object023
+    2300038: Object024
+    2300040: Object03
+    2300042: platform
+    2300044: stoyki
+    3300000: aerial
+    3300002: aerial2
+    3300004: launcher
+    3300006: Object009
+    3300008: Object01
+    3300010: Object010
+    3300012: Object011
+    3300014: Object012
+    3300016: Object013
+    3300018: Object014
+    3300020: Object015
+    3300022: Object016
+    3300024: Object017
+    3300026: Object018
+    3300028: Object019
+    3300030: Object020
+    3300032: Object021
+    3300034: Object022
+    3300036: Object023
+    3300038: Object024
+    3300040: Object03
+    3300042: platform
+    3300044: stoyki
+    4300000: Object03
+    4300002: platform
+    4300004: stoyki
+    4300006: launcher
+    4300008: Object01
+    4300010: aerial
+    4300012: aerial2
+    4300014: Object009
+    4300016: Object010
+    4300018: Object011
+    4300020: Object012
+    4300022: Object013
+    4300024: Object014
+    4300026: Object015
+    4300028: Object016
+    4300030: Object017
+    4300032: Object018
+    4300034: Object019
+    4300036: Object020
+    4300038: Object021
+    4300040: Object022
+    4300042: Object023
+    4300044: Object024
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

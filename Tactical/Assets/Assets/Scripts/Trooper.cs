@@ -427,6 +427,11 @@ public class Trooper : MonoBehaviour {
 		myPlayer.attacking = false;
 	}
 
+	public void goBack(){
+		Vector3 direction = (initialPosition - gameObject.transform.position).normalized;
+		gameObject.transform.Translate (direction * 2f);
+	}
+
 
 	public void unselect(){
 		if (myPlayer.Selected = this) {

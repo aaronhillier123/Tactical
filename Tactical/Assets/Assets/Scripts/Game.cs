@@ -126,7 +126,7 @@ public class Game : MonoBehaviour {
 								}
 							}
 						}
-					} else if (hit.collider.CompareTag ("Terrain") || hit.collider.CompareTag("ControlPoint")) {
+					} else if (hit.collider.CompareTag ("Terrain") || hit.collider.CompareTag("ControlPoint") || hit.collider.CompareTag("NaturalCover")) {
 						//if player clicked on terrain/ground
 						if (myPlayer.Selected != null) {
 							//if player is selected

@@ -1,0 +1,216 @@
+fileFormatVersion: 2
+guid: 17b38ce579354469b879e136992519ff
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: block
+    100002: block2
+    100004: Cylinder002
+    100006: Cylinder003
+    100008: Cylinder004
+    100010: Cylinder005
+    100012: Cylinder006
+    100014: Cylinder007
+    100016: Cylinder008
+    100018: Cylinder009
+    100020: Cylinder01
+    100022: Cylinder010
+    100024: deck
+    100026: Dummy02
+    100028: Dummy03
+    100030: hook
+    100032: hook01
+    100034: Line02
+    100036: Object01
+    100038: Object02
+    100040: Object04
+    100042: Object05
+    100044: Object06
+    100046: Object07
+    100048: opori1
+    100050: opori2
+    100052: planks
+    100054: planks2
+    100056: strela
+    100058: strela2
+    100060: strela3
+    100062: tross
+    100064: tross02
+    100066: //RootNode
+    400000: block
+    400002: block2
+    400004: Cylinder002
+    400006: Cylinder003
+    400008: Cylinder004
+    400010: Cylinder005
+    400012: Cylinder006
+    400014: Cylinder007
+    400016: Cylinder008
+    400018: Cylinder009
+    400020: Cylinder01
+    400022: Cylinder010
+    400024: deck
+    400026: Dummy02
+    400028: Dummy03
+    400030: hook
+    400032: hook01
+    400034: Line02
+    400036: Object01
+    400038: Object02
+    400040: Object04
+    400042: Object05
+    400044: Object06
+    400046: Object07
+    400048: opori1
+    400050: opori2
+    400052: planks
+    400054: planks2
+    400056: strela
+    400058: strela2
+    400060: strela3
+    400062: tross
+    400064: tross02
+    400066: //RootNode
+    2300000: block
+    2300002: block2
+    2300004: Cylinder002
+    2300006: Cylinder003
+    2300008: Cylinder004
+    2300010: Cylinder005
+    2300012: Cylinder006
+    2300014: Cylinder007
+    2300016: Cylinder008
+    2300018: Cylinder009
+    2300020: Cylinder01
+    2300022: Cylinder010
+    2300024: deck
+    2300026: hook
+    2300028: hook01
+    2300030: opori1
+    2300032: opori2
+    2300034: planks
+    2300036: planks2
+    2300038: strela
+    2300040: strela2
+    2300042: strela3
+    3300000: block
+    3300002: block2
+    3300004: Cylinder002
+    3300006: Cylinder003
+    3300008: Cylinder004
+    3300010: Cylinder005
+    3300012: Cylinder006
+    3300014: Cylinder007
+    3300016: Cylinder008
+    3300018: Cylinder009
+    3300020: Cylinder01
+    3300022: Cylinder010
+    3300024: deck
+    3300026: hook
+    3300028: hook01
+    3300030: opori1
+    3300032: opori2
+    3300034: planks
+    3300036: planks2
+    3300038: strela
+    3300040: strela2
+    3300042: strela3
+    4300000: tross
+    4300002: hook
+    4300004: deck
+    4300006: strela3
+    4300008: strela2
+    4300010: strela
+    4300012: block2
+    4300014: block
+    4300016: hook01
+    4300018: planks
+    4300020: opori1
+    4300022: opori2
+    4300024: planks2
+    4300026: tross02
+    4300028: Cylinder01
+    4300030: Cylinder002
+    4300032: Cylinder003
+    4300034: Cylinder004
+    4300036: Cylinder005
+    4300038: Cylinder006
+    4300040: Cylinder007
+    4300042: Cylinder008
+    4300044: Cylinder009
+    4300046: Cylinder010
+    7400000: Take 001
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: tross
+    13700002: tross02
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -122,35 +122,52 @@ public class Player : MonoBehaviour {
 
 	//network attack function
 	public static void attack(byte id, object content, int senderID){
-		if(id == 4){
+		if (id == 4) {
 			//unpack objects for attacker and target
 
 			float[] contents = (float[])content;
 			Trooper myTroop = Game.GetTroop ((int)contents [0]);
-			Trooper enemy = Game.GetTroop((int)contents[1]);
+			Trooper enemy = Game.GetTroop ((int)contents [1]);
 			myTroop.isSniper = false;
-			//find distance and see if attack is a hit
-			float distance = Vector3.Distance(myTroop.gameObject.transform.position, enemy.gameObject.transform.position);
-			float random = contents [2];
-			if (random - distance > 0) {
-				//Debug.Log ("its a hit, distance is " + distance + " and random is " + random);
-				myTroop.rotateTo (enemy.gameObject.transform.position);
-				myTroop.animator.SetInteger ("AnimPar", 2);
-				myTroop.shoot (enemy.gameObject);
-			
-			} else {
-				//Debug.Log ("its a miss,  distance is " + distance + " and random is " + random);
-				myTroop.rotateTo (enemy.gameObject.transform.position);
-				myTroop.animator.SetInteger ("AnimPar", 2);
-				myTroop.miss (enemy.gameObject);
-			}
-			myTroop.Invoke ("stop", 1f);
 
-			myTroop.unselect ();
-			myTroop.freeze ();
-			myTroop.noAttackMode ();
+			RaycastHit hit;
+			Vector3 enemypos = enemy.gameObject.transform.position;
+			Vector3 mypos = myTroop.gameObject.transform.position;
+			Vector3 enemyhip = new Vector3 (enemypos.x, enemypos.y + 3, enemypos.z);
+			Vector3 myhip = new Vector3 (mypos.x, mypos.y + 3, mypos.z);
+			Vector3 dir = (enemyhip - myhip);
+			if (Physics.Raycast (myhip, dir, out hit, 200f)) {
+				Debug.Log ("Collided with " + hit.collider.tag);
+				Debug.DrawRay (myhip, dir, Color.white, 3f);
+				if (hit.collider.CompareTag ("NaturalCover")) {
+					myTroop.rotateTo (enemy.gameObject.transform.position);
+					myTroop.animator.SetInteger ("AnimPar", 2);
+					myTroop.miss (enemy.gameObject);
+				} else {
+					//find distance and see if attack is a hit
+					float distance = Vector3.Distance (myTroop.gameObject.transform.position, enemy.gameObject.transform.position);
+					float random = contents [2];
+					if (random - distance > 0) {
+						//Debug.Log ("its a hit, distance is " + distance + " and random is " + random);
+						myTroop.rotateTo (enemy.gameObject.transform.position);
+						myTroop.animator.SetInteger ("AnimPar", 2);
+						myTroop.shoot (enemy.gameObject);
+			
+					} else {
+						//Debug.Log ("its a miss,  distance is " + distance + " and random is " + random);
+						myTroop.rotateTo (enemy.gameObject.transform.position);
+						myTroop.animator.SetInteger ("AnimPar", 2);
+						myTroop.miss (enemy.gameObject);
+					}
+				}
+					myTroop.Invoke ("stop", 1f);
+
+					myTroop.unselect ();
+					myTroop.freeze ();
+					myTroop.noAttackMode ();
+				}
+			}
 		}
-	}
 
 	public static void throwGrenade(byte id, object content, int senderID){
 		if (id == 6) {
