@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 
 	//identification
 	public int team;
-
+	public int lookingAt = 0;
 	//Prefabs needed
 	public GameObject TrooperObject;
 	public GameObject HealthObject;
@@ -67,6 +67,7 @@ public class Player : MonoBehaviour {
 			GameObject.Find ("NextTurnButton").GetComponent<Button> ().interactable = true;
 			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
 			GameObject ws = GameObject.Find ("NotTurnPanel(Clone)");
+			GameObject.Find ("CameraPan").GetComponent<CameraPan> ().moveToPlayer (roster [lookingAt]);
 			if (ws != null) {
 				Destroy (ws);
 			}

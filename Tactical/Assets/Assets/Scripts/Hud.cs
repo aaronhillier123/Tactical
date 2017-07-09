@@ -229,4 +229,13 @@ public class Hud : MonoBehaviour {
 		}
 	}
 
+	public void nextTroopPan(){
+		Player myPlayer = Game.getPlayer (PhotonNetwork.player.ID);
+		myPlayer.lookingAt++;
+		if (myPlayer.lookingAt == myPlayer.roster.Count) {
+			myPlayer.lookingAt = 0;
+		}
+		GameObject.Find ("CameraPan").GetComponent<CameraPan> ().moveToPlayer (myPlayer.roster [myPlayer.lookingAt]);
+	}
+
 }
