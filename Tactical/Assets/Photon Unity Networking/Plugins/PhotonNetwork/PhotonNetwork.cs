@@ -665,7 +665,7 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// The lobby that will be used when PUN joins a lobby or creates a game.
+    /// The lobby that will be used when PUN joins a lobby or creates a Game._instance.
     /// </summary>
     /// <remarks>
     /// The default lobby uses an empty string as name.
@@ -1311,7 +1311,7 @@ public static class PhotonNetwork
 	/// <summary>Can be used to reconnect to the master server after a disconnect.</summary>
 	/// <remarks>
 	/// After losing connection, you can use this to connect a client to the region Master Server again.
-	/// Cache the room name you're in and use ReJoin(roomname) to return to a game.
+	/// Cache the room name you're in and use ReJoin(roomname) to return to a Game._instance.
 	/// Common use case: Press the Lock Button on a iOS device and you get disconnected immediately.
 	/// </remarks>
     public static bool Reconnect()
@@ -1977,13 +1977,13 @@ public static class PhotonNetwork
 	/// <remarks>
 	/// After losing connection, you might be able to return to a room and continue playing,
 	/// if the client is reconnecting fast enough. Use Reconnect() and this method.
-	/// Cache the room name you're in and use ReJoin(roomname) to return to a game.
+	/// Cache the room name you're in and use ReJoin(roomname) to return to a Game._instance.
 	///
 	/// Note: To be able to ReJoin any room, you need to use UserIDs!
 	/// You also need to set RoomOptions.PlayerTtl.
 	///
 	/// <b>Important: Instantiate() and use of RPCs is not yet supported.</b>
-	/// The ownership rules of PhotonViews prevent a seamless return to a game.
+	/// The ownership rules of PhotonViews prevent a seamless return to a Game._instance.
 	/// Use Custom Properties and RaiseEvent with event caching instead.
 	///
 	/// Common use case: Press the Lock Button on a iOS device and you get disconnected immediately.

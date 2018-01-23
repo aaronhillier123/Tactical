@@ -564,7 +564,7 @@ LoadBalancing API:
 Windows Phone 8:
     Added: Demo for Cloud / LoadBalancing. The Particle Demo only has a special WP8 GUI and links it's logic from a separate project (read: folder).
 Windows 8 RT:
-    Added: Demo "Phong", which is a simplified, basic multiplayer game. It's focus is to show how to sync data, not to make it super smooth and error free. Let us know any issues but bear with us as it isn't fully featured.
+    Added: Demo "Phong", which is a simplified, basic multiplayer Game._instance. It's focus is to show how to sync data, not to make it super smooth and error free. Let us know any issues but bear with us as it isn't fully featured.
 
 *** Version 3.0.1.13 (26.09.2012 - rev1731)
     Fixed: Internals of method DispatchIncomingCommands() for UDP. In some cases this removed commands from a dictionary inside a foreach loop (which causes an Exception due to changing the dictionary)
@@ -958,7 +958,7 @@ Siverlight:
 - Changed: removed locks inside the callbacks (according to above change).
 - Changed: DNS resolution is now done in Connect() unless you provide a valid IP address (if IPAddress.Parse(address) is successful, the IP is used directly).
 - Fixed: PhotonPeer.Connect() should fail if the IP is unknown or unavailable. Exception: using a localhost might succeed but fail when we try to receive anything.
-- Updated: Game.cs now initialized the timing intervals. This avoids issues if the client system is having a negative TickCount.
+- Updated: Game._instance.cs now initialized the timing intervals. This avoids issues if the client system is having a negative TickCount.
 - Added: ServerAddress property to PhotonPeer, which might help while developing with several servers and peers.
 - Changed: This version includes GetLocalMsTimestampDelegate and the PhotonPeer property GetLocalMsTimestamp to set the delegate for local timestamp.
 
@@ -980,7 +980,7 @@ Siverlight:
 - Changed: internally, there is no locking for outgoing reliable and unreliable command lists anymore
 - Changed: Realtime Demo timer usage to avoid nullref on form-close
 - Changed: Realtime Demo propety isReliable is now in the Player class
-- Changed: Game.cs and Player.cs for all realtime demos. There is now something like a gameloop (Update()) which must be called regularly and makes (pretty) sure just one thread accesses the peer
+- Changed: Game._instance.cs and Player.cs for all realtime demos. There is now something like a gameloop (Update()) which must be called regularly and makes (pretty) sure just one thread accesses the peer
 - Changed: all realtime demos to use the new Update() method and use more similar Game and Player classes (cleanup for less differences)
 - Fixed: RoundtripTimeVariance is now also reset on connect / init, so the resend-timing of reliable udp does not suffer when a peer connects after a disconnect
 - Fixed: typo in ExitGames.Client.Photon.StatusCode.QueueIncomingUnreliableWarning (was QueueIncomingUneliableWarning)
@@ -1195,9 +1195,9 @@ Siverlight:
 - Change: parameters of GetPropertiesReturn(). property-type is replaced by channel. added revision
 - Change: EV_PROPERTIES_CHANGE now has a key EV_KEY_OWNERNR if it's a "player property" (the key is missing if it's a game-property)
 - Internal: changed setProperties and getProperties to new operation-codes using different parameters (with similar results)
-- New: parameter "textMessage" for NeutronGame.invite() adds personal message to invited players (in EV_INV and gameListInvitations())
-- New: key EV_KEY_INFO will be added to EV_INV if "textMessage" was used in NeutronGame.invite() (it's not there otherwise)
-- New: gameListInvitations() has new value parameter {t} to get "textMessage" from NeutronGame.invite()
+- New: parameter "textMessage" for NeutronGame._instance.invite() adds personal message to invited players (in EV_INV and gameListInvitations())
+- New: key EV_KEY_INFO will be added to EV_INV if "textMessage" was used in NeutronGame._instance.invite() (it's not there otherwise)
+- New: gameListInvitations() has new value parameter {t} to get "textMessage" from NeutronGame._instance.invite()
 - New: RC_APPINSTANCE_NOT_OPEN is now used for "singleton namebased pools" where a game is full (not able to join / instanciate)
 - New: gameCreate() with invitations will fail if the chosen game-name is already taken in a "singleton namebased pool"
 - New: RC_APPINSTANCE_ALREADY_EXISTS for the case above
@@ -1211,9 +1211,9 @@ Siverlight:
 
 *** Version 5.0.0 RC1
 - New: RaiseEvent (all functions of this name) now has a "filter" parameter. If filter is true, all String-typed values in an event are badword filtered
-- Change: signature of NeutronGame.raiseEvent(), NeutronGame.raiseEventInChannel(), NeutronSession.raiseEventInChannel(), NeutronSession.raiseEventForActor() start with: byte eventCode, Hashtable event, boolean filter
+- Change: signature of NeutronGame._instance.raiseEvent(), NeutronGame._instance.raiseEventInChannel(), NeutronSession.raiseEventInChannel(), NeutronSession.raiseEventForActor() start with: byte eventCode, Hashtable event, boolean filter
 - Change: signature of NeutronSession.raiseEventForActor() is changed to "byte eventCode, Hashtable eventData, boolean filter, String userID, int minutesValid, byte maxTypeCount, byte channel"
-- Change: NeutronGame.doModerate() is now isModerator()
+- Change: NeutronGame._instance.doModerate() is now isModerator()
 - Change: moved GpOperation.SerializeData() and GpOperation.DeserializeData() to Neutron.SerializeData() and Neutron.DeserializeData().
 - New: errorCode RC_INVALID_TARGET and RC_PARAMETER_NOT_SUPPLIED added as constant.
 
@@ -1221,8 +1221,8 @@ Siverlight:
 - New: Errors constants in NeutronListener: RC_FATAL_LOGIC, RC_MATCHMAKING_NOT_COMPLETED, RC_CHANNEL_ACCESS_VIOLATION
 - New: for game-creation you can now reserve "spots", which are not filled up by Neutron matchmaking. players can be invited to fill the spots, or they can be deblocked later on
 - New: Parameter reservedSpots in NeutronSession.gameCreate()
-- New: NeutronGame.setReservedSpots() to modify the number of reserved slots (to make them available to matchmaking again, or block/reserve them)
-- New: event EV_RESERVED_SPOTS will update the NeutronGame.reservedSpots value after a call to NeutronGame.setReservedSpots()
+- New: NeutronGame._instance.setReservedSpots() to modify the number of reserved slots (to make them available to matchmaking again, or block/reserve them)
+- New: event EV_RESERVED_SPOTS will update the NeutronGame._instance.reservedSpots value after a call to NeutronGame._instance.setReservedSpots()
 - New: NeutronSession.listBannedPlayers() gives you the list of banned players for a known game - only usable by "admin" users
 - New: NeutronSession.unbanPlayer() is a modified "kick" operation which allows the respective user to join a certain game again - only usable by "admin" users
 - New: the event invitation includes now the game's name (in the new key EV_KEY_NAME)
@@ -1232,24 +1232,24 @@ Siverlight:
 
 *** Version 4.9.2
 - New: Players can be admins (by list of logins on server) or moderator (by being the first active player of a game)
-- New: Players may request and become moderator for game: NeutronSession.gameCanModerate(boolean), NeutronSession.canModerate, NeutronGame.doModerate() and NeutronGame.moderatorActorNr
+- New: Players may request and become moderator for game: NeutronSession.gameCanModerate(boolean), NeutronSession.canModerate, NeutronGame._instance.doModerate() and NeutronGame._instance.moderatorActorNr
 - Change: the new value NeutronSession.canModerate will be sent with gameCreate() operations (if set to true)
 - New: Event key NeutronListener.EV_KEY_MODERATOR to get moderator's actorNr from events
-- Change: EV_QUIT and EV_KICKED now carry the new key EV_KEY_MODERATOR which tells all players who is the current moderator (by actorNr); this is stored into NeutronGame.moderatorActorNr
+- Change: EV_QUIT and EV_KICKED now carry the new key EV_KEY_MODERATOR which tells all players who is the current moderator (by actorNr); this is stored into NeutronGame._instance.moderatorActorNr
 - New: Players in NeutronGame can have new state PLAYER_KICKED (player-data is updated with EV_KICKED)
-- New: NeutronGame.kickPlayer() (for moderators) and NeutronSession.kickPlayer() (for admin's who are not active in the game to shutdown)
+- New: NeutronGame._instance.kickPlayer() (for moderators) and NeutronSession.kickPlayer() (for admin's who are not active in the game to shutdown)
 - New: NeutronSession.shutdownGame() can be used by admin-players (for others, this operation will fail)
 - New: Namebased pools can now be defined as "singleton": only one instance per pool and name will be created; if such a game is full players get an error instead of a new game
 - New: Errors constants in NeutronListener: RC_ACTORSESSION_KICKED, RC_ACTORSESSION_BANNED, RC_APPINSTANCE_CLOSED, RC_ACTORSESSION_ALREADY_JOINED
-- Change: NeutronGame.raiseEvent() accepts a "targetActorNr" which defines a single player to get the raised event; leave 0 to target "all players in game" (as before)
-- New: NeutronGame.quitLocally() to release a NeutronGame instance locally (without having to quit()); used after a player was kicked or game shutdown
-- Update: NeutronGame.playerGetCount() is updated to simply count all active or inactive players (excluding quit and kicked ones)
+- Change: NeutronGame._instance.raiseEvent() accepts a "targetActorNr" which defines a single player to get the raised event; leave 0 to target "all players in game" (as before)
+- New: NeutronGame._instance.quitLocally() to release a NeutronGame instance locally (without having to quit()); used after a player was kicked or game shutdown
+- Update: NeutronGame._instance.playerGetCount() is updated to simply count all active or inactive players (excluding quit and kicked ones)
 - Internal: NeutronGame constructor reads new parameter: P_MODERATOR
 - Change: Polling (getEvents operation) now calls sendGameDataReturn() for all errors (not just RC_ACTORSESSION_EXPIRED and RC_ACTORSESSION_NOT_FOUND); takes care of kicked/banned errors
 - Fix: Fatal server errors cause a returnCode of NeutronListener.RC_OP_SERVER again; debug test-server libs print out debug text! (during development fatal errors could happen in case of not matching client/server setups)
 - Change: removed (already deprecated) NeutronListener.gameListPerPoolReturn()
 - Change / Internal: canModerate is sent as Byte (not bool) as in definition; Code: if ( canModerate ) op.addParameter(Neutron.P_MODERATOR , new Byte((byte)1));
-- Add: NeutronGame.PLAYER_KICKED is now listed in JavaDoc for NeutronGame.playerGetStatus()
+- Add: NeutronGame._instance.PLAYER_KICKED is now listed in JavaDoc for NeutronGame._instance.playerGetStatus()
 - Update: JavaDoc package.html, gameCreateReturn(), gamesListReturn(), EV_DEACTIVATE, kickPlayer(), quitLocally(), RC_ACTORSESSION_KICKED, RC_ACTORSESSION_BANNED, RC_APPINSTANCE_CLOSED, RC_ACTORSESSION_ALREADY_JOINED
 - Added: Event EV_STATUS (50) includes a key EV_KEY_ISADMIN if the current player has administrator rights; the value is (byte)1 in that case. The key does not exist in any other case (normal users)
 - Update: JavaDoc gameCreateReturn;
@@ -1277,7 +1277,7 @@ Siverlight:
 - Internal: Changed parameter in buddySet from P_STATUS to P_TYPE
 
 *** Version 4.0.4
-- Change: NeutronGame.handoverTurn() and NeutronGame.sendData() are now getting a Hashtable parameter instead of Object
+- Change: NeutronGame._instance.handoverTurn() and NeutronGame._instance.sendData() are now getting a Hashtable parameter instead of Object
 - New: RC_ACTORSESSION_BUSY (121) constant to help identify common development error! check in gameCreateReturn()
 
 *** Version 4.0.3
@@ -1310,11 +1310,11 @@ Siverlight:
     - NeutronSession.ListIgnore;
     - NeutronSession.BillingInitPayment;
     - NeutronSession.BillingProcessPayment;
-    - NeutronGame.Invite;
-    - NeutronGame.GetGameProperties;
-    - NeutronGame.SetGameProperties;
-    - NeutronGame.GetPlayerProperties;
-    - NeutronGame.SetLocatPlayerProperties;
+    - NeutronGame._instance.Invite;
+    - NeutronGame._instance.GetGameProperties;
+    - NeutronGame._instance.SetGameProperties;
+    - NeutronGame._instance.GetPlayerProperties;
+    - NeutronGame._instance.SetLocatPlayerProperties;
     - NeutronListener.GameInviteReturn;
     - NeutronListener.GetPropertiesReturn;
     - NeutronListener.SetPropertiesReturn;

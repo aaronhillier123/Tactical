@@ -236,7 +236,7 @@
              OnStatusChanged is called to let the game know when asyncronous actions finished or when errors happen.
              </summary>
              <remarks>
-             Not all of the many StatusCode values will apply to your game. Example: If you don't use encryption,
+             Not all of the many StatusCode values will apply to your Game._instance. Example: If you don't use encryption,
              the respective status changes are never made.
             
              The values are all part of the StatusCode enumeration and described value-by-value.

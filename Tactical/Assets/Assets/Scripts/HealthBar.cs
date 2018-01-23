@@ -19,12 +19,12 @@ public class HealthBar : MonoBehaviour {
 	void Update () {
 		if (myTroop == null && found == false && canv==null) {
 			try{
-			myTroop = Game.GetTroop (id).gameObject;
+			myTroop = Game._instance.GetTroop (id).gameObject;
 				canv = GameObject.Find("Canvas");
 			} catch{
 			}
 		} else if (myTroop != null && found == false && canv != null) {
-			transform.parent = canv.transform;
+			transform.SetParent(canv.transform);
 			myTroopScript = myTroop.GetComponent<Trooper> ();
 			//InvokeRepeating ("showOnHead", .1f, .1f);
 			found = true;

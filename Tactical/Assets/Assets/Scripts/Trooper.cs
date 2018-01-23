@@ -8,18 +8,16 @@ public class Trooper : MonoBehaviour {
 	//miscellaneous
 	public GameObject hitmisOb;
 	public float health = 100;
+	public GameObject limit;
 
 	//animation
 	public Animator animator;
 	private int animInt;
 	public float maxDistance = 50f;
 	//Seperate Objects
-	public GameObject bullet;
-	public GameObject grenade;
-	public GameObject explosion;
-	public GameObject shield;
-	public GameObject dogTag;
-	public GameObject moveLimit;
+
+
+
 
 	//for movement
 	public Vector3 initialPosition;
@@ -29,37 +27,13 @@ public class Trooper : MonoBehaviour {
 	public int team;
 	public Player myPlayer;
 
-	//Blue Troop Materials
-	public Material BlueTroopSelected;
-	public Material BlueTroop;
-	public Material BlueTroopFrozen;
-	public Material BlueTroopShield;
-	public Material BlueTroopLimit;
 
-	//Red Troop Materials
-	public Material RedTroop;
-	public Material RedTroopSelected;
-	public Material RedTroopFrozen;
-	public Material RedTroopShield;
-	public Material RedTroopLimit;
 
-	//Orange Troop Materials
-	public Material OrangeTroop;
-	public Material OrangeTroopFrozen;
-	public Material OrangeTroopSelected;
-	public Material OrangeTroopShield;
-	public Material OrangeTroopLimit;
-
-	//Green Troop Materials
-	public Material GreenTroop;
-	public Material GreenTroopFrozen;
-	public Material GreenTroopSelected;
-	public Material GreenTroopShield;
-	public Material GreenTroopLimit;
 
 	//state of availability
 	public bool moving = false;
 	public bool frozen = false;
+	public bool covering = false;
 
 	//bools for abilities
 	public bool hasGrenade = false;
@@ -79,9 +53,6 @@ public class Trooper : MonoBehaviour {
 	void Update () {
 	}
 
-	public void showMovementLimit(){
-	}
-
 	public void stop(){
 		moving = false;
 		animator.SetInteger ("AnimPar", 0);
@@ -91,103 +62,85 @@ public class Trooper : MonoBehaviour {
 		animator.SetInteger ("AnimPar", 8);
 	}
 
+	public void takeCover(Vector3 pos){
+	}
+
 	public static void makeInvulnerable(byte id, object content, int senderID){
 		if (id == 7) {
-			Trooper myTroop = Game.GetTroop ((int)content);
+			Trooper myTroop = Game._instance.GetTroop ((int)content);
 			myTroop.isInvulnerable = true;
-			GameObject shieldO = Instantiate (myTroop.shield, myTroop.gameObject.transform);
-			Material[] mats = shieldO.GetComponent<MeshRenderer> ().materials;
-			switch (myTroop.team) {
-			case 1:
-				mats [0] = myTroop.BlueTroopShield;
-				break;
-			case 2:
-				mats [0] = myTroop.RedTroopShield;
-				break;
-			case 3:
-				mats [0] = myTroop.GreenTroopShield;
-				break;
-			case 4:
-				mats [0] = myTroop.OrangeTroopShield;
-				break;
-			default:
-				break;
-			}
-			shieldO.GetComponent<MeshRenderer> ().materials = mats;
+			GameObject myShield = Instantiate (TroopController._instance.TroopObjects[3], myTroop.gameObject.transform);
+			myShield.GetComponent<MeshRenderer> ().material = TroopController._instance.ShieldMats[myTroop.team];
 		}
 	}
 
-	public void makeNotInvulnerable(){
-		isInvulnerable = false;
-		GameObject shieldO = gameObject.transform.Find("Shield(Clone)").gameObject;
-		if (shieldO != null) {
-			Destroy (shieldO);
+	public static void makeNotInvulnerable(byte id, object content, int senderID){
+		if (id == 9) {
+			Trooper myTroop = Game._instance.GetTroop ((int)content);
+			GameObject TroopOb = myTroop.gameObject;
+			myTroop.isInvulnerable = false;
+			GameObject myShield = TroopOb.transform.Find ("Shield(Clone)").gameObject;
+			if (myShield != null) {
+				Destroy (myShield);
+			}
 		}
 	}
 		
 	public static void move(byte id, object content, int senderID){
 		if (id == 2) {
+			Debug.Log ("MOOOVVVIIINGNGGGG");
 			float[] conList = (float[])content;
 			int selectedID = (int)conList[0];
 			float newPosx = conList [1];
 			float newPosy = conList [2];
 			float newPosz = conList [3];
-			int cpID = (int)conList [4];
 			Vector3 newPos = new Vector3 (newPosx, newPosy, newPosz);
-			Trooper myTroop = Game.GetTroop (selectedID);
-			if (myTroop.moving == false) {
-				if (cpID != -1) {
-					Vector3 newPoss = new Vector3 (newPos.x, 0, newPos.z);
-					myTroop.StopAllCoroutines ();
-					myTroop.StartCoroutine (myTroop.moveAndCapture (myTroop.gameObject, newPoss, 10f, cpID));
-				} else {
-					myTroop.StopAllCoroutines ();
-					myTroop.StartCoroutine (myTroop.moveToPosition (myTroop.gameObject, newPos, 10f)); 
-				}
-			}
+			Trooper myTroop = Game._instance.GetTroop (selectedID);
+			myTroop.StopAllCoroutines ();
+			myTroop.StartCoroutine (myTroop.moveToPosition (newPos, 10f)); 
 		}
-	}
-
-	public IEnumerator moveAndCapture(GameObject t, Vector3 destination, float speed, int CPID){
-		t.GetComponent<Trooper>().moving = true;
-		Vector3 direction = (destination - t.transform.position).normalized;
-		Quaternion lookRotation = Quaternion.LookRotation (direction);
-		t.transform.rotation = lookRotation;
-		t.GetComponent<Trooper>().animator.SetInteger ("AnimPar", 1);
-		Vector3 currentPos = t.transform.position;
-
-		while(Vector3.Distance(t.transform.position, destination) > 1f)
-		{
-			t.transform.position = Vector3.MoveTowards (t.transform.position, destination, speed * Time.deltaTime);
-			yield return null;
-		}
-		t.transform.position = destination;
-		t.GetComponent<Trooper> ().unselect ();
-		t.GetComponent<Trooper> ().resetDistance ();
-		ControlPoint cp = Game.getConrolPoint (CPID);
-		if (cp != null) {
-			cp.setTeam (team, id);
-		}
-		Debug.Log ("Captured!");
-		//t.GetComponent<Trooper> ().stop ();
 	}
 		
-	public IEnumerator moveToPosition(GameObject t, Vector3 destination, float speed)
-	{
-		t.GetComponent<Trooper>().moving = true;
-		Vector3 direction = (destination - t.transform.position).normalized;
-		Quaternion lookRotation = Quaternion.LookRotation (direction);
-		t.transform.rotation = lookRotation;
-		t.GetComponent<Trooper>().animator.SetInteger ("AnimPar", 1);
-		Vector3 currentPos = t.transform.position;
+	public void RaiseMovement(Vector3 point){
+		
+		Vector3 floor = toFloor (point);
+		float[] contents = new float[5];
+		contents [0] = (float)myPlayer.Selected.id;
+		if (Vector3.Distance (point, myPlayer.Selected.initialPosition) <= myPlayer.Selected.maxDistance) {
+			//if the click point is within the troops walking distance
+			contents [1] = point.x;
+			contents [2] = point.y;
+			contents [3] = point.z;
+		} else {
+			//find farthest point that troop can currently travel
+			Vector3 myPoint = ((point - initialPosition).normalized) * maxDistance;
+			contents [1] = initialPosition.x + myPoint.x;
+			contents [2] = initialPosition.y + myPoint.y;
+			contents [3] = initialPosition.z + myPoint.z;
+		}
+		RaiseEventOptions rf = RaiseEventOptions.Default;
+		rf.Receivers = ReceiverGroup.All;
+		PhotonNetwork.RaiseEvent ((byte)2, (object)contents, true, rf);
+		HudController._instance.AttackMode (false);	
+	}
 
-		while(Vector3.Distance(t.transform.position, destination) > 1f)
+	public Vector3 toFloor(Vector3 point){
+		return new Vector3 (point.x, Game._instance.floor, point.z);
+	}
+
+	public IEnumerator moveToPosition(Vector3 destination, float speed)
+	{
+		moving = true;
+		Vector3 direction = (destination - transform.position).normalized;
+		transform.rotation = Quaternion.LookRotation (direction);
+		animator.SetInteger ("AnimPar", 1);
+		while(Vector3.Distance(transform.position, destination) > 1f)
 		{
-			t.transform.position = Vector3.MoveTowards (t.transform.position, destination, speed * Time.deltaTime);
+			transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
 			yield return null;
 		}
-		t.transform.position = destination;
-		t.GetComponent<Trooper> ().stop ();
+		transform.position = destination;
+		stop ();
 	}
 
 	public void resetDistance(){
@@ -208,7 +161,7 @@ public class Trooper : MonoBehaviour {
 		yield return new WaitForSeconds (1f);
 		Vector3 p = gameObject.transform.position;
 		Vector3 startpos = new Vector3 (p.x, p.y + 5, p.z);
-		GameObject mybullet = Instantiate (bullet, startpos, Quaternion.identity);
+		GameObject mybullet = Instantiate (TroopController._instance.TroopObjects[0], startpos, Quaternion.identity);
 		Vector3 t = target.transform.position;
 		Vector3 finalPos = new Vector3 (t.x, t.y + 5, t.z);
 		Vector2 location = Camera.main.WorldToScreenPoint (new Vector3(p.x, p.y+7, p.z));
@@ -231,15 +184,13 @@ public class Trooper : MonoBehaviour {
 
 	public IEnumerator die(){
 		unselect ();
-		Vector3 pos = gameObject.transform.position;
-		Vector3 newPos = new Vector3 (pos.x, pos.y + 3f, pos.z);
 		animator.SetInteger ("AnimPar", 6);
 		yield return new WaitForSeconds (2f);
 		myPlayer.roster.Remove (this);
-		Game.allTroopers.Remove (this);
-		GameObject newDogTag = Instantiate (dogTag, newPos, Quaternion.identity);
-		Game.allDogTags.Add(newDogTag.GetComponent<DogTag>());
-		Hud.removeHealthBar (id);
+		Game._instance.allTroopers.Remove (this);
+		GameObject newDogTag = Instantiate (TroopController._instance.TroopObjects[4], transform.position + new Vector3 (0, 3f, 0), Quaternion.identity);
+		Game._instance.allDogTags.Add(newDogTag.GetComponent<DogTag>());
+		HudController._instance.removeHealthBar (id);
 		Destroy (gameObject);
 	}
 		
@@ -250,7 +201,7 @@ public class Trooper : MonoBehaviour {
 		float yoff = Random.Range (-4, 4);
 		float zoff = Random.Range (-4, 4);
 		Vector3 startpos = new Vector3 (p.x, p.y + 5, p.z);
-		GameObject mybullet = Instantiate (bullet, startpos, Quaternion.identity);
+		GameObject mybullet = Instantiate (TroopController._instance.TroopObjects[0], startpos, Quaternion.identity);
 		Vector3 t = target.transform.position;
 		Vector3 finalPos = new Vector3 (t.x+xoff, t.y+yoff + 5, t.z+zoff);
 		Vector2 location = Camera.main.WorldToScreenPoint (new Vector3(p.x, p.y+7, p.z));
@@ -277,7 +228,7 @@ public class Trooper : MonoBehaviour {
 		//animator.SetInteger ("AnimPar", 3);
 		Vector3 p = gameObject.transform.position;
 		Vector3 pos = new Vector3 (p.x, p.y + 3, p.z);
-		GameObject myGrenade = Instantiate (grenade, pos, Quaternion.identity); 
+		GameObject myGrenade = Instantiate (TroopController._instance.TroopObjects[1], pos, Quaternion.identity); 
 		Vector3 mid = midPoint (pos, position);
 		Vector3 midup = new Vector3 (mid.x, mid.y + 5, mid.z);
 		Vector3 fq = midPoint (pos, mid);
@@ -302,7 +253,7 @@ public class Trooper : MonoBehaviour {
 		}
 		yield return new WaitForSeconds (.5f);
 		hurtNearByEnemies (myGrenade.transform.position, 20f, 20f);
-		GameObject ex = GameObject.Instantiate (explosion, myGrenade.transform.position, Quaternion.identity);
+		GameObject ex = GameObject.Instantiate (TroopController._instance.TroopObjects[2], myGrenade.transform.position, Quaternion.identity);
 		Destroy (myGrenade);
 		yield return new WaitForSeconds (1f);
 		Destroy (ex);
@@ -310,11 +261,11 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void hurtNearByEnemies(Vector3 point, float distance, float damage){
-		Player myPlayer = Game.getPlayer (team);
-		List<Trooper> others = Game.notMyTroopers (myPlayer);
+		Player myPlayer = GameHandler._instance.getPlayer (team);
+		List<Trooper> others = Game._instance.notMyTroopers (myPlayer);
 		foreach(Trooper t in others){
 			if(Vector3.Distance(point, t.gameObject.transform.position) < distance){
-				Hud.showHealthBar (t.id);
+				HudController._instance.showHealthBar (t.id);
 				t.rotateTo (point);
 				t.naded ();
 				t.decreaseHealth (damage);
@@ -333,22 +284,16 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public Vector3 midPoint(Vector3 start, Vector3 finish){
-		Vector3 mp = new Vector3();
-		mp.x = (start.x + finish.x) / 2;
-		mp.y = (start.y + finish.y) / 2;
-		mp.z = (start.z + finish.z) / 2;
-		return mp;
+		return (start + finish) / 2;
 	}
 
 	public void decreaseHealth(float dec){
-		if (isInvulnerable == false) {
 			health -= dec;
 			if (health <= 0) {
 				StartCoroutine (die ());
 			} else {
 				Invoke ("stop", 1f);
 			}
-		}
 	}
 
 	public float distanceTo(Vector3 target){
@@ -359,44 +304,13 @@ public class Trooper : MonoBehaviour {
 		if (myPlayer.Selected != null) {
 			myPlayer.Selected.unselect ();
 		}
-		if (this.frozen == true) {
-			resetDistance ();
-		}
-			myPlayer.Selected = this;
-			GameObject limiter = Instantiate (moveLimit, initialPosition, Quaternion.identity);
-			limiter.transform.localScale = new Vector3 (2 * maxDistance, 1, 2 * maxDistance);
-			Material[] lim = new Material[1];
-			Material[] mats = new Material[1];
-			switch (team) {
-			case 1:
-				mats [0] = BlueTroopSelected;
-				lim [0] = BlueTroopLimit;
-				break;
-			case 2:
-				mats [0] = RedTroopSelected;
-				lim [0] = RedTroopLimit;
-				break;
-			case 3:
-				mats [0] = GreenTroopSelected;
-				lim [0] = GreenTroopLimit;
-				break;
-			case 4:
-				mats [0] = OrangeTroopSelected;
-				lim [0] = OrangeTroopLimit;
-				break;
-			default:
-				break;
-			}
+		myPlayer.Selected = this;
 		if (this.frozen == false) {
-			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
-			noAttackMode ();
+			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.SelectedMats[team];
+			HudController._instance.AttackMode (true);
 		}
-			limiter.GetComponent<MeshRenderer> ().materials = lim;
-			GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
-			foreach (GameObject g in itemButtons) {
-				g.GetComponent<Button> ().interactable = true;
-			}
-
+		ShowWalkLimit ();
+		HudController._instance.RefreshStore ();
 		}
 
 	public void rotateTo(Vector3 point){
@@ -404,27 +318,19 @@ public class Trooper : MonoBehaviour {
 		Quaternion lookRotation = Quaternion.LookRotation (direction);
 		gameObject.transform.rotation = lookRotation;
 	}
-
-	public void goAttackMode(){
-		if (frozen == false) {
-			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
-			GameObject.Find ("AttackText").GetComponent<Text> ().text = "CHOSE PLAYER";
-			GameObject.Find ("AttackText").GetComponent<Text> ().fontSize = 10;
-			myPlayer.showAllChances ();
-			myPlayer.attacking = true;
-		}
+		
+	public void ShowWalkLimit(){
+		GameObject limiter = Instantiate (TroopController._instance.TroopObjects[5], initialPosition, Quaternion.identity, transform);
+		limit = limiter;
+		limit.GetComponent<Projector> ().orthographicSize = maxDistance * 2;
+		limit.transform.SetParent (null);
+		limit.transform.rotation = Quaternion.Euler (90f, 0, 0);
 	}
 
-	public void noAttackMode(){
-		if (frozen == false) {
-			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = true;
-		} else {
-			GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
+	public void RemoveWalkLimit(){
+		if(limit!=null){
+			Destroy (limit.gameObject);
 		}
-		GameObject.Find ("AttackText").GetComponent<Text> ().text = "ATTACK";
-		GameObject.Find ("AttackText").GetComponent<Text> ().fontSize = 14;
-		myPlayer.removeChances ();
-		myPlayer.attacking = false;
 	}
 
 	public void goBack(){
@@ -438,103 +344,26 @@ public class Trooper : MonoBehaviour {
 			myPlayer.Selected = null;
 		}
 
-		GameObject limiter = GameObject.Find ("MoveLimit(Clone)");
-		if (limiter != null) {
-			Destroy (limiter);
-		}
-
-		GameObject[] itemButtons = GameObject.FindGameObjectsWithTag ("ItemButton");
-		foreach (GameObject g in itemButtons) {
-			g.GetComponent<Button> ().interactable = false;
-		}
-		noAttackMode ();
-		GameObject.Find ("AttackButton").GetComponent<Button> ().interactable = false;
-
-		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
-		switch (team) {
-		case 1:
-			mats [0] = BlueTroop;
-			break;
-		case 2:
-			mats [0] = RedTroop;
-			break;
-		case 3:
-			mats [0] = GreenTroop;
-			break;
-		case 4:
-			mats [0] = OrangeTroop;
-			break;
-		default:
-			break;
-		}
+		RemoveWalkLimit ();
+			
+		HudController._instance.AttackMode (false);
 		if (this.frozen == false) {
-			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
 		}
 	}
 
 	public void freeze(){
-		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
-		switch (team) {
-		case 1:
-			mats [0] = BlueTroopFrozen;
-			break;
-		case 2:
-			mats [0] = RedTroopFrozen;
-			break;
-		case 3:
-			mats [0] = GreenTroopFrozen;
-			break;
-		case 4:
-			mats [0] = OrangeTroopFrozen;
-			break;
-		default:
-			break;
-		}
-		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.FrozenMats[team];
 		frozen = true;
 	}
 
 	public void unFreeze(){
-		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
-		switch (team) {
-		case 1:
-			mats [0] = BlueTroop;
-			break;
-		case 2:
-			mats [0] = RedTroop;
-			break;
-		case 3:
-			mats [0] = GreenTroop;
-			break;
-		case 4:
-			mats [0] = OrangeTroop;
-			break;
-		default:
-			break;
-		}
-		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
 		frozen = false;
 	}
 
 	void assignColor(){
-		Material[] mats = transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials;
-		switch (team) {
-		case 1:
-			mats [0] = BlueTroop;
-			break;
-		case 2:
-			mats [0] = RedTroop;
-			break;
-		case 3:
-			mats [0] = GreenTroop;
-			break;
-		case 4:
-			mats [0] = OrangeTroop;
-			break;
-		default:
-			break;
-		}
-		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().materials = mats;
+		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
 	}
 
 }

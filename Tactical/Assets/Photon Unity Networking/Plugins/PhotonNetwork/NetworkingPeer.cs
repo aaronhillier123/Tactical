@@ -1856,7 +1856,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
                     if (operationResponse.ReturnCode == ErrorCode.NoRandomMatchFound)
                     {
                         if (PhotonNetwork.logLevel >= PhotonLogLevel.Full)
-                            Debug.Log("JoinRandom failed: No open game. Calling: OnPhotonRandomJoinFailed() and staying on master server.");
+                            Debug.Log("JoinRandom failed: No open Game._instance. Calling: OnPhotonRandomJoinFailed() and staying on master server.");
                     }
                     else if (PhotonNetwork.logLevel >= PhotonLogLevel.Informational)
                     {
@@ -4183,7 +4183,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
                 // Skip this packet as we haven't got received complete-copy of this view yet.
                 if (PhotonNetwork.logLevel >= PhotonLogLevel.Informational)
                 {
-                    Debug.Log("Skipping packet for " + view.name + " [" + view.viewID + "] as we haven't received a full packet for delta compression yet. This is OK if it happens for the first few frames after joining a game.");
+                    Debug.Log("Skipping packet for " + view.name + " [" + view.viewID + "] as we haven't received a full packet for delta compression yet. This is OK if it happens for the first few frames after joining a Game._instance.");
                 }
                 return;
             }

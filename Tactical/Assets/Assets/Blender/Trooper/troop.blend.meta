@@ -105,6 +105,8 @@ ModelImporter:
     7400012: Die
     7400014: Naded
     7400016: FlagPull
+    7400018: JumpBarrier
+    7400020: Cover
     9500000: //RootNode
     13700000: Trooper
   materials:
@@ -1079,6 +1081,242 @@ ModelImporter:
       takeName: LeftLowArmAction_002
       firstFrame: 386
       lastFrame: 403
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: Body/Stomach
+        weight: 1
+      - path: Body/Stomach/UpperTorso
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase/LMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase/LPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase/LPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase/LRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase/LThumbMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck/Head
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid/RMiddleTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase/RPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase/RPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid/RRingTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase/RThumbMid
+        weight: 1
+      - path: Body/UpLegLeft
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot/LeftToe
+        weight: 1
+      - path: Body/UpLegRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight/ToeRight
+        weight: 1
+      - path: Trooper
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: JumpBarrier
+      takeName: Default Take
+      firstFrame: 428
+      lastFrame: 458
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: Body/Stomach
+        weight: 1
+      - path: Body/Stomach/UpperTorso
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LMiddleBase/LMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPinkyBase/LPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LPointerBase/LPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LRingBase/LRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/LeftClav/LeftUpArm/LeftForearm/LeftHand/LThumbBase/LThumbMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck
+        weight: 1
+      - path: Body/Stomach/UpperTorso/Neck/Head
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RMiddleBase/RMiddleMid/RMiddleTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPinkyBase/RPinkyMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RPointerBase/RPointerMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RRingBase/RRingMid/RRingTip
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase
+        weight: 1
+      - path: Body/Stomach/UpperTorso/RightClav/UpArmRight/RightForearm/RightHand/RThumbBase/RThumbMid
+        weight: 1
+      - path: Body/UpLegLeft
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot
+        weight: 1
+      - path: Body/UpLegLeft/LowLeftLeg/LeftFoot/LeftToe
+        weight: 1
+      - path: Body/UpLegRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight
+        weight: 1
+      - path: Body/UpLegRight/LowRightLeg/FootRight/ToeRight
+        weight: 1
+      - path: Trooper
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cover
+      takeName: Default Take
+      firstFrame: 468
+      lastFrame: 478
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

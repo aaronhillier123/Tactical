@@ -34,7 +34,7 @@ Updated: Basic Demo Launcher.cs: removed Log Level setup, it's now done in the P
 Updated: Chat Demo ChatGui.cs: removed running in background setup, it's now done in the Photon settings.
 Fixed: NetworkingPeer.cs: Fixed Scene Object OwnerShip transfer on late Join. 
 Fixed: ColorPerPlayer.cs and ColorPerPlayerApply.cs for a more robust connection with PlayerRoomIndexing.cs instance.
-Fixed: Ownership handling when returning to a game.
+Fixed: Ownership handling when returning to a Game._instance.
 Updated: Setting the log levels via code will now override the logging settings ("Pun Logging" and "Network Logging") from the PhotonServerSettings config.
 Updated: Demo Hub scene to better highlight tutorial links versus links to online documentation.
 Updated: Link for PhotonAnimatorView trigger doc url.
@@ -222,7 +222,7 @@ Internal: Refactored RPCs and "Synchronization" updates to waste far less memory
 Internal: The PhotonStream now has 3 values pre-set. Those are needed in the stream to be sent along with your custom values. This doesn't change anything usage-wise. It also has a object[] which is used for readin values and a List<object> which is used when you write. This is leaner.
 Internal: PhotonView.ExecuteComponentOnSerialize() now makes better use of its cache Dictionary. It fetches cached methods with TryFetchValue(), instead of checking for content, then accessing it.
 Fixed: PhotonTransformView interpolation for "estimated speed". It was way too slow, because it didn't factor in that there are 10 updates per second. So speed as a value per second is 10 times higher. 10 being the default send rate here. Note that the object can overshoot (the actual position due to this and extrapolation).
-Fixed: PhotonTransformView interpolation for "estimated speed" now avoids jitter when joining a game. The initial received position simply defines where the object is (after being instantiated at the position of it's Instantiate message). With the next update, it can begin to move.
+Fixed: PhotonTransformView interpolation for "estimated speed" now avoids jitter when joining a Game._instance. The initial received position simply defines where the object is (after being instantiated at the position of it's Instantiate message). With the next update, it can begin to move.
 
 v1.65 (16. December 2015)
 Fixed: Potential NullReference Exception when transfering ownership. The PhotonView which gets transfered might get destroyed before the transfer is complete and that case is now handled.
@@ -452,7 +452,7 @@ v1.26.1 (11. August 2014)
 Fixed: Nullreference Exception on import (due to ServerSettings RPC List).
 
 v1.26 (11. August 2014)
-Added: Demo Pickup! Simple soltion for picking up items in a game. It also has Teams and Scores per player. Some of it is "work in progress" but it should give you a base to extend.
+Added: Demo Pickup! Simple soltion for picking up items in a Game._instance. It also has Teams and Scores per player. Some of it is "work in progress" but it should give you a base to extend.
 Changed: PUN now uses Photon's "Name Server". Per AppId and region, it returns the Master Server's address to use. This allows us to dynamically move games if we have to.
 Changed: Best Region selection. It should now be supported on all platforms that PUN runs on, too.
 Changed: NetworkingPeer.AvailableRegions is now a List<Region>. It can be populated when connected to the NameServer. When the list is available PUN can send pings to each server and find the best.
@@ -652,7 +652,7 @@ Changed: DisconnectCause to more explicit names. TimeoutDisconnect is now: Disco
 Added: Feature to override/set a Master Client manually. Default Master Client selection will trigger when a Master leaves and only this "default" selected Master Client can assign another one via SetMasterClient().
 Added: PunEvent.AssignMaster as internal event to override the current master client.
 Internal: Changed implementation of CheckMasterClient(). Should be a bit cleaner and leaner.
-Internal: Renamed PhotonNetworkMessages to PunEvent. This is usually only used by code in PUN's classes, not in your game.
+Internal: Renamed PhotonNetworkMessages to PunEvent. This is usually only used by code in PUN's classes, not in your Game._instance.
 Fixed: When a game uses Connect with a server-address, this is set as MasterServer address and after playing a game, the client will return to that server. This fixes the case when you don't use ConnectUsingSettings().
 Internal: GameVersion and PunVersion are combined for the (internal) virtual-app version string, they are now separated by underscore: '_'.
 Added: PhotonNetwork.ResentReliableCommands. It can be an indicator for bad connections and as such is helpful during issue analysis.
@@ -728,7 +728,7 @@ Renamed: PhotonNetSimSettingsGui class is now called PhotonLagSimulationGui. The
 Changed: Internal system to allocate viewIDs. The new system is much simpler and saves performance at runtime.
 Fixed: LevelPrefix for RPCs in ExecuteRpc() is now cast correctly.
 Fixed: PhotonNetwork.countOfPlayersOnMaster was returning PhotonNetwork.countOfPlayers instead just those on master server (looking for rooms/games).
-Fixed: PhotonNetwork.Destroy for anything owned by a player who already left. This affects you only if autoCleanup is disabled by your game.
+Fixed: PhotonNetwork.Destroy for anything owned by a player who already left. This affects you only if autoCleanup is disabled by your Game._instance.
 Fixed: OfflineMode for PhotonNetwork.Disconnect() now resets the state and calls events (leaving room, disconnect) as you know it by online mode.
 Changed: If you use OfflineMode, this now ends (!) when you call PhotonNetwork.Disconnect().
 Added: NetworkView groups are now using Photon's new Interest Group feature (new server SDK v3.2 and up required). This might save some bandwidth but might also lead to inconsistant states (when ignoring essential RPCs accidentally). Check out "Using Groups in PUN" topic in the PDF.
@@ -948,7 +948,7 @@ v1.4.1:
 Re-Submit same package to asset store.
 
 v1.4:
-Fixed: Caching of RPCs and Instantiates. This is a major fix, affecting all situations where players join a room where RPCs and Instantiations were done previously. This fix is "hidden" by the API, so no code changes are necessary in a game.
+Fixed: Caching of RPCs and Instantiates. This is a major fix, affecting all situations where players join a room where RPCs and Instantiations were done previously. This fix is "hidden" by the API, so no code changes are necessary in a Game._instance.
 Changed: The new cache is no longer cleaned by the server if someone leaves. The "MasterClient" will delete another user's RPCs and Instantiations, when someone leaves (unless auto cleanup is turned off).
 Changed: Internals of RPCs and Instantiates. Their events are streamlined and contain only data that's not a default value. This is incompatible with v1.3 clients.
 Fixed: Position and rotation synchronization is now done local to the object. This helps with positions relative to ancestor objects.

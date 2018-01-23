@@ -880,7 +880,7 @@ using ExitGames.Client.Photon;
         /// <summary>(32765) Game is full. This rarely happens when some player joined the room before your join completed.</summary>
         public const int GameFull = 0x7FFF - 2;
 
-        /// <summary>(32764) Game is closed and can't be joined. Join another game.</summary>
+        /// <summary>(32764) Game is closed and can't be joined. Join another Game._instance.</summary>
         public const int GameClosed = 0x7FFF - 3;
 
         [Obsolete("No longer used, cause random matchmaking is no longer a process.")]
@@ -1076,7 +1076,7 @@ using ExitGames.Client.Photon;
         [Obsolete("TCP routing was removed after becoming obsolete.")]
         public const byte AzureNodeInfo = 210;
 
-        /// <summary>(255) Event Join: someone joined the game. The new actorNumber is provided as well as the properties of that actor (if set in OpJoin).</summary>
+        /// <summary>(255) Event Join: someone joined the Game._instance. The new actorNumber is provided as well as the properties of that actor (if set in OpJoin).</summary>
         public const byte Join = (byte)255;
 
         /// <summary>(254) Event Leave: The player who left the game can be identified by the actorNumber.</summary>
@@ -1537,7 +1537,7 @@ using ExitGames.Client.Photon;
         /// <summary>Defines if this room can be joined at all.</summary>
         /// <remarks>
         /// If a room is closed, no player can join this. As example this makes sense when 3 of 4 possible players
-        /// start their gameplay early and don't want anyone to join during the game.
+        /// start their gameplay early and don't want anyone to join during the Game._instance.
         /// The room can still be listed in the lobby (set IsVisible to control lobby-visibility).
         /// </remarks>
         public bool IsOpen { get { return this.isOpenField; } set { this.isOpenField = value; } }

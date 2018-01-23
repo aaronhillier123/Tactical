@@ -351,7 +351,7 @@ namespace ExitGames.Client.Photon.Chat
         /// <summary>(32765) Game is full. This rarely happens when some player joined the room before your join completed.</summary>
         public const int GameFull = 0x7FFF - 2;
 
-        /// <summary>(32764) Game is closed and can't be joined. Join another game.</summary>
+        /// <summary>(32764) Game is closed and can't be joined. Join another Game._instance.</summary>
         public const int GameClosed = 0x7FFF - 3;
 
         /// <summary>(32762) Not in use currently.</summary>

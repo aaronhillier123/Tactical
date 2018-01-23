@@ -30,7 +30,7 @@ public class Chance : MonoBehaviour {
 
 	void showOnHead(){
 		try{
-			myTroopScript = Game.GetTroop (id);
+			myTroopScript = Game._instance.GetTroop (id);
 			myTroop = myTroopScript.gameObject;
 			troopPos = Camera.main.WorldToScreenPoint (myTroop.transform.position);
 			transform.position = new Vector2(troopPos.x, troopPos.y+50);

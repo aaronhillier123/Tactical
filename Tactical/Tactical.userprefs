@@ -1,13 +1,23 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Assets\Scripts\Game.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ProjectorShader.shader">
     <Files>
-      <File FileName="Assets\Assets\Scripts\Game.cs" Line="129" Column="138" />
-      <File FileName="Assets\Assets\Scripts\Player.cs" Line="138" Column="37" />
-      <File FileName="Assets\Assets\Scripts\Chance.cs" Line="65" Column="4" />
-      <File FileName="Assets\Assets\Scripts\EventHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\WaitForPlayers.cs" Line="15" Column="41" />
+      <File FileName="Assets\Assets\Scripts\Game.cs" Line="9" Column="17" />
+      <File FileName="Assets\Assets\Scripts\GameHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\Scripts\HudController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\Scripts\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\Scripts\BarrierPiece.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\Scripts\NaturalCover.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\Scripts\Hud.cs" Line="1" Column="1" />
+      <File FileName="Assets\GamePlayPanel.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\Scripts\StorePanel.cs" Line="1" Column="1" />
       <File FileName="Assets\Assets\Scripts\Trooper.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\Scripts\WaitForPlayers.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\Scripts\EventHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets\BarrierHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\Scripts\CameraPan.cs" Line="1" Column="1" />
+      <File FileName="Assets\Assets\CircleShader.shader" Line="1" Column="1" />
+      <File FileName="Assets\ProjectorShader.shader" Line="52" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

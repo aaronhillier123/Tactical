@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
-	// Static variables for game state
-	public static List<Player> GamePlayers = new List<Player>();
-	public GameObject PlayerObject;
-	public static GameObject Player1;
-	public static List<Trooper> allTroopers = new List<Trooper> ();
-	public static List<DogTag> allDogTags = new List<DogTag> ();
-	public static int playersTurn;
+	public static Game _instance;
+	public Player myPlayer;
+	public float floor = 49f;
+	//handles internal game events and lists
+
+
+	public List<Trooper> allTroopers = new List<Trooper> ();
+	public List<DogTag> allDogTags = new List<DogTag> ();
+
 
 	//for click and drag differential
 	private float firstTime;
@@ -21,157 +23,159 @@ public class Game : MonoBehaviour {
 	private bool dragOccuring = false;
 	private Vector3 previousMousePosition;
 
+	private bool barrierSelected = false;
+	private bool rotatingBarrier = false;
+	private BKnob selectedKnob;
+
+
+
 	void Start () {
-		Player1 = PlayerObject;
-		PhotonNetwork.OnEventCall += CreatePlayer;
-		PhotonNetwork.OnEventCall += Player.throwGrenade;
-		PhotonNetwork.OnEventCall += Player.attack;
-		PhotonNetwork.OnEventCall += Trooper.makeInvulnerable;
-		PhotonNetwork.OnEventCall += Trooper.move;
-		playersTurn = 1;
+		_instance = this;
+		PhotonNetwork.OnEventCall += GameHandler.CreatePlayer; //1
+		PhotonNetwork.OnEventCall += Trooper.move; //2
+		PhotonNetwork.OnEventCall += GameHandler.EndPlacements;//3
+		PhotonNetwork.OnEventCall += Player.attack; //4
+		PhotonNetwork.OnEventCall += GameHandler.changeTurn; //5
+		PhotonNetwork.OnEventCall += Player.throwGrenade; //6
+		PhotonNetwork.OnEventCall += Trooper.makeInvulnerable; //7
+		PhotonNetwork.OnEventCall += Trooper.makeNotInvulnerable;//8
+		PhotonNetwork.OnEventCall += Game.raiseBarrier; //15
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if(myPlayer==null){
+			try{
+				myPlayer = GameHandler._instance.getPlayer (PhotonNetwork.player.ID);
+			} catch{
+			}
+		}
 
+		OnDrag ();
+		//On Drag or Click
+		if (Input.GetMouseButtonDown (0)) {
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit hit;
+			if (Physics.Raycast (ray, out hit, 300)) {
+				if (hit.collider.CompareTag ("Barrier") && GameHandler._instance.getTurnNumber() == 0) {
+					if (hit.transform.parent.parent.gameObject.GetComponent<Barrier> ().team == PhotonNetwork.player.ID) {
+						myPlayer.barrierSelected = hit.collider.gameObject.GetComponent<BarrierPiece> ().myBarrier;
+						barrierSelected = true;
+					}
+				} else if (hit.collider.CompareTag ("Prelimb")) {
+					if (hit.transform.parent.parent.gameObject.GetComponent<Barrier>().team == PhotonNetwork.player.ID) {
+						selectedKnob = hit.transform.gameObject.GetComponent<BKnob> ();
+						selectedKnob.selected = true;
+						rotatingBarrier = true;
+					}
+				}
+					previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+					firstTime = Time.time;
+					mouseDown = true;
+				}
+			}
+
+			if (mouseDown == true) {
+				timeDiff = Time.time - firstTime;
+			}
+			if (timeDiff > 0f) {
+				if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject ()) {
+					dragOccuring = true;
+				}
+			}
+			if (Input.GetMouseButtonUp (0)) {
+				mouseDown = false;
+				dragOccuring = false;
+				barrierSelected = false;
+				rotatingBarrier = false;
+				if (selectedKnob != null) {
+					selectedKnob.selected = false;
+					selectedKnob = null;
+				}
+				if (myPlayer != null) {
+					myPlayer.barrierSelected = null;
+				}
+				if (timeDiff < .2f) {
+					OnClick ();
+				}
+				timeDiff = 0;
+			}
+		}
+
+
+	void OnDrag(){
 		if (dragOccuring == true) {
+			if (barrierSelected == false && rotatingBarrier == false) {
+				//drag camera/screen with mouse
 
-			//adjust camera from drag
-			//if (previousMousePosition == null) {
-			//	previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
-			//} else {
-				Vector3 camDifference = Camera.main.ScreenToViewportPoint(Input.mousePosition) - previousMousePosition;
+				Vector3 camDifference = Camera.main.ScreenToViewportPoint (Input.mousePosition) - previousMousePosition;
 				Camera.main.transform.parent.transform.Translate (camDifference.y * 30f, 0f, camDifference.x * -30f);
 				previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
-			//}
-		}
-
-		//decide if click or drag happens
-		if (Input.GetMouseButtonDown (0)) {
-			previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
-			firstTime = Time.time;
-			mouseDown = true;
-		}
-		if (mouseDown == true) {
-			timeDiff = Time.time - firstTime;
-		}
-		if (timeDiff > 0f) {
-			if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject ()) {
-				dragOccuring = true;
+			} else if (barrierSelected == false) {
+			} else {
+				//moving barrier on drag
+				if (myPlayer.barrierSelected.placed == false) {
+					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+					RaycastHit hit;
+					if (Physics.Raycast (ray, out hit, 300)) {
+						if (hit.collider.CompareTag ("Terrain")) {
+							//BarrierPiece myPiece = Game._instance.GetBarrierPiece (myPlayer.barrierSelected.id);
+							//myPiece.gameObject.transform.parent.parent.position = hit.point;
+							myPlayer.barrierSelected.Cylinder.gameObject.transform.position = hit.point;
+						}
+					}
+				}
 			}
-		}
-		if (Input.GetMouseButtonUp (0)) {
-			mouseDown = false;
-			dragOccuring = false;
-			if (timeDiff < .2f) {
-				OnClick ();
-			}
-			timeDiff = 0;
 		}
 	}
-
 	//if click happens
 	void OnClick (){
 		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject (-1)) {
 
 		} else { 
-			if (playersTurn == PhotonNetwork.player.ID) {
-				Player myPlayer = getPlayer (PhotonNetwork.player.ID);
-				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				RaycastHit hit;
-				if (Physics.Raycast (ray, out hit, 100)) {
-
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit hit;
+				if (Physics.Raycast (ray, out hit, 300)) {
+				if (myPlayer.isTurn ()) {
+					
 					//if player is clicked
 					if (hit.collider.CompareTag ("Player")) {
 						Trooper clickedOn = hit.collider.gameObject.GetComponent<Trooper> ();
-						if (PhotonNetwork.player.ID == clickedOn.team) {
+						if (myPlayer.team == clickedOn.team) {
+								
 							//if it is an ally trooper
 							myPlayer.selectTrooper (clickedOn);
 						} else {
+							//if it is an enemy player
 							if (myPlayer.Selected != null) {
-								//if it is an enemy player
+										
 								if (myPlayer.attacking == true) {
 									//if current player is attacking
+									myPlayer.RaiseAttack (clickedOn.id);
+						
+								} else if (myPlayer.Selected.hasGrenade) {
+									//if current player is not attacking and player is carrying a grenade
+									myPlayer.RaiseGrenade (hit.point);
 
-									myPlayer.attacking = false;
-									float[] targets = new float[3];
-									targets [0] = myPlayer.Selected.id;
-									targets [1] = clickedOn.id;
-									if (Game.GetTroop (myPlayer.Selected.id).isSniper == false) {
-										targets [2] = Random.Range (0, 100);
-									} else {
-										targets [2] = Random.Range (0, 200);
-									}
-									object target = (object)targets;
-									PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
-									myPlayer.removeChances ();
-									//myPlayer.Selected.noAttackMode ();
-								}
-							}else {
-								if (myPlayer.Selected != null) {
-									//if current player is not attacking
-									if (myPlayer.Selected.hasGrenade) {
-										//if player is carrying a grenade
-										myPlayer.Selected.resetDistance ();
-										float[] contents1 = new float[4];
-										contents1 [0] = (float)myPlayer.Selected.id;
-										contents1 [1] = hit.point.x;
-										contents1 [2] = hit.point.y;
-										contents1 [3] = hit.point.z;
-										object contents = (object)contents1;
-										PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
-									} else {
-										Hud.showHealthBar (clickedOn.id);
-									}
+								} else {
+									HudController._instance.showHealthBar (clickedOn.id);
 								}
 							}
 						}
-					} else if (hit.collider.CompareTag ("Terrain") || hit.collider.CompareTag("ControlPoint") || hit.collider.CompareTag("NaturalCover")) {
+							
+					} else if (hit.collider.CompareTag ("Terrain") || hit.collider.CompareTag ("ControlPoint") || hit.collider.CompareTag ("NaturalCover")) {
 						//if player clicked on terrain/ground
 						if (myPlayer.Selected != null) {
 							//if player is selected
 							if (myPlayer.Selected.hasGrenade) {
 								//if grenade is equipped
-								myPlayer.Selected.resetDistance();
-								float[] contents1 = new float[4];
-								contents1 [0] = (float)myPlayer.Selected.id;
-								contents1 [1] = hit.point.x;
-								contents1 [2] = hit.point.y;
-								contents1 [3] = hit.point.z;
-								object contents = (object)contents1;
-								PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
+								myPlayer.RaiseGrenade(hit.point);
 							} else {
 								//regular player movement
-
-								RaiseEventOptions ops = RaiseEventOptions.Default;
-								ops.Receivers = ReceiverGroup.All;
-								float[] contents1 = new float[5];
-								contents1 [0] = (float)myPlayer.Selected.id;
-								if (Vector3.Distance (hit.point, myPlayer.Selected.initialPosition) <= myPlayer.Selected.maxDistance) {
-									//if the click point is within the troops walking distance
-									contents1 [1] = hit.point.x;
-									contents1 [2] = hit.point.y;
-									contents1 [3] = hit.point.z;
-									if (hit.collider.CompareTag ("ControlPoint")) {
-										//if click is also a control point
-										contents1 [4] = (float) hit.collider.gameObject.transform.parent.gameObject.GetComponent<ControlPoint> ().id;
-									} else {
-										contents1 [4] = -1f;
-									}
-								} else {
-									//find farthest point that troop can currently travel
-									Trooper myTroop = GetTroop(myPlayer.Selected.id);
-									Vector3 myPoint = ((hit.point - myTroop.initialPosition).normalized) * myTroop.maxDistance;
-									contents1 [1] = myTroop.initialPosition.x + myPoint.x;
-									contents1 [2] = myTroop.initialPosition.y + myPoint.y;
-									contents1 [3] = myTroop.initialPosition.z + myPoint.z;
-									contents1 [4] = -1f;
-									}
-									object contents = (object)contents1;
-									PhotonNetwork.RaiseEvent ((byte)2, contents, true, ops);
-									myPlayer.Selected.noAttackMode ();
-								}
+								myPlayer.Selected.RaiseMovement (hit.point);
 							}
+						}
 					}
 				}
 			}
@@ -179,10 +183,11 @@ public class Game : MonoBehaviour {
 	}
 
 
+
 	//list of all troopers who are NOT a specifc player's
-	public static List<Trooper> notMyTroopers(Player p){
+	public List<Trooper> notMyTroopers(Player p){
 		List<Trooper> nmt = new List<Trooper> ();
-		foreach(Trooper t in allTroopers){
+		foreach(Trooper t in Game._instance.allTroopers){
 			if(t.team != p.team){
 				nmt.Add(t);
 			}
@@ -190,70 +195,94 @@ public class Game : MonoBehaviour {
 		return nmt;
 	}
 		
-			
-			
-	//create and initialize a global player
-	public static void CreatePlayer(byte id, object content, int senderID){
-		if (id == 1) {
-			Vector3 pos = new Vector3 (0, 0, senderID * 50);
-			GameObject newPlayerObject = Instantiate (Player1, pos, Quaternion.identity) as GameObject;
-			Player newPlayer = newPlayerObject.GetComponent<Player> ();
-			newPlayer.team = senderID;
-			GamePlayers.Add (newPlayer);
-			GameObject[] spawns = GameObject.FindGameObjectsWithTag ("Respawn");
-			SpawnArea mySpawn = new SpawnArea ();
-			foreach (GameObject g in spawns) {
-				if (g.GetComponent<SpawnArea> ().team == newPlayer.team) {
-					mySpawn = g.GetComponent<SpawnArea>();
-				}
-			}
-
-			for (int i = 0; i < Player.numberOfTroops; ++i) {
-				Debug.Log("creating troop number " + i + " for team " + senderID);
-				Vector3 newPos = mySpawn.spawnPoints [i];
-				newPlayer.CreateTroopAt (newPos, senderID, ((senderID-1) * Player.numberOfTroops) + i);
-			}
-
-		}
-	}
-
-	//End current turn and go to next player
-	public void changeTurn(){
-		Debug.Log ("Changing turn");
-		if (playersTurn < 4) {
-			playersTurn++;
-		} else {
-			playersTurn = 0;
-		}
-	}
-
-	public static ControlPoint getConrolPoint(int idd){
+	public ControlPoint getConrolPoint(int idd){
 		ControlPoint[] allObs = GameObject.FindObjectsOfType (typeof(ControlPoint)) as ControlPoint[];
 		foreach(ControlPoint g in allObs){
 			if(g.id == idd){
-				Debug.Log ("reutnring control point " + g.id);
 				return g;
 			}
 		}
-		Debug.Log("returning null because size is" + allObs.Length);
 		return null;
 	}
 
+	public void BeginGame(){
+		Game._instance.SendBarriersToNetwork ();
+		BarrierHandler._instance.RemoveAllPrelimbs ();
+		Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
+		Vector3 newPos = Camera.main.transform.position;
+
+		Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);
+		GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
+		HudController._instance.GameHud.nextTroopPan ();
+
+		HudController._instance.BeginGame ();
+	}
+
+	public void StartTurn(){
+		foreach (Trooper t in Game._instance.myPlayer.roster) {
+			t.initialPosition = t.transform.position;
+			t.maxDistance = 50f;
+		}
+		HudController._instance.StartTurn ();
+		myPlayer.setTurn (true);
+	}
+
+	public void EndTurn(){
+		foreach (Trooper t in Game._instance.myPlayer.roster) {
+			t.unselect ();
+		}
+
+		HudController._instance.EndTurn ();
+		myPlayer.setTurn (false);
+	}
+
+
+	public void SendBarriersToNetwork(){
+		foreach (Barrier b in BarrierHandler._instance.allBarriers) {
+			GameObject g = b.gameObject;
+			if (b.team == Game._instance.myPlayer.team) {
+				float[] info = new float[11];
+				info [0] = b.type;
+				info [1] = b.team;
+				info [2] = g.transform.position.x;
+				info [3] = g.transform.position.y;
+				info [4] = g.transform.position.z;
+				info [5] = b.Cylinder.transform.position.x;
+				info [6] = b.Cylinder.transform.position.y;
+				info [7] = b.Cylinder.transform.position.z;
+				info [8] = b.Cylinder.transform.rotation.eulerAngles.x;
+				info [9] = b.Cylinder.transform.rotation.eulerAngles.y;
+				info [10] = b.Cylinder.transform.rotation.eulerAngles.z;
+				RaiseEventOptions rf = RaiseEventOptions.Default;
+				rf.Receivers = ReceiverGroup.Others;
+				PhotonNetwork.RaiseEvent (15, (object)info, true, rf);
+			}
+		}
+	}
+
+
+
+	public static void raiseBarrier(byte id, object content, int senderID){
+		if (id == 15) {
+			Debug.Log ("Raising a barrier");
+			//if (PhotonNetwork.player.ID != senderID) {
+				float[] info = (float[])content;
+				Vector3 location = new Vector3 (info [2], info [3], info [4]);
+				Vector3 Cylinderlocation = new Vector3 (info [5], info [6], info [7]);
+				Quaternion angles = Quaternion.Euler (info [8], info [9], info [10]);
+				int btype = (int)info [0];
+				int bteam = (int)info [1];
+				Player myPlayer = GameHandler._instance.getPlayer (PhotonNetwork.player.ID);
+				BarrierHandler._instance.CreateBarrier (btype, location, Cylinderlocation, angles, bteam);
+			//}
+		}
+	}
+		
 	//Return trooper based on ID
-	public static Trooper GetTroop(int id){
+	public Trooper GetTroop(int id){
 		foreach (Trooper t in allTroopers){
 			if(t.id == id){
 				return t;
-			}
-		}
-		return null;
-	}
-
-	//Return player based on ID
-	public static Player getPlayer(int id){
-		foreach (Player p in GamePlayers) {
-			if (p.team == id) {
-				return p;
 			}
 		}
 		return null;

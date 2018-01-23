@@ -27,4 +27,11 @@ public class CameraZoom : MonoBehaviour {
 			gameObject.transform.Translate(0f, 0f, .8f);
 		}
 	}
+
+	public void resetZoom(){
+		deltaWheel = 0;
+		currentZoom = gameObject.transform.position.y;
+		originalZoom = gameObject.transform.position.y;
+		maxZoom = 20;
+	}
 }

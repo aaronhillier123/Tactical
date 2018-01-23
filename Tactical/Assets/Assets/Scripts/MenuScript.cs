@@ -11,11 +11,9 @@ public class MenuScript : MonoBehaviour {
 
 	}
 
-	void OnGUI(){
-		if(GUI.Button(new Rect(Screen.width / 2 - 50, 5, 200, 30), "Create or Join Game"))
-		{
+	public void CreateGame(){
+		
 			PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
-		}
 	}
 
 

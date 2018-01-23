@@ -23,7 +23,7 @@ public class ControlPoint : MonoBehaviour {
 	}
 
 	public void setTeam(int a, int b){
-		Trooper myTroop = Game.GetTroop (b);
+		Trooper myTroop = Game._instance.GetTroop (b);
 		if (team != a) {
 			myTroop.myPlayer.addControlPoint (this);
 			myTroop.myPlayer.dogtags += 2;
@@ -67,7 +67,7 @@ public class ControlPoint : MonoBehaviour {
 			yield return null;
 		}
 		myFlag.transform.position = og;
-		Trooper myTroop = Game.GetTroop (troopid);
+		Trooper myTroop = Game._instance.GetTroop (troopid);
 		myTroop.stop ();
 	}
 }

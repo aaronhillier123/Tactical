@@ -1,5 +1,5 @@
 
-Importing the CrossPlatformInput package adds a menu item to Unity, "CrossPlatformInput", which allows you to enable or disable the CrossPlatformInput in the editor. You must enable the CrossPlatformInput in order to see the control rigs in the editor, and to start using Unity Remote to control your game.
+Importing the CrossPlatformInput package adds a menu item to Unity, "CrossPlatformInput", which allows you to enable or disable the CrossPlatformInput in the editor. You must enable the CrossPlatformInput in order to see the control rigs in the editor, and to start using Unity Remote to control your Game._instance.
 
 The CrossPlatformInput sample assets contains two main sections. 
 

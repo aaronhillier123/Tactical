@@ -11,8 +11,7 @@ public class WaitForPlayers : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (PhotonNetwork.room.PlayerCount);
-		if (PhotonNetwork.room.PlayerCount > 1) {
+		if (PhotonNetwork.room.PlayerCount > 0) {
 			SceneManager.LoadScene ("GameScene");
 		}
 	}

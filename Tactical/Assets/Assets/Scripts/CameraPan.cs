@@ -6,7 +6,16 @@ public class CameraPan : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		GameObject[] spawns = GameObject.FindGameObjectsWithTag ("Respawn");
+		foreach (GameObject g in spawns) {
+			if (g.GetComponent<SpawnArea> ().team == PhotonNetwork.player.ID) {
+				float x = g.transform.position.x;
+				float y = transform.position.y;
+				float z = g.transform.position.z;
+				transform.position = new Vector3 (x, y, z);
+			}
+		}
+
 	}
 	
 	// Update is called once per frame
@@ -32,7 +41,7 @@ public class CameraPan : MonoBehaviour {
 
 	public void moveToPlayer(Trooper t){
 		Vector3 troopPos = t.gameObject.transform.position;
-		Vector3 newPos = new Vector3 (troopPos.x - 8, gameObject.transform.position.y, troopPos.z-10);
+		Vector3 newPos = new Vector3 (troopPos.x - 8, gameObject.transform.position.y, troopPos.z + 5);
 		StartCoroutine (moveTo (newPos));
 	}
 

@@ -17,12 +17,12 @@ public class NaturalCover : MonoBehaviour {
 	void OnCollisionEnter(Collision coll){
 		Trooper myTroop = coll.gameObject.GetComponent<Trooper> ();
 		if (myTroop != null) {
-			Debug.Log ("Collision");
+
 			myTroop.StopAllCoroutines ();
 			myTroop.goBack ();
 			myTroop.stop ();
 		} else {
-			Debug.Log ("NO COLLISION");
+
 		}
 
 	}

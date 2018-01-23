@@ -20,7 +20,7 @@ public class DogTag : MonoBehaviour {
 		if (myTroop != null) {
 			myTroop.myPlayer.dogtags++;
 			Hud.updateDogTags (myTroop.myPlayer.dogtags);
-			Game.allDogTags.Remove (this);
+			Game._instance.allDogTags.Remove (this);
 			Destroy (gameObject);
 		}
 	}

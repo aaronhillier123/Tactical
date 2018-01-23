@@ -57,7 +57,7 @@ Server
 	Alternatively, download the Server SDK and run your own Photon Server.
 	The SDK has the binaries to run immediately but also includes the source code and projects
 	for the game logic. You can use that as basis to modify and extend it.
-	A 100 concurrent user license is free (also for commercial use) per game.
+	A 100 concurrent user license is free (also for commercial use) per Game._instance.
 	Read more about it: http://www.photonengine.com/en/OnPremise
 
 

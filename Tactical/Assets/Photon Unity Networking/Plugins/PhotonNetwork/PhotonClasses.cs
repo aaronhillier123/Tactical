@@ -69,7 +69,7 @@ public interface IPunObservable
 /// This interface is used as definition of all callback methods of PUN, except OnPhotonSerializeView. Preferably, implement them individually.
 /// </summary>
 /// <remarks>
-/// This interface is available for completeness, more than for actually implementing it in a game.
+/// This interface is available for completeness, more than for actually implementing it in a Game._instance.
 /// You can implement each method individually in any MonoMehaviour, without implementing IPunCallbacks.
 ///
 /// PUN calls all callbacks by name. Don't use implement callbacks with fully qualified name.
