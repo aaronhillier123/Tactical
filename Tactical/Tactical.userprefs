@@ -1,23 +1,21 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ProjectorShader.shader">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Assets\Scripts\Trooper.cs">
     <Files>
-      <File FileName="Assets\Assets\Scripts\Game.cs" Line="9" Column="17" />
-      <File FileName="Assets\Assets\Scripts\GameHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\HudController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\Player.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\BarrierPiece.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\NaturalCover.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\Hud.cs" Line="1" Column="1" />
-      <File FileName="Assets\GamePlayPanel.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\StorePanel.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\Trooper.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\WaitForPlayers.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\EventHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets\BarrierHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\Scripts\CameraPan.cs" Line="1" Column="1" />
-      <File FileName="Assets\Assets\CircleShader.shader" Line="1" Column="1" />
-      <File FileName="Assets\ProjectorShader.shader" Line="52" Column="2" />
+      <File FileName="Assets\Assets\Scripts\Game.cs" Line="157" Column="43" />
+      <File FileName="Assets\Assets\Scripts\GameHandler.cs" Line="75" Column="5" />
+      <File FileName="Assets\Assets\Scripts\Player.cs" Line="110" Column="72" />
+      <File FileName="Assets\Assets\Scripts\Trooper.cs" Line="85" Column="3" />
+      <File FileName="Assets\Assets\Scripts\WaitForPlayers.cs" Line="14" Column="41" />
+      <File FileName="Assets\Assets\Scripts\StorePanel.cs" Line="22" Column="82" />
+      <File FileName="Assets\Assets\Scripts\Chance.cs" Line="28" Column="3" />
+      <File FileName="Assets\Assets\Scripts\HealthBar.cs" Line="40" Column="72" />
+      <File FileName="Assets\Assets\Scripts\Bullet.cs" Line="28" Column="5" />
+      <File FileName="Assets\Assets\Scripts\SpawnArea.cs" Line="10" Column="1" />
+      <File FileName="Assets\Assets\Scripts\DogTag.cs" Line="25" Column="4" />
+      <File FileName="Assets\Assets\Scripts\HudController.cs" Line="68" Column="22" />
+      <File FileName="Assets\Assets\Scripts\HitMiss.cs" Line="7" Column="24" />
+      <File FileName="Assets\Assets\Scripts\Hud.cs" Line="48" Column="8" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

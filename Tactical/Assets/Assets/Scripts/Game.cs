@@ -152,7 +152,7 @@ public class Game : MonoBehaviour {
 										
 								if (myPlayer.attacking == true) {
 									//if current player is attacking
-									myPlayer.RaiseAttack (clickedOn.id);
+									myPlayer.RaiseAttack (clickedOn);
 						
 								} else if (myPlayer.Selected.hasGrenade) {
 									//if current player is not attacking and player is carrying a grenade
@@ -220,8 +220,7 @@ public class Game : MonoBehaviour {
 
 	public void StartTurn(){
 		foreach (Trooper t in Game._instance.myPlayer.roster) {
-			t.initialPosition = t.transform.position;
-			t.maxDistance = 50f;
+			t.reset ();
 		}
 		HudController._instance.StartTurn ();
 		myPlayer.setTurn (true);
@@ -235,7 +234,13 @@ public class Game : MonoBehaviour {
 		HudController._instance.EndTurn ();
 		myPlayer.setTurn (false);
 	}
-
+		
+	public void giveAbility(int ability){
+		if (myPlayer.Selected != null) {
+			myPlayer.Selected.giveAbility (ability);
+		}
+		HudController._instance.GameHud.Store.removeInfoPanel ();
+	}
 
 	public void SendBarriersToNetwork(){
 		foreach (Barrier b in BarrierHandler._instance.allBarriers) {
@@ -259,8 +264,6 @@ public class Game : MonoBehaviour {
 			}
 		}
 	}
-
-
 
 	public static void raiseBarrier(byte id, object content, int senderID){
 		if (id == 15) {

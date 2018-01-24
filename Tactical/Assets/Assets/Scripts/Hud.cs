@@ -27,13 +27,21 @@ public class Hud : MonoBehaviour {
 		
 	}
 
+	public void showInfoPanel(int item){
+		Store.ShowInfoPanel(item);
+	}
+
+	public void removeInfoPanel(){
+		Store.removeInfoPanel ();
+	}
+
 	public void StartTurn(){
 		AttackMode (false);
 		GamePlay.NextTurn.interactable = true;
 	}
 
 	public void EndTurn(){
-		AttackMode (true);
+		AttackMode (false);
 		GamePlay.NextTurn.interactable = false;
 	}
 
@@ -41,12 +49,29 @@ public class Hud : MonoBehaviour {
 		Store.refresh ();
 	}
 
-	public void AttackMode(bool attack){
+	public void CanAttack(bool attack){
 		if (attack == true) {
 			GamePlay.Attack.interactable = true;
 		} else {
 			GamePlay.Attack.interactable = false;
+			GamePlay.Attack.image.color = new Color(255f / 255f, 163f/255f, 36f/255f, 255f/255f);
 		}
+
+	}
+
+	public void AttackMode(bool attack){
+		if (attack == true) {
+			HudController._instance.showAllChances ();
+			GamePlay.Attack.image.color = Color.green;
+			GamePlay.Attack.interactable = false;
+		} else {
+			HudController._instance.removeChances ();
+			GamePlay.Attack.image.color = new Color(255f / 255f, 163f/255f, 36f/255f, 255f/255f);
+		}
+	}
+
+	public void Retract(){
+		Store.Retract ();
 	}
 
 	public static void updateDogTags(int amount){

@@ -24,7 +24,6 @@ public class Chance : MonoBehaviour {
 		if (target!=null) {
 			showOnHead ();
 			} else {
-			Debug.Log ("No id yet");
 		}
 	}
 

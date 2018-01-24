@@ -56,7 +56,6 @@ public class GameHandler : MonoBehaviour {
 
 
 	public void RaiseTurnChange(){
-		Debug.Log ("RASING EVENT");
 		RaiseEventOptions rf = RaiseEventOptions.Default;
 		rf.Receivers = ReceiverGroup.All;
 		PhotonNetwork.RaiseEvent(5, null, true, rf);
@@ -71,9 +70,7 @@ public class GameHandler : MonoBehaviour {
 	//End current turn and start turn for next player
 	public static void changeTurn(byte Newid, object content, int SenderID){
 		if (Newid == 5) {
-			Debug.Log ("CHANGING TURN NOW");
 			if (GameHandler._instance.playersTurn == PhotonNetwork.player.ID) {
-				Debug.Log ("ENDING TURN because PhotonID and turn is " + GameHandler._instance.playersTurn + " and " + PhotonNetwork.player.ID);
 				Game._instance.EndTurn ();
 			}
 
@@ -86,7 +83,6 @@ public class GameHandler : MonoBehaviour {
 			}
 
 			if (GameHandler._instance.playersTurn == PhotonNetwork.player.ID) {
-				Debug.Log ("Starting TURN because PhotonID and turn is " + GameHandler._instance.playersTurn + " and " + PhotonNetwork.player.ID);
 				Game._instance.StartTurn ();
 			}
 		}
@@ -105,12 +101,10 @@ public class GameHandler : MonoBehaviour {
 			int notReady = 0;
 			foreach (Player p in GameHandler._instance.GamePlayers) {
 				if (p.ready == false) {
-					Debug.Log ("Player " + p.team + "is not ready");
 					notReady++;
 				}
 			}
 			if (notReady == 0 && SenderID == PhotonNetwork.player.ID) {
-				Debug.Log ("PLACEMENTS ARE OVER");
 				GameHandler._instance.RaiseTurnChange ();
 			}
 		}

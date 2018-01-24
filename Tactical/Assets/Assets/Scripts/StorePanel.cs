@@ -10,11 +10,21 @@ public class StorePanel : MonoBehaviour {
 	public List<GameObject> InfoPanels = new List<GameObject> ();
 	public GameObject CurrentInfoPanel;
 	public Button retract;
-	public static bool retracted = true;
+	public static bool retracted = false;
 
 	// Use this for initialization
 	void Start () {
 		
+	}
+
+	public void ShowInfoPanel(int item){
+		CurrentInfoPanel = InfoPanels [item];
+		CurrentInfoPanel.transform.SetParent (HudController._instance.GameHud.transform);
+		CurrentInfoPanel.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+	}
+
+	public void removeInfoPanel(){
+		CurrentInfoPanel.transform.SetParent (null);
 	}
 
 	public void refresh(){
@@ -36,7 +46,7 @@ public class StorePanel : MonoBehaviour {
 	{
 		
 		if (retracted == false) {
-			retract.GetComponent<Text> ().text = ">";
+			retract.GetComponentInChildren<Text> ().text = ">";
 			transform.Translate (-1 * Screen.width/5, 0f, 0f);
 			retracted = true;
 		} else {
@@ -46,14 +56,6 @@ public class StorePanel : MonoBehaviour {
 		}
 	}
 
-	public void CreateInfoPanel(int InfoID){
-		CurrentInfoPanel = Instantiate (InfoPanels [InfoID]) as GameObject;
-	}
-
-	public void RemoveInfoPanel(){
-		Destroy (CurrentInfoPanel);
-		CurrentInfoPanel = null;
-	}
 
 
 

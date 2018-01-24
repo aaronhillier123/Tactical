@@ -10,7 +10,7 @@ public class HudController : MonoBehaviour {
 
 	public GameObject HealthObject;
 	public GameObject ChanceObject;
-
+	public GameObject HitOrMissObject;
 
 
 	public GameObject GameHudObject;
@@ -32,12 +32,29 @@ public class HudController : MonoBehaviour {
 		StartHud = StartHudObject.GetComponent<StartHud> ();
 	}
 
+	public void showInfoPanel(int item){
+		GameHud.showInfoPanel (item);
+	}
+
+	public void removeInfoPanel(){
+		GameHud.removeInfoPanel ();
+	}
 
 	public void AttackMode(bool attack){
 		if(GameHud.GetComponent<Hud>() != null){
 			myPlayer.attacking = attack;
 			GameHud.AttackMode(attack);
 		}
+	}
+
+	public void CanAttack(bool attack){
+		if(GameHud.GetComponent<Hud>() != null){
+			GameHud.CanAttack (attack);
+		}
+	}
+
+	public void Retract(){
+		GameHud.Retract ();
 	}
 
 	public void StartTurn(){
@@ -157,5 +174,13 @@ public class HudController : MonoBehaviour {
 		foreach (Chance c in all) {
 			Destroy (c.gameObject);
 		}
+	}
+
+	public void HitOrMiss(Vector3 pos, int hit){
+		Vector2 UIpos = Camera.main.WorldToScreenPoint (pos);
+		GameObject Hit = Instantiate (HitOrMissObject, UIpos, Quaternion.identity) as GameObject;
+		Hit.transform.SetParent (canvas.transform, true);
+		Hit.GetComponent<HitMiss> ().hitmis = hit;
+
 	}
 }

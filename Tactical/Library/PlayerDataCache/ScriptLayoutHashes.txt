@@ -20,6 +20,7 @@ b027659a510ae8d01d6d5f31baf9827a Assembly-CSharp.dll:.PhotonStatsGui
 7ba1e84ad3d2d8813486668e75f842ce Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.ParticleSystemMultiplier
 fc7c721b9da7b629fb82d772c21696de Assembly-CSharp.dll:.BKnob
 430c1729d7a445aa5df470ced463fca9 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.ExplosionPhysicsForce
+1f083a64da881f760c569a8e4fd3983e Assembly-CSharp.dll:.SelectableUnitComponent
 1d777c8b933c9e3b37fcd9a3587e6e49 Assembly-CSharp.dll:.MenuScript
 7053d3582d4243b90c04eed2ebd7b373 Assembly-CSharp.dll:.Chance
 6fce0feadba7642a361e87ebfcfe753e Assembly-CSharp.dll:.PhotonAnimatorView
@@ -150,7 +151,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 78ebae5ed9b3edeb216da437b99754a4 Assembly-CSharp-firstpass.dll:UnityStandardAssets.CrossPlatformInput.Joystick
 149e538468c9a609cf26b23682c996c7 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.PlatformSpecificContent
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.WaitForPlayers
-6d035bde1db407c00f6035937bb25512 Assembly-CSharp.dll:.HudController
+119017929809ce2f03f9d7a7c47e0d5b Assembly-CSharp.dll:.HudController
 4df86f437a61b08c14fd0adff88ddf71 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.ActivateTrigger
 a2efb0db652b8114d1ae7dd9a600d626 Assembly-CSharp-firstpass.dll:UnityStandardAssets.CrossPlatformInput.InputAxisScrollbar
 fe76270bd84ec3b6f2f6f92c69cf69da Assembly-CSharp-firstpass.dll:UnityStandardAssets.CrossPlatformInput.AxisTouchButton
@@ -164,7 +165,7 @@ a90e94673f50d2237c1b971c138660c6 Assembly-CSharp-firstpass.dll:UnityStandardAsse
 090584907af2e462994cc893ced507b3 Assembly-CSharp.dll:.PhotonRigidbodyView
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.ForcedReset
 57fde8e76fc7bce23deb0e799d336be7 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.SmoothFollow
-0adb664eed0e90261a03f22875f63dde Assembly-CSharp.dll:.HitMiss
+88a3b8916e91367bf09431a8dd4a01c6 Assembly-CSharp.dll:.HitMiss
 cfa93710d56cd4da2a3b2eec27bc1139 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Water.PlanarReflection
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UnityStandardAssets.Water.Displace
 ada54cb428213a7e0c4b986e95788f97 Assembly-CSharp.dll:.PhotonTransformView
@@ -173,7 +174,7 @@ ada54cb428213a7e0c4b986e95788f97 Assembly-CSharp.dll:.PhotonTransformView
 c0ad1fb5d400aa83cb257e5f6c3714cf Assembly-CSharp.dll:.OnClickDestroy
 e97ff9540a49b92b779792c195839d33 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.AfterburnerPhysicsForce
 89b5fa39370f0364ff3d43d99c44f347 Assembly-CSharp.dll:.ControlPoint
-1b120367f614b4902e7e7545855924ad Assembly-CSharp.dll:.Trooper
+d06346b642316ed82d0712bedf311176 Assembly-CSharp.dll:.Trooper
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UnityStandardAssets.Water.WaterBasic
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.FireLight
 30c6237931168f8b4c2f10a656a47aa8 Assembly-CSharp.dll:.PickupItem
@@ -243,4 +244,4 @@ b48cdf3417500d250817f0261a88fa67 Assembly-CSharp.dll:.GamePlayPanel
 b2dc25029b6f083ffbbdf9df269f825a Assembly-CSharp.dll:.InRoomChat
 02a9e43a42baecbaa9b2d58679b5b2d9 Assembly-CSharp.dll:.StorePanel
 0f3d4bb7128a287827d041c696039525 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.AutoMobileShaderSwitch
-1f083a64da881f760c569a8e4fd3983e Assembly-CSharp.dll:.SelectableUnitComponent
+c47de83fe59202a812209c8c29499812 Assembly-CSharp.dll:.Bullet

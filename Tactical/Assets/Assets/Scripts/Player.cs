@@ -66,99 +66,55 @@ public class Player : MonoBehaviour {
 	public void addControlPoint(ControlPoint cp){
 		myControlPoints.Add(cp);
 	}
-
-
-
-	public void RaiseAttack(int EnemyId){
-
+		
+	public void RaiseAttack(Trooper EnemyTroop){
 		attacking = false;
+		Selected.freeze ();
 		HudController._instance.removeChances ();
+
+		float distance = Vector3.Distance (Selected.transform.position, EnemyTroop.transform.position);
+		float hit = (Random.Range (0, Selected.range) - distance) > 0 ? 1 : 0;
+		Vector3 enemypos = EnemyTroop.transform.position + new Vector3(0f, 3f, 0f);
+
 		float[] targets = new float[3];
 		targets [0] = Selected.id;
-		targets [1] = EnemyId;
-		if (Game._instance.GetTroop (Selected.id).isSniper == false) {
-			targets [2] = Random.Range (0, 100);
-		} else {
-			targets [2] = Random.Range (0, 200);
-		}
+		targets [1] = EnemyTroop.id;
+		targets [2] = hit;
+		Selected.DidSomething ();
 		object target = (object)targets;
 		PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
-
 	}
+
 	//network attack function
 	public static void attack(byte id, object content, int senderID){
 		if (id == 4) {
 			//unpack objects for attacker and target
-
 			float[] contents = (float[])content;
 			Trooper myTroop = Game._instance.GetTroop ((int)contents [0]);
-			Trooper enemy = Game._instance.GetTroop ((int)contents [1]);
-			myTroop.isSniper = false;
-
-			RaycastHit hit;
-			Vector3 enemypos = enemy.gameObject.transform.position;
-			Vector3 mypos = myTroop.gameObject.transform.position;
-			Vector3 enemyhip = new Vector3 (enemypos.x, enemypos.y + 3, enemypos.z);
-			Vector3 myhip = new Vector3 (mypos.x, mypos.y + 3, mypos.z);
-			Vector3 dir = (enemyhip - myhip);
-			if (Physics.Raycast (myhip, dir, out hit, 200f)) {
-				
-				if (hit.collider.CompareTag ("NaturalCover")) {
-					myTroop.rotateTo (enemy.gameObject.transform.position);
-					myTroop.animator.SetInteger ("AnimPar", 2);
-					myTroop.miss (enemy.gameObject);
-				} else {
-					//find distance and see if attack is a hit
-					float distance = Vector3.Distance (myTroop.gameObject.transform.position, enemy.gameObject.transform.position);
-					float random = contents [2];
-					myTroop.rotateTo (enemy.gameObject.transform.position);
-					myTroop.animator.SetInteger ("AnimPar", 2);
-					if (random - distance > 0) {
-						myTroop.shoot (enemy.gameObject);
-					} else {
-						myTroop.miss (enemy.gameObject);
-					}
-				}
-					myTroop.Invoke ("stop", 1f);
-
-					myTroop.unselect ();
-					myTroop.freeze ();
-					HudController._instance.AttackMode (false);
-				}
+			Trooper Enemy = Game._instance.GetTroop ((int)contents [1]);
+			int hit = (int)contents [2];
+			myTroop.shoot (Enemy, hit);
 			}
 		}
 
 
 	public void RaiseGrenade(Vector3 point){
 
-		Selected.resetDistance ();
-		float[] contents1 = new float[4];
-		contents1 [0] = (float)Selected.id;
-		contents1 [1] = point.x;
-		contents1 [2] = point.y;
-		contents1 [3] = point.z;
-		object contents = (object)contents1;
+		float[] contentsFloat = new float[] {(float)Selected.id, point.x, point.y, point.z};
+		object contents = (object)contentsFloat;
+		Selected.DidSomething ();
 		PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
 	}
+
 	//network grenade function
 	public static void throwGrenade(byte id, object content, int senderID){
 		if (id == 6) {
 			float[] conList = (float[])content;
-			int selectedID = (int)conList [0];
-			float newPosx = conList [1];
-			float newPosy = conList [2];
-			float newPosz = conList [3];
-			Vector3 newPos = new Vector3 (newPosx, newPosy, newPosz);
-			Trooper myTroop = Game._instance.GetTroop (selectedID);
-			myTroop.animator.SetInteger ("AnimPar", 3);
+			Trooper myTroop = Game._instance.GetTroop ((int)conList[0]);
+			Vector3 newPos = new Vector3 (conList[1], conList[2], conList[3]);
 			myTroop.throwGrenade (newPos);
-			myTroop.unselect ();
 		}
 	}
-		
-	//select a specific trooper
-
-
 
 	public void selectTrooper(Trooper a){
 		a.select();

@@ -6,14 +6,28 @@ using UnityEngine.UI;
 public class Trooper : MonoBehaviour {
 
 	//miscellaneous
-	public GameObject hitmisOb;
-	public float health = 100;
+	//public GameObject hitmisOb;
+
 	public GameObject limit;
 
 	//animation
-	public Animator animator;
+	private Animator animator;
+	//0 - idle
+	//1 - run
+	//2 - shoot
+	//3 - throw grenade
+	//4 - stab
+	//5 - got shot
+	//6 - Die
+	//7 got naded
+	//8 flagpool
+	//10 - jump barrier
+	//11 - take cover
+
+
 	private int animInt;
-	public float maxDistance = 50f;
+	private float maxDistance = 50f;
+	private float health = 100;
 	//Seperate Objects
 
 
@@ -21,6 +35,7 @@ public class Trooper : MonoBehaviour {
 
 	//for movement
 	public Vector3 initialPosition;
+	public float range = 100;
 
 	//identification
 	public int id;
@@ -56,6 +71,21 @@ public class Trooper : MonoBehaviour {
 	public void stop(){
 		moving = false;
 		animator.SetInteger ("AnimPar", 0);
+	}
+
+	public void reset(){
+		maxDistance = 50f;
+		initialPosition = transform.position;
+		hasGrenade = false;
+		isSniper = false;
+		isInvulnerable = false;
+		canMarathon = false;
+		PhotonNetwork.RaiseEvent (9, (object)id, true, GameHandler._instance.AllReceivers());
+		unFreeze ();
+	}
+
+	public float getHealth(){
+		return health;
 	}
 
 	public void flagPull(){
@@ -102,7 +132,7 @@ public class Trooper : MonoBehaviour {
 	}
 		
 	public void RaiseMovement(Vector3 point){
-		
+		HudController._instance.AttackMode (false);
 		Vector3 floor = toFloor (point);
 		float[] contents = new float[5];
 		contents [0] = (float)myPlayer.Selected.id;
@@ -121,7 +151,7 @@ public class Trooper : MonoBehaviour {
 		RaiseEventOptions rf = RaiseEventOptions.Default;
 		rf.Receivers = ReceiverGroup.All;
 		PhotonNetwork.RaiseEvent ((byte)2, (object)contents, true, rf);
-		HudController._instance.AttackMode (false);	
+		HudController._instance.CanAttack (false);	
 	}
 
 	public Vector3 toFloor(Vector3 point){
@@ -141,6 +171,7 @@ public class Trooper : MonoBehaviour {
 		}
 		transform.position = destination;
 		stop ();
+		select ();
 	}
 
 	public void resetDistance(){
@@ -149,35 +180,40 @@ public class Trooper : MonoBehaviour {
 		maxDistance = newDis;
 		}
 		
-	public void shoot(GameObject target){
-		StartCoroutine (shootThis (target));
+	public void shoot(Trooper enemy, int hit){
+		StopAllCoroutines ();
+		animator.SetInteger ("AnimPar", 2);
+		StartCoroutine (ShootCoroutine (enemy, hit));
+		Invoke ("stop", 1f);
 	}
 
-	public void miss(GameObject target){
-		StartCoroutine (missThis (target));
-	}
-
-	IEnumerator shootThis(GameObject target){
+	IEnumerator ShootCoroutine(Trooper enemy, int hit){
 		yield return new WaitForSeconds (1f);
-		Vector3 p = gameObject.transform.position;
-		Vector3 startpos = new Vector3 (p.x, p.y + 5, p.z);
+		Vector3 startpos = transform.position + new Vector3 (0, 5, 0);
+		Vector3 enemyPos = enemy.transform.position + new Vector3 (0, 5, 0);
 		GameObject mybullet = Instantiate (TroopController._instance.TroopObjects[0], startpos, Quaternion.identity);
-		Vector3 t = target.transform.position;
-		Vector3 finalPos = new Vector3 (t.x, t.y + 5, t.z);
-		Vector2 location = Camera.main.WorldToScreenPoint (new Vector3(p.x, p.y+7, p.z));
-		Vector2 alocation = new Vector2 (location.x + 50, location.y);
-		GameObject misser = Instantiate (hitmisOb, alocation, Quaternion.identity, GameObject.Find("Canvas").transform);
-		misser.GetComponent<HitMiss> ().hitmis = "Hit";
-		while (Vector3.Distance (mybullet.transform.position, finalPos) > 1f) {
-			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, finalPos, 60 * Time.deltaTime);
+		while (Vector3.Distance (mybullet.transform.position, enemyPos) > 1f) {
+			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, enemyPos, 60 * Time.deltaTime);
 			yield return null;
 		}
-		target.GetComponent<Trooper> ().rotateTo (transform.position);
-		target.GetComponent<Trooper>().gotShot ();
+		switch (hit) {
+		case 0:
+			
+				break;
+		case 1:
+			enemy.gotShot ();
+
+				break;
+			default:
+				break;
+		}
+		HudController._instance.HitOrMiss (mybullet.transform.position, hit);
 		Destroy (mybullet);
+		enemy.Invoke ("stop", 1f);
 	}
 		
 	public void gotShot(){
+		StopAllCoroutines ();
 		animator.SetInteger ("AnimPar", 5);
 		decreaseHealth (50f);
 	}
@@ -194,57 +230,76 @@ public class Trooper : MonoBehaviour {
 		Destroy (gameObject);
 	}
 		
-	IEnumerator missThis(GameObject target){
-		yield return new WaitForSeconds (1f);
-		Vector3 p = gameObject.transform.position;
-		float xoff = Random.Range (-4, 4);
-		float yoff = Random.Range (-4, 4);
-		float zoff = Random.Range (-4, 4);
-		Vector3 startpos = new Vector3 (p.x, p.y + 5, p.z);
-		GameObject mybullet = Instantiate (TroopController._instance.TroopObjects[0], startpos, Quaternion.identity);
-		Vector3 t = target.transform.position;
-		Vector3 finalPos = new Vector3 (t.x+xoff, t.y+yoff + 5, t.z+zoff);
-		Vector2 location = Camera.main.WorldToScreenPoint (new Vector3(p.x, p.y+7, p.z));
-		Vector2 alocation = new Vector2 (location.x + 50, location.y);
-		GameObject misser = Instantiate (hitmisOb, alocation, Quaternion.identity, GameObject.Find("Canvas").transform);
-		misser.GetComponent<HitMiss> ().hitmis = "Missed";
-		while (Vector3.Distance (mybullet.transform.position, finalPos) > 1f) {
-			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, finalPos, 60 * Time.deltaTime);
-			yield return null;
-		}
+	public void giveGrenade(){
+		hasGrenade = true;
+	}
 
-		Destroy (mybullet);
+	public void giveSniper(){
+		isSniper = true;
+		range += 100;
+	}
+
+	public void giveInvulnerability(){
+		isInvulnerable = true;
+		RaiseEventOptions rf = RaiseEventOptions.Default;
+		rf.Receivers = ReceiverGroup.All;
+		PhotonNetwork.RaiseEvent (7, (object)id, true, rf);
+	}
+
+	public void giveMarathon(){
+		canMarathon = true;
+		maxDistance += 50;
+		resetDistance ();
+		select ();
+	}
+
+	public void giveAbility(int ability){
+		switch(ability){
+		case 0:
+			giveGrenade();
+			break;
+		case 1:
+			giveSniper();
+			break;
+		case 2:
+			giveInvulnerability();
+			break;
+		case 3:
+			giveMarathon();
+			break;
+		default:
+			break;
+		}
 	}
 
 	public void throwGrenade(Vector3 target){
-		StartCoroutine (throwthis (target));
+		StopAllCoroutines ();
+		animator.SetInteger ("AnimPar", 3);
+		StartCoroutine (throwCoroutine (target));
+		Invoke ("stop", 1f);
 	}
 
-	public IEnumerator throwthis(Vector3 positio){
+	public IEnumerator throwCoroutine(Vector3 position){
 		hasGrenade = false;
-		rotateTo (positio);
+		rotateTo (position);
 		yield return new WaitForSeconds (1f);
-		Vector3 position = new Vector3 (positio.x, 0, positio.z);
+		Vector3 groundPosition = toFloor (position);
 		//animator.SetInteger ("AnimPar", 3);
-		Vector3 p = gameObject.transform.position;
-		Vector3 pos = new Vector3 (p.x, p.y + 3, p.z);
-		GameObject myGrenade = Instantiate (TroopController._instance.TroopObjects[1], pos, Quaternion.identity); 
-		Vector3 mid = midPoint (pos, position);
-		Vector3 midup = new Vector3 (mid.x, mid.y + 5, mid.z);
-		Vector3 fq = midPoint (pos, mid);
-		Vector3 fqup = new Vector3 (fq.x, fq.y + 3, fq.z);
-		Vector3 lq = midPoint (mid, position);
-		Vector3 lqup = new Vector3 (lq.x, lq.y + 3, lq.z);
-		while (Vector3.Distance (myGrenade.transform.position, fqup) > 1f) {
-			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, fqup, 30 * Time.deltaTime);
+		Vector3 p = gameObject.transform.position + new Vector3(0f, 3f ,0f);
+		GameObject myGrenade = Instantiate (TroopController._instance.TroopObjects[1], p, Quaternion.identity); 
+		Vector3 mid = (midPoint (p, groundPosition)) + new Vector3(0f, 5f, 0f);
+		Vector3 fq = (midPoint (p, mid)) + new Vector3 (0f, 3f, 0f);
+		Vector3 lq = (midPoint (mid, groundPosition)) + new Vector3(0f, 3f, 0f);
+		while (Vector3.Distance (myGrenade.transform.position, fq) > 1f) {
+			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, fq, 30 * Time.deltaTime);
 			yield return null;
 		}
-		while (Vector3.Distance (myGrenade.transform.position, midup) > 1f) {
-			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, midup, 30 * Time.deltaTime);
+		while (Vector3.Distance (myGrenade.transform.position, mid) > 1f) {
+			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, mid, 30 * Time.deltaTime);
 			yield return null;
 		}
-		while (Vector3.Distance (myGrenade.transform.position, lqup) > 1f) {
-			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, lqup, 30 * Time.deltaTime);
+		while (Vector3.Distance (myGrenade.transform.position, lq) > 1f) {
+			myGrenade.transform.position = Vector3.MoveTowards (myGrenade.transform.position, lq, 30 * Time.deltaTime);
 			yield return null;
 		}
 		while (Vector3.Distance (myGrenade.transform.position, position) > 1f) {
@@ -295,11 +350,7 @@ public class Trooper : MonoBehaviour {
 				Invoke ("stop", 1f);
 			}
 	}
-
-	public float distanceTo(Vector3 target){
-		return (Vector3.Distance(gameObject.transform.position, target));
-	}
-
+		
 	public void select(){
 		if (myPlayer.Selected != null) {
 			myPlayer.Selected.unselect ();
@@ -307,7 +358,7 @@ public class Trooper : MonoBehaviour {
 		myPlayer.Selected = this;
 		if (this.frozen == false) {
 			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.SelectedMats[team];
-			HudController._instance.AttackMode (true);
+			HudController._instance.CanAttack (true);
 		}
 		ShowWalkLimit ();
 		HudController._instance.RefreshStore ();
@@ -315,8 +366,7 @@ public class Trooper : MonoBehaviour {
 
 	public void rotateTo(Vector3 point){
 		Vector3 direction = (point - gameObject.transform.position).normalized;
-		Quaternion lookRotation = Quaternion.LookRotation (direction);
-		gameObject.transform.rotation = lookRotation;
+		gameObject.transform.rotation = Quaternion.LookRotation (direction);
 	}
 		
 	public void ShowWalkLimit(){
@@ -337,16 +387,15 @@ public class Trooper : MonoBehaviour {
 		Vector3 direction = (initialPosition - gameObject.transform.position).normalized;
 		gameObject.transform.Translate (direction * 2f);
 	}
-
-
+		
 	public void unselect(){
 		if (myPlayer.Selected = this) {
 			myPlayer.Selected = null;
 		}
 
 		RemoveWalkLimit ();
-			
-		HudController._instance.AttackMode (false);
+		HudController._instance.AttackMode (false);	
+		HudController._instance.CanAttack (false);
 		if (this.frozen == false) {
 			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
 		}
@@ -366,4 +415,8 @@ public class Trooper : MonoBehaviour {
 		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
 	}
 
+	public void DidSomething(){
+		unselect ();
+		resetDistance ();
+	}
 }
