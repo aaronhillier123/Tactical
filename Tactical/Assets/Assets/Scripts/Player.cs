@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class PlayerJson{
+	public int team;
+	public List<TroopJson> troops = new List<TroopJson>();
+}
+
 public class Player : MonoBehaviour {
 
 	//identification
@@ -11,29 +17,57 @@ public class Player : MonoBehaviour {
 	public int lookingAt = 0;
 	private bool isTurnBool = false;
 	//Prefabs needed
+
 	public GameObject TrooperObject;
-	public GameObject HealthObject;
-	public GameObject ChanceObject;
-	public GameObject WaitingScreen;
-	public GameObject HudObject;
-	public GameObject StartHudOb;
 
+	//all troops in player roster
 
-	//state of player's troops
 	public List<Trooper> roster = new List<Trooper>();
-	public Trooper Selected;
-	public Barrier barrierSelected;
-	public List<GameObject> barriers = new List<GameObject> ();
+
+
+	private Trooper Selected;
+	private Barrier barrierSelected;
+
 
 	//general player variables
 	public static int numberOfTroops = 3;
-	public int dogtags = 3;
+	private int dogtags = 3;
 	public List<ControlPoint> myControlPoints;
 
 	//booleans for player states
-	public bool attacking = false;
-	public bool ready = false;
+	private bool attacking = false;
+	private bool ready = false;
 
+	public Trooper getSelected(){
+		return Selected;
+	}
+	public void setSelected(Trooper s){
+		Selected = s;
+	}
+	public Barrier getBarrierSelected(){
+		return barrierSelected;
+	}
+	public void setBarrierSelected(Barrier b){
+		barrierSelected = b;
+	}
+	public int getDogTags(){
+		return dogtags;
+	}
+	public void addDogTags(int d){
+		dogtags = dogtags + d;
+	}
+	public bool isAttacking(){
+		return attacking;
+	}
+	public void setAttacking(bool a){
+		attacking = a;
+	}
+	public bool isReady(){
+		return ready;
+	}
+	public void setReady(bool r){
+		ready = r;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -57,7 +91,7 @@ public class Player : MonoBehaviour {
 		if (firstTroop != null) {
 			firstTroop.team = troopTeam;
 			firstTroop.id = troopId;
-			firstTroop.initialPosition = firstTroop.gameObject.transform.position;
+			firstTroop.setInPos(firstTroop.gameObject.transform.position);
 			Game._instance.allTroopers.Add (firstTroop);
 			roster.Add (firstTroop);
 		}
@@ -66,6 +100,10 @@ public class Player : MonoBehaviour {
 	public void addControlPoint(ControlPoint cp){
 		myControlPoints.Add(cp);
 	}
+
+	public void removeControlPoint(ControlPoint cp){
+		myControlPoints.Remove (cp);
+	}
 		
 	public void RaiseAttack(Trooper EnemyTroop){
 		attacking = false;
@@ -73,8 +111,19 @@ public class Player : MonoBehaviour {
 		HudController._instance.removeChances ();
 
 		float distance = Vector3.Distance (Selected.transform.position, EnemyTroop.transform.position);
-		float hit = (Random.Range (0, Selected.range) - distance) > 0 ? 1 : 0;
+		float hit = (Random.Range (0, Selected.getRange()) - distance) > 0 ? 1 : 0;
 		Vector3 enemypos = EnemyTroop.transform.position + new Vector3(0f, 3f, 0f);
+
+		//under cover may be blocked by barrier
+		if (EnemyTroop.getPiece() != null) {
+			Vector3 enemyCenter = EnemyTroop.GetComponent<CapsuleCollider> ().bounds.center;
+			Vector3 barrierCenter = EnemyTroop.getPiece().GetComponent<BoxCollider> ().bounds.center;
+			float DistanceToEnemy = Vector3.Distance (Selected.transform.position, enemyCenter);
+			float DistanceToBarrier = Vector3.Distance (Selected.transform.position, barrierCenter);
+			if (DistanceToEnemy > DistanceToBarrier) {
+				hit = 2;
+			}
+		}
 
 		float[] targets = new float[3];
 		targets [0] = Selected.id;
@@ -82,7 +131,7 @@ public class Player : MonoBehaviour {
 		targets [2] = hit;
 		Selected.DidSomething ();
 		object target = (object)targets;
-		PhotonNetwork.RaiseEvent (4, target, true, EventHandler.ops);
+		PhotonNetwork.RaiseEvent (4, target, true, GameHandler._instance.AllReceivers());
 	}
 
 	//network attack function
@@ -103,7 +152,7 @@ public class Player : MonoBehaviour {
 		float[] contentsFloat = new float[] {(float)Selected.id, point.x, point.y, point.z};
 		object contents = (object)contentsFloat;
 		Selected.DidSomething ();
-		PhotonNetwork.RaiseEvent ((byte)6, contents, true, EventHandler.ops);
+		PhotonNetwork.RaiseEvent ((byte)6, contents, true, GameHandler._instance.AllReceivers());
 	}
 
 	//network grenade function

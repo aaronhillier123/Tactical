@@ -19,7 +19,7 @@ public class NaturalCover : MonoBehaviour {
 		if (myTroop != null) {
 
 			myTroop.StopAllCoroutines ();
-			myTroop.goBack ();
+			myTroop.goBack (2f);
 			myTroop.stop ();
 		} else {
 

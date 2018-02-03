@@ -42,7 +42,7 @@ public class HudController : MonoBehaviour {
 
 	public void AttackMode(bool attack){
 		if(GameHud.GetComponent<Hud>() != null){
-			myPlayer.attacking = attack;
+			myPlayer.setAttacking (attack);
 			GameHud.AttackMode(attack);
 		}
 	}
@@ -163,7 +163,7 @@ public class HudController : MonoBehaviour {
 		List<Trooper> others = Game._instance.notMyTroopers (myPlayer);
 		foreach (Trooper t in others) {
 			GameObject chance = Instantiate (ChanceObject, GameObject.Find ("Canvas").transform);
-			chance.GetComponent<Chance> ().target = myPlayer.Selected;
+			chance.GetComponent<Chance> ().target = myPlayer.getSelected ();
 			chance.GetComponent<Chance> ().id = t.id;
 		}
 	}

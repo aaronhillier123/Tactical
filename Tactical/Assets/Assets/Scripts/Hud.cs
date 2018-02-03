@@ -28,6 +28,7 @@ public class Hud : MonoBehaviour {
 	}
 
 	public void showInfoPanel(int item){
+		Store.removeInfoPanel ();
 		Store.ShowInfoPanel(item);
 	}
 
@@ -83,10 +84,12 @@ public class Hud : MonoBehaviour {
 	public void nextTroopPan(){
 		Player myPlayer = GameHandler._instance.getPlayer (PhotonNetwork.player.ID);
 		myPlayer.lookingAt++;
-		if (myPlayer.lookingAt == myPlayer.roster.Count) {
+		if (myPlayer.lookingAt >= myPlayer.roster.Count) {
 			myPlayer.lookingAt = 0;
 		}
-		GameObject.Find ("CameraPan").GetComponent<CameraPan> ().moveToPlayer (myPlayer.roster [myPlayer.lookingAt]);
+		CameraController._instance.setFollowedObject(myPlayer.roster [myPlayer.lookingAt].gameObject, 1);
 	}
+
+
 
 }

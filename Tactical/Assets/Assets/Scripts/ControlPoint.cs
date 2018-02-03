@@ -6,12 +6,8 @@ public class ControlPoint : MonoBehaviour {
 
 	public int id;
 	public int team;
-	public Material BlueFlag;
-	public Material RedFlag;
-	public Material GreenFlag;
-	public Material OrangeFlag;
-	public Material NeutralFlag;
-
+	public Material[] FlagMaterials = new Material[5];
+	public GameObject myFlag;
 	// Use this for initialization
 	void Start () {
 		team = 0;
@@ -22,52 +18,43 @@ public class ControlPoint : MonoBehaviour {
 		
 	}
 
-	public void setTeam(int a, int b){
-		Trooper myTroop = Game._instance.GetTroop (b);
-		if (team != a) {
+	public void setTeam(int troopId){
+		Trooper myTroop = Game._instance.GetTroop (troopId);
+		if (team != myTroop.team) {
+			if (team != 0) {
+				GameHandler._instance.getPlayer (team).removeControlPoint (this);
+			}
+			myTroop.StopAllCoroutines ();
 			myTroop.myPlayer.addControlPoint (this);
-			myTroop.myPlayer.dogtags += 2;
-			Hud.updateDogTags (myTroop.myPlayer.dogtags);
+			myTroop.myPlayer.addDogTags (2);
+			Hud.updateDogTags (myTroop.myPlayer.getDogTags());
 			myTroop.flagPull ();
-			StartCoroutine (changeFlag(a, b));
-			team = a;
+			StartCoroutine (changeFlag(myTroop));
+			team = myTroop.team;
 		} else {
-			myTroop.stop ();
 		}
 	}
 
-	public IEnumerator changeFlag(int team, int troopid){
+	public IEnumerator changeFlag(Trooper troop){
 		
-		GameObject myFlag = gameObject.transform.Find ("Flag").gameObject;
-		Debug.Log ("CHANGING FLAG");
 		Vector3 og = myFlag.transform.position;
-		while(myFlag.transform.position.y > 0){
+		while(myFlag.transform.position.y > Game._instance.floor){
 				myFlag.transform.Translate (0f, -.2f, 0f);
 				yield return null;
 		}
-		switch (team) {
-		case 1:
-			myFlag.GetComponent<MeshRenderer> ().materials [0].color = Color.blue;
-			break;
-		case 2:
-			myFlag.GetComponent<MeshRenderer> ().materials [0].color = Color.red;
-			break;
-		case 3:
-			myFlag.GetComponent<MeshRenderer> ().materials [0].color = Color.green;
-			break;
-		case 4:
-			myFlag.GetComponent<MeshRenderer> ().materials [0].color = Color.yellow;
-			break;
-		default:
-			myFlag.GetComponent<MeshRenderer> ().materials [0].color = Color.white;
-			break;
-		}
+		myFlag.GetComponent<MeshRenderer> ().material = FlagMaterials[team];
 		while (myFlag.transform.position.y <= og.y) {
 			myFlag.transform.Translate (0f, .2f, 0f);
 			yield return null;
 		}
 		myFlag.transform.position = og;
-		Trooper myTroop = Game._instance.GetTroop (troopid);
-		myTroop.stop ();
+		troop.stop ();
+	}
+
+	void OnTriggerEnter(Collider coll){
+		Trooper myTroop = coll.gameObject.GetComponent<Trooper> ();
+		if (myTroop != null) {
+			setTeam (myTroop.id);
+		}
 	}
 }

@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayFab;
+
+[System.Serializable]
+public class GameJson {
+	public List<PlayerJson> players = new List<PlayerJson>();
+
+}
+
+
 
 public class Game : MonoBehaviour {
 
 	public static Game _instance;
 	public Player myPlayer;
-	public float floor = 49f;
+	public float floor = 100f;
 	//handles internal game events and lists
 
 
@@ -60,7 +69,7 @@ public class Game : MonoBehaviour {
 			if (Physics.Raycast (ray, out hit, 300)) {
 				if (hit.collider.CompareTag ("Barrier") && GameHandler._instance.getTurnNumber() == 0) {
 					if (hit.transform.parent.parent.gameObject.GetComponent<Barrier> ().team == PhotonNetwork.player.ID) {
-						myPlayer.barrierSelected = hit.collider.gameObject.GetComponent<BarrierPiece> ().myBarrier;
+						myPlayer.setBarrierSelected(hit.collider.gameObject.GetComponent<BarrierPiece> ().myBarrier);
 						barrierSelected = true;
 					}
 				} else if (hit.collider.CompareTag ("Prelimb")) {
@@ -94,7 +103,7 @@ public class Game : MonoBehaviour {
 					selectedKnob = null;
 				}
 				if (myPlayer != null) {
-					myPlayer.barrierSelected = null;
+					myPlayer.setBarrierSelected (null);
 				}
 				if (timeDiff < .2f) {
 					OnClick ();
@@ -102,7 +111,7 @@ public class Game : MonoBehaviour {
 				timeDiff = 0;
 			}
 		}
-
+		
 
 	void OnDrag(){
 		if (dragOccuring == true) {
@@ -115,14 +124,14 @@ public class Game : MonoBehaviour {
 			} else if (barrierSelected == false) {
 			} else {
 				//moving barrier on drag
-				if (myPlayer.barrierSelected.placed == false) {
+				if (myPlayer.getBarrierSelected().placed == false) {
 					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 					RaycastHit hit;
 					if (Physics.Raycast (ray, out hit, 300)) {
 						if (hit.collider.CompareTag ("Terrain")) {
 							//BarrierPiece myPiece = Game._instance.GetBarrierPiece (myPlayer.barrierSelected.id);
 							//myPiece.gameObject.transform.parent.parent.position = hit.point;
-							myPlayer.barrierSelected.Cylinder.gameObject.transform.position = hit.point;
+							myPlayer.getBarrierSelected().Cylinder.gameObject.transform.position = hit.point;
 						}
 					}
 				}
@@ -148,13 +157,13 @@ public class Game : MonoBehaviour {
 							myPlayer.selectTrooper (clickedOn);
 						} else {
 							//if it is an enemy player
-							if (myPlayer.Selected != null) {
+							if (myPlayer.getSelected() != null) {
 										
-								if (myPlayer.attacking == true) {
+								if (myPlayer.isAttacking() == true) {
 									//if current player is attacking
 									myPlayer.RaiseAttack (clickedOn);
 						
-								} else if (myPlayer.Selected.hasGrenade) {
+								} else if (myPlayer.getSelected().hasGrenade) {
 									//if current player is not attacking and player is carrying a grenade
 									myPlayer.RaiseGrenade (hit.point);
 
@@ -164,16 +173,22 @@ public class Game : MonoBehaviour {
 							}
 						}
 							
-					} else if (hit.collider.CompareTag ("Terrain") || hit.collider.CompareTag ("ControlPoint") || hit.collider.CompareTag ("NaturalCover")) {
+					} else {
 						//if player clicked on terrain/ground
-						if (myPlayer.Selected != null) {
+						if (myPlayer.getSelected() != null) {
 							//if player is selected
-							if (myPlayer.Selected.hasGrenade) {
+							if (myPlayer.getSelected().hasGrenade) {
 								//if grenade is equipped
 								myPlayer.RaiseGrenade(hit.point);
 							} else {
 								//regular player movement
-								myPlayer.Selected.RaiseMovement (hit.point);
+								if (hit.collider.CompareTag ("Barrier")) {
+									myPlayer.getSelected().takingCover = true;
+									myPlayer.getSelected().RaiseMovement (hit.point, 1);
+								} else {
+									myPlayer.getSelected().takingCover= false;
+									myPlayer.getSelected().RaiseMovement (hit.point, 0);
+								}
 							}
 						}
 					}
@@ -182,8 +197,23 @@ public class Game : MonoBehaviour {
 		}
 	}
 
+	/*
+	string GetGameState(){
+		return SerialPlayer (myPlayer);
+	}
 
-
+	string SerialPlayer(Player p){
+		string result = "";
+		result += "{\"team\": " + p.team + ",\n";
+		result += "\"roster\": [" + "\n";
+		foreach (Trooper t in p.roster) {
+			result += JsonUtility.ToJson (t, true);
+			result += ",";
+		}
+		result += "]}";
+		return result;
+	}
+*/
 	//list of all troopers who are NOT a specifc player's
 	public List<Trooper> notMyTroopers(Player p){
 		List<Trooper> nmt = new List<Trooper> ();
@@ -195,6 +225,8 @@ public class Game : MonoBehaviour {
 		return nmt;
 	}
 		
+
+
 	public ControlPoint getConrolPoint(int idd){
 		ControlPoint[] allObs = GameObject.FindObjectsOfType (typeof(ControlPoint)) as ControlPoint[];
 		foreach(ControlPoint g in allObs){
@@ -227,19 +259,22 @@ public class Game : MonoBehaviour {
 	}
 
 	public void EndTurn(){
+
 		foreach (Trooper t in Game._instance.myPlayer.roster) {
 			t.unselect ();
 		}
-
+		//Debug.Log (GetGameState());
 		HudController._instance.EndTurn ();
 		myPlayer.setTurn (false);
 	}
 		
 	public void giveAbility(int ability){
-		if (myPlayer.Selected != null) {
-			myPlayer.Selected.giveAbility (ability);
+		if (myPlayer.getSelected() != null) {
+			myPlayer.getSelected().giveAbility (ability);
 		}
+		myPlayer.spendDogTags(HudController._instance.GameHud.Store.ItemPrices [ability]);
 		HudController._instance.GameHud.Store.removeInfoPanel ();
+		HudController._instance.RefreshStore ();
 	}
 
 	public void SendBarriersToNetwork(){
@@ -258,16 +293,13 @@ public class Game : MonoBehaviour {
 				info [8] = b.Cylinder.transform.rotation.eulerAngles.x;
 				info [9] = b.Cylinder.transform.rotation.eulerAngles.y;
 				info [10] = b.Cylinder.transform.rotation.eulerAngles.z;
-				RaiseEventOptions rf = RaiseEventOptions.Default;
-				rf.Receivers = ReceiverGroup.Others;
-				PhotonNetwork.RaiseEvent (15, (object)info, true, rf);
+				PhotonNetwork.RaiseEvent (15, (object)info, true, GameHandler._instance.OtherReceivers());
 			}
 		}
 	}
 
 	public static void raiseBarrier(byte id, object content, int senderID){
 		if (id == 15) {
-			Debug.Log ("Raising a barrier");
 			//if (PhotonNetwork.player.ID != senderID) {
 				float[] info = (float[])content;
 				Vector3 location = new Vector3 (info [2], info [3], info [4]);

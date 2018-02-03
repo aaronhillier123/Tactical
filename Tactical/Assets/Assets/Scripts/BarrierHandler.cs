@@ -75,5 +75,16 @@ public class BarrierHandler : MonoBehaviour {
 		}
 	}
 
+	public BarrierPiece getPiece(int id){
+		foreach(Barrier b in allBarriers){
+			foreach (GameObject bp in b.pieces) {
+				BarrierPiece mybp = bp.GetComponent<BarrierPiece> ();
+				if (mybp != null && mybp.id == id) {
+					return mybp;
+				}
+			}
+		}
+		return null;
+	}
 
 }

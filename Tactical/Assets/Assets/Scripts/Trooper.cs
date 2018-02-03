@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class TroopJson{
+	public int id;
+	public int team;
+	public Vector3 position;
+	public Quaternion rotation;
+}
+
 public class Trooper : MonoBehaviour {
 
 	//miscellaneous
 	//public GameObject hitmisOb;
-
-	public GameObject limit;
+	[System.NonSerialized]
+	private GameObject limit;
 
 	//animation
 	private Animator animator;
@@ -28,32 +36,39 @@ public class Trooper : MonoBehaviour {
 	private int animInt;
 	private float maxDistance = 50f;
 	private float health = 100;
-	//Seperate Objects
+	private BarrierPiece myPiece;
+	private Vector3 initialPosition;
 
-
-
-
-	//for movement
-	public Vector3 initialPosition;
-	public float range = 100;
+	private float range = 100;
 
 	//identification
 	public int id;
 	public int team;
+
+	[System.NonSerialized]
 	public Player myPlayer;
 
-
-
+	public Vector3 currentPosition;
+	public Quaternion currentRotation;
 
 	//state of availability
-	public bool moving = false;
+	private bool moving = false;
+
 	public bool frozen = false;
+
 	public bool covering = false;
 
+	[System.NonSerialized]
+	public bool takingCover = false;
+
 	//bools for abilities
+	[System.NonSerialized]
 	public bool hasGrenade = false;
+	[System.NonSerialized]
 	public bool isSniper = false;
+	[System.NonSerialized]
 	public bool isInvulnerable = false;
+	[System.NonSerialized]
 	public bool canMarathon = false;
 
 
@@ -63,9 +78,37 @@ public class Trooper : MonoBehaviour {
 		assignColor ();
 	}
 
+	//Getters Setters
+	public void setPiece(BarrierPiece b){
+		myPiece = b;
+	}
+	public BarrierPiece getPiece(){
+		return myPiece;
+	}
+	public void setInPos(Vector3 ip){
+		initialPosition = ip;
+	}
+	public Vector3 getInPos(){
+		return initialPosition;
+	}
+	public void setRange(float r){
+		range = r;
+	}
+	public float getRange(){
+		return range;
+	}
+	public void setMaxDistance(float m){
+		maxDistance = m;
+	}
+	public float getMaxDistance(){
+		return maxDistance;
+	}
+
 
 	// Update is called once per frame
 	void Update () {
+		currentPosition = transform.position;
+		currentRotation = transform.rotation;
 	}
 
 	public void stop(){
@@ -78,9 +121,11 @@ public class Trooper : MonoBehaviour {
 		initialPosition = transform.position;
 		hasGrenade = false;
 		isSniper = false;
-		isInvulnerable = false;
 		canMarathon = false;
-		PhotonNetwork.RaiseEvent (9, (object)id, true, GameHandler._instance.AllReceivers());
+		if (isInvulnerable == true) {
+			isInvulnerable = false;
+			PhotonNetwork.RaiseEvent (9, (object)id, true, GameHandler._instance.AllReceivers ());
+		}
 		unFreeze ();
 	}
 
@@ -91,9 +136,38 @@ public class Trooper : MonoBehaviour {
 	public void flagPull(){
 		animator.SetInteger ("AnimPar", 8);
 	}
-
-	public void takeCover(Vector3 pos){
+		
+	public void takeCover(){
+		if (takingCover == true) {
+			takingCover = false;
+			this.StopAllCoroutines ();
+			this.goBack (1f);
+			this.stop ();
+			/*
+			if (myPiece != null) {
+				Vector3 towardBarrier = (myPiece.transform.position - transform.position).normalized;
+				Debug.Log ("X" + towardBarrier.x + " y: " + towardBarrier.y + " z: " + towardBarrier.z);
+				transform.rotation = Quaternion.Euler (towardBarrier + new Vector3 (0f, 180f, 0f));
+			}
+			*/
+			transform.Rotate(new Vector3(0, 180f, 0));
+			animator.SetInteger ("AnimPar", 11);
+		}
 	}
+
+	IEnumerator ContinueAnimation(float time, int startAnimation, int animation){
+		yield return new WaitForSeconds (time);
+		if (animator.GetInteger ("AnimPar") == startAnimation) {
+			animator.SetInteger ("AnimPar", animation);
+		}
+	}
+
+	public void jumpBarrier(){
+		int currentAnimation = animator.GetInteger ("AnimPar");
+		animator.SetInteger ("AnimPar", 10);
+		StartCoroutine(ContinueAnimation(0.8f, 10, currentAnimation));
+	}
+		
 
 	public static void makeInvulnerable(byte id, object content, int senderID){
 		if (id == 7) {
@@ -118,39 +192,47 @@ public class Trooper : MonoBehaviour {
 		
 	public static void move(byte id, object content, int senderID){
 		if (id == 2) {
-			Debug.Log ("MOOOVVVIIINGNGGGG");
 			float[] conList = (float[])content;
 			int selectedID = (int)conList[0];
 			float newPosx = conList [1];
 			float newPosy = conList [2];
 			float newPosz = conList [3];
+			int cover = (int)conList [4];
 			Vector3 newPos = new Vector3 (newPosx, newPosy, newPosz);
 			Trooper myTroop = Game._instance.GetTroop (selectedID);
+			if (cover == 1) {
+				myTroop.covering = true;
+			} else {
+				myTroop.covering = false;
+			}
 			myTroop.StopAllCoroutines ();
 			myTroop.StartCoroutine (myTroop.moveToPosition (newPos, 10f)); 
 		}
 	}
 		
-	public void RaiseMovement(Vector3 point){
+	public void RaiseMovement(Vector3 point, int cover){
 		HudController._instance.AttackMode (false);
 		Vector3 floor = toFloor (point);
-		float[] contents = new float[5];
-		contents [0] = (float)myPlayer.Selected.id;
-		if (Vector3.Distance (point, myPlayer.Selected.initialPosition) <= myPlayer.Selected.maxDistance) {
+		Debug.Log ("Floor level is " + floor.y);
+		float[] contents = new float[6];
+		contents [0] = (float)myPlayer.getSelected().id;
+		if (Vector3.Distance (floor, myPlayer.getSelected().getInPos()) <= myPlayer.getSelected().getMaxDistance()) {
 			//if the click point is within the troops walking distance
-			contents [1] = point.x;
-			contents [2] = point.y;
-			contents [3] = point.z;
+			contents [1] = floor.x;
+			contents [2] = floor.y;
+			contents [3] = floor.z;
 		} else {
 			//find farthest point that troop can currently travel
-			Vector3 myPoint = ((point - initialPosition).normalized) * maxDistance;
-			contents [1] = initialPosition.x + myPoint.x;
-			contents [2] = initialPosition.y + myPoint.y;
-			contents [3] = initialPosition.z + myPoint.z;
+			Vector3 myfloor = ((floor - initialPosition).normalized) * maxDistance;
+			contents [1] = initialPosition.x + myfloor.x;
+			contents [2] = initialPosition.y + myfloor.y;
+			contents [3] = initialPosition.z + myfloor.z;
 		}
-		RaiseEventOptions rf = RaiseEventOptions.Default;
-		rf.Receivers = ReceiverGroup.All;
-		PhotonNetwork.RaiseEvent ((byte)2, (object)contents, true, rf);
+		contents [4] = (float)cover;
+		PhotonNetwork.RaiseEvent ((byte)2, (object)contents, true, new RaiseEventOptions(){
+			Receivers = ReceiverGroup.All,
+			ForwardToWebhook = true,
+			CachingOption = EventCaching.AddToRoomCache});
 		HudController._instance.CanAttack (false);	
 	}
 
@@ -164,6 +246,7 @@ public class Trooper : MonoBehaviour {
 		Vector3 direction = (destination - transform.position).normalized;
 		transform.rotation = Quaternion.LookRotation (direction);
 		animator.SetInteger ("AnimPar", 1);
+		myPiece = null;
 		while(Vector3.Distance(transform.position, destination) > 1f)
 		{
 			transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
@@ -174,6 +257,12 @@ public class Trooper : MonoBehaviour {
 		select ();
 	}
 
+	public IEnumerator MoveAfterSeconds(float time){
+		yield return new WaitForSeconds(time);
+		animator.SetInteger ("AnimPar", 1);
+	}
+
+
 	public void resetDistance(){
 		float newDis = maxDistance - (Vector3.Distance(initialPosition, transform.position));
 		initialPosition = transform.position;
@@ -182,6 +271,8 @@ public class Trooper : MonoBehaviour {
 		
 	public void shoot(Trooper enemy, int hit){
 		StopAllCoroutines ();
+		CameraController._instance.setFollowedObject (gameObject, 0);
+		rotateTo (enemy.transform.position);
 		animator.SetInteger ("AnimPar", 2);
 		StartCoroutine (ShootCoroutine (enemy, hit));
 		Invoke ("stop", 1f);
@@ -192,19 +283,20 @@ public class Trooper : MonoBehaviour {
 		Vector3 startpos = transform.position + new Vector3 (0, 5, 0);
 		Vector3 enemyPos = enemy.transform.position + new Vector3 (0, 5, 0);
 		GameObject mybullet = Instantiate (TroopController._instance.TroopObjects[0], startpos, Quaternion.identity);
+		CameraController._instance.setFollowedObject (mybullet, 0);
 		while (Vector3.Distance (mybullet.transform.position, enemyPos) > 1f) {
 			mybullet.transform.position = Vector3.MoveTowards (mybullet.transform.position, enemyPos, 60 * Time.deltaTime);
 			yield return null;
 		}
 		switch (hit) {
 		case 0:
-			
 				break;
 		case 1:
 			enemy.gotShot ();
-
-				break;
-			default:
+			break;
+		case 3:
+			break;
+		default:
 				break;
 		}
 		HudController._instance.HitOrMiss (mybullet.transform.position, hit);
@@ -219,6 +311,7 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public IEnumerator die(){
+		CameraController._instance.setFollowedObject (gameObject, 1);
 		unselect ();
 		animator.SetInteger ("AnimPar", 6);
 		yield return new WaitForSeconds (2f);
@@ -241,9 +334,7 @@ public class Trooper : MonoBehaviour {
 
 	public void giveInvulnerability(){
 		isInvulnerable = true;
-		RaiseEventOptions rf = RaiseEventOptions.Default;
-		rf.Receivers = ReceiverGroup.All;
-		PhotonNetwork.RaiseEvent (7, (object)id, true, rf);
+		PhotonNetwork.RaiseEvent (7, (object)id, true, GameHandler._instance.AllReceivers());
 	}
 
 	public void giveMarathon(){
@@ -282,11 +373,12 @@ public class Trooper : MonoBehaviour {
 	public IEnumerator throwCoroutine(Vector3 position){
 		hasGrenade = false;
 		rotateTo (position);
+		CameraController._instance.setFollowedObject (gameObject, 0);
 		yield return new WaitForSeconds (1f);
 		Vector3 groundPosition = toFloor (position);
-		//animator.SetInteger ("AnimPar", 3);
 		Vector3 p = gameObject.transform.position + new Vector3(0f, 3f ,0f);
 		GameObject myGrenade = Instantiate (TroopController._instance.TroopObjects[1], p, Quaternion.identity); 
+		CameraController._instance.setFollowedObject (myGrenade, 0);
 		Vector3 mid = (midPoint (p, groundPosition)) + new Vector3(0f, 5f, 0f);
 		Vector3 fq = (midPoint (p, mid)) + new Vector3 (0f, 3f, 0f);
 		Vector3 lq = (midPoint (mid, groundPosition)) + new Vector3(0f, 3f, 0f);
@@ -312,7 +404,11 @@ public class Trooper : MonoBehaviour {
 		Destroy (myGrenade);
 		yield return new WaitForSeconds (1f);
 		Destroy (ex);
+		Debug.Log ("Stop2");
 		stop ();
+		if (covering == true) {
+			animator.SetInteger ("AnimPar", 11);
+		}
 	}
 
 	public void hurtNearByEnemies(Vector3 point, float distance, float damage){
@@ -343,19 +439,20 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void decreaseHealth(float dec){
-			health -= dec;
-			if (health <= 0) {
-				StartCoroutine (die ());
-			} else {
-				Invoke ("stop", 1f);
-			}
+		HudController._instance.showHealthBar (id);
+		health -= dec;
+		if (health <= 0) {
+			StartCoroutine (die ());
+		} else {
+			Invoke ("stop", 1f);
+		}
 	}
 		
 	public void select(){
-		if (myPlayer.Selected != null) {
-			myPlayer.Selected.unselect ();
+		if (myPlayer.getSelected() != null) {
+			myPlayer.getSelected().unselect ();
 		}
-		myPlayer.Selected = this;
+		myPlayer.setSelected (this);
 		if (this.frozen == false) {
 			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.SelectedMats[team];
 			HudController._instance.CanAttack (true);
@@ -370,11 +467,13 @@ public class Trooper : MonoBehaviour {
 	}
 		
 	public void ShowWalkLimit(){
-		GameObject limiter = Instantiate (TroopController._instance.TroopObjects[5], initialPosition, Quaternion.identity, transform);
-		limit = limiter;
-		limit.GetComponent<Projector> ().orthographicSize = maxDistance * 2;
-		limit.transform.SetParent (null);
-		limit.transform.rotation = Quaternion.Euler (90f, 0, 0);
+		if (team == PhotonNetwork.player.ID) {
+			GameObject limiter = Instantiate (TroopController._instance.TroopObjects [5], initialPosition, Quaternion.identity, transform);
+			limit = limiter;
+			limit.GetComponent<Projector> ().orthographicSize = maxDistance * 2;
+			limit.transform.SetParent (null);
+			limit.transform.rotation = Quaternion.Euler (90f, 0, 0);
+		}
 	}
 
 	public void RemoveWalkLimit(){
@@ -383,14 +482,14 @@ public class Trooper : MonoBehaviour {
 		}
 	}
 
-	public void goBack(){
+	public void goBack(float distance){
 		Vector3 direction = (initialPosition - gameObject.transform.position).normalized;
-		gameObject.transform.Translate (direction * 2f);
+		gameObject.transform.Translate (direction * distance);
 	}
 		
 	public void unselect(){
-		if (myPlayer.Selected = this) {
-			myPlayer.Selected = null;
+		if (myPlayer.getSelected() == this) {
+			myPlayer.setSelected (null);
 		}
 
 		RemoveWalkLimit ();

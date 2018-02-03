@@ -23,7 +23,6 @@ public class Barrier : MonoBehaviour {
 	}
 
 	public void HidePrelimbs(){
-		Debug.Log ("HIDING PRELIMBS");
 		Cylinder.GetComponent<MeshRenderer> ().enabled = false;
 		Knob.GetComponent<MeshRenderer> ().enabled = false;
 		Knob.GetComponent<CapsuleCollider> ().enabled = false;

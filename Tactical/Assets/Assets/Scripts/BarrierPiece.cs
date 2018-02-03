@@ -19,14 +19,15 @@ public class BarrierPiece : MonoBehaviour {
 	void Update () {
 		
 	}
-
-	void OnCollisionEnter(Collision coll){
+		
+	void OnTriggerEnter(Collider coll){
 		Trooper myTroop = coll.gameObject.GetComponent<Trooper> ();
-		if (myTroop != null) {
-			if (myTroop.covering == false) {
-				myTroop.takeCover (gameObject.transform.position);
+		if (myTroop != null && GameHandler._instance.getPlayersTurn()>0) {
+			if (myTroop.takingCover == true || myTroop.covering == true) {
+				myTroop.setPiece (this);
+				myTroop.takeCover ();
 			} else {
-				//myTroop.takeCover(id);
+				myTroop.jumpBarrier ();
 			}
 		}
 	}

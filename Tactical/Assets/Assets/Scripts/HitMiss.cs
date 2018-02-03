@@ -21,6 +21,10 @@ public class HitMiss : MonoBehaviour {
 			gameObject.GetComponent<Text> ().text = "HIT";
 			gameObject.GetComponent<Text> ().color = Color.green;
 			break;
+		case 2:
+			gameObject.GetComponent<Text> ().text = "BLOCKED";
+			gameObject.GetComponent<Text> ().color = Color.yellow;
+			break;
 		default:
 			break;
 		}

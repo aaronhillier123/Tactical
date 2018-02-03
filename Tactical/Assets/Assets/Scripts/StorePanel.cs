@@ -24,12 +24,14 @@ public class StorePanel : MonoBehaviour {
 	}
 
 	public void removeInfoPanel(){
-		CurrentInfoPanel.transform.SetParent (null);
+		if (CurrentInfoPanel != null) {
+			CurrentInfoPanel.transform.SetParent (null);
+		}
 	}
 
 	public void refresh(){
 		for (int i = 0; i < ItemButtons.Count; ++i) {
-			if (GameHandler._instance.getPlayer (PhotonNetwork.player.ID).dogtags >= ItemPrices [i]) {
+			if (GameHandler._instance.getPlayer (PhotonNetwork.player.ID).getDogTags() >= ItemPrices [i]) {
 				ItemButtons [i].interactable = true;
 			} else {
 				ItemButtons [i].interactable = false;

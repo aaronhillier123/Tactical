@@ -5,17 +5,19 @@ using UnityEngine;
 public class EventHandler : MonoBehaviour {
 
 	public bool gameStarted = false;
-	public static RaiseEventOptions ops;
 	// Use this for initialization
 	void Start () {
-		ops = RaiseEventOptions.Default;
-		ops.Receivers = ReceiverGroup.All;
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (PhotonNetwork.inRoom && gameStarted==false){
-			PhotonNetwork.RaiseEvent (1, null, true, ops);
+			var response = PhotonNetwork.RaiseEvent (1, null, true, new RaiseEventOptions(){
+				ForwardToWebhook = true,
+				Receivers = ReceiverGroup.All,
+				CachingOption = EventCaching.AddToRoomCache});
+			Debug.Log ("EVENT IS " + response);
 			gameStarted = true;
 		}
 	}

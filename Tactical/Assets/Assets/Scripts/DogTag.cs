@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class DogTagJson{
+	Vector3 position;
+}
+
 public class DogTag : MonoBehaviour {
 
 	// Use this for initialization
@@ -18,8 +23,8 @@ public class DogTag : MonoBehaviour {
 		Debug.Log ("trigger endered");
 		Trooper myTroop = coll.gameObject.GetComponent<Trooper> ();
 		if (myTroop != null) {
-			myTroop.myPlayer.dogtags++;
-			Hud.updateDogTags (myTroop.myPlayer.dogtags);
+			myTroop.myPlayer.addDogTags(1);
+			Hud.updateDogTags (myTroop.myPlayer.getDogTags());
 			Game._instance.allDogTags.Remove (this);
 			Destroy (gameObject);
 		}

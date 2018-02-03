@@ -39,15 +39,15 @@ public class CameraPan : MonoBehaviour {
 		gameObject.transform.Translate ( 0.25f, 0f, 0);
 	}
 
-	public void moveToPlayer(Trooper t){
-		Vector3 troopPos = t.gameObject.transform.position;
-		Vector3 newPos = new Vector3 (troopPos.x - 8, gameObject.transform.position.y, troopPos.z + 5);
+	public void moveToObject(GameObject t){
+		Vector3 pos = t.transform.position;
+		Vector3 newPos = new Vector3 (pos.x - 8, gameObject.transform.position.y, pos.z + 5);
 		StartCoroutine (moveTo (newPos));
 	}
 
 	public IEnumerator moveTo(Vector3 dest){
 		while (Vector3.Distance (gameObject.transform.position, dest) > 1) {
-			gameObject.transform.position = Vector3.MoveTowards (gameObject.transform.position, dest, 5f);
+			gameObject.transform.position = Vector3.MoveTowards (gameObject.transform.position, dest, 1f);
 			yield return null;
 		}
 		gameObject.transform.position = dest;
