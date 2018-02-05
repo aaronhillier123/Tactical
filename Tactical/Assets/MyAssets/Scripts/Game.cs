@@ -44,7 +44,7 @@ public class Game : MonoBehaviour {
 		PhotonNetwork.OnEventCall += Trooper.move; //2
 		PhotonNetwork.OnEventCall += GameHandler.EndPlacements;//3
 		PhotonNetwork.OnEventCall += Player.attack; //4
-		PhotonNetwork.OnEventCall += GameHandler.changeTurn; //5
+		PhotonNetwork.OnEventCall += GameHandler.setTurn; //5
 		PhotonNetwork.OnEventCall += Player.throwGrenade; //6
 		PhotonNetwork.OnEventCall += Trooper.makeInvulnerable; //7
 		PhotonNetwork.OnEventCall += Trooper.makeNotInvulnerable;//8

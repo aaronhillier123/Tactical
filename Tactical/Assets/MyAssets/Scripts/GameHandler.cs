@@ -63,9 +63,19 @@ public class GameHandler : MonoBehaviour {
 
 
 	public void RaiseTurnChange(){
-		RaiseEventOptions rf = RaiseEventOptions.Default;
-		rf.Receivers = ReceiverGroup.All;
-		PhotonNetwork.RaiseEvent(5, null, true, AllReceivers());
+		int lastturn = GameHandler._instance.playersTurn;
+		int newturn = 0;
+		if (lastturn == PhotonNetwork.room.PlayerCount || lastturn==0) {
+			newturn = 1;
+		} else {
+			newturn++;
+		}
+		int[] turns = new int[]{ lastturn, newturn };
+		object turnObject = (object)turns;
+		PhotonNetwork.RaiseEvent (5, null, true, new RaiseEventOptions () {
+			CachingOption = EventCaching.RemoveFromRoomCache
+		});
+		PhotonNetwork.RaiseEvent(5, turnObject, true, AllReceivers());
 	}
 
 	public string TroopState(){
@@ -87,6 +97,7 @@ public class GameHandler : MonoBehaviour {
 					gamestate += "0";
 				}
 				gamestate += " ";
+				Debug.Log ("GAME STATE IS " + gamestate);
 			}
 		}
 		return gamestate;
@@ -102,10 +113,10 @@ public class GameHandler : MonoBehaviour {
 			List<string> ts = new List<string>(ta);
 			ts.RemoveAt (ts.Count - 1);
 			foreach(string s in ts){
+				Debug.Log (s);
 				UpdateTroopFromCode (s);
 			}
 		}
-		Debug.Log ("UPDATED ALL TROOPS");
 	}
 
 	public void UpdateTroopFromCode(string troopCode){
@@ -146,63 +157,52 @@ public class GameHandler : MonoBehaviour {
 		ht.Add ("Dogs", dogstate);
 		ht.Add ("Turn", turnNumber);
 		string deb;
-		//Debug.Log (troopstate);
+		Debug.Log ("SENDING GAME STATE TO ALL CLIENTS");
 		PhotonNetwork.room.SetCustomProperties (ht, null, true);
 	}
 
 	public void RaiseEndPlacements(){
 		BarrierHandler._instance.PlaceAllBarriers ();
 		HudController._instance.removeStartHud ();
+		Game._instance.BeginGame ();
 		PhotonNetwork.RaiseEvent(3, null, true, AllReceivers());
+		int PlayersReady = 0;
+		foreach (Player p in GamePlayers) {
+			if (p.isReady ()) {
+				PlayersReady++;
+			}
+		}
+		int gpc = GameHandler._instance.GamePlayers.Count - 1;
+		if (PlayersReady == GameHandler._instance.GamePlayers.Count-1) {
+			RaiseTurnChange ();
+		}
 	}
 
-	//End current turn and start turn for next player
-	public static void changeTurn(byte Newid, object content, int SenderID){
+	//start turn for player {content[1]} and end turn for player {content[2]}
+	public static void setTurn(byte Newid, object content, int SenderID){
 		if (Newid == 5) {
-			if (GameHandler._instance.playersTurn == PhotonNetwork.player.ID) {
+			int[] turns = (int[])content;
+			int lastTurn = turns [0];
+			int newTurn = turns [1];
+			GameHandler._instance.playersTurn = newTurn;
+			if (lastTurn == PhotonNetwork.player.ID) {
 				GameHandler._instance.sendGameState ();
 				Game._instance.EndTurn ();
-			}
-
-			//change turn number
-			if (GameHandler._instance.playersTurn < GameHandler._instance.GamePlayers.Count) {
-				GameHandler._instance.playersTurn++;
-			} else {
-				GameHandler._instance.playersTurn = 1;
-				GameHandler._instance.turnNumber++;
-			}
-
-			if (GameHandler._instance.playersTurn == PhotonNetwork.player.ID) {
+			}	
+			if (newTurn == PhotonNetwork.player.ID) {
 				GameHandler._instance.UpdateTroopState ();
 				Game._instance.StartTurn ();
 			}
 		}
 	}
 
-
 	public static void EndPlacements(byte id, object content, int SenderID){
 
 		if(id == 3){
-			if (SenderID == PhotonNetwork.player.ID) {
-				HudController._instance.removeStartHud ();
-				Game._instance.BeginGame ();
-				GameHandler._instance.getPlayer (PhotonNetwork.player.ID).setReady (true);
-			}
 			GameHandler._instance.getPlayer (SenderID).setReady(true);
-			int notReady = 0;
-			foreach (Player p in GameHandler._instance.GamePlayers) {
-				if (p.isReady() == false) {
-					notReady++;
-				}
-			}
-			if (notReady == 0 && SenderID == PhotonNetwork.player.ID) {
-				GameHandler._instance.RaiseTurnChange ();
-			}
 		}
 	}
-
-
-
+		
 	//return player based on ID
 	public Player getPlayer(int id){
 		foreach (Player p in GamePlayers) {

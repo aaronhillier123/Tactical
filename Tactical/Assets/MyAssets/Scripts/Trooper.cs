@@ -75,7 +75,7 @@ public class Trooper : MonoBehaviour {
 	void Start () {
 		myPlayer = GetComponentInParent<Player>();
 		animator = gameObject.GetComponentInChildren<Animator> ();
-		assignColor ();
+		assignColor (); 
 	}
 
 	//Getters Setters
