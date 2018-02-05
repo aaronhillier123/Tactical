@@ -56,6 +56,8 @@ public class GameHandler : MonoBehaviour {
 					HudController._instance.showGameHud ();
 				}
 			}
+			ExitGames.Client.Photon.Hashtable ht = new ExitGames.Client.Photon.Hashtable ();
+			ht.Add ("Player" + PhotonNetwork.player.ID.ToString(), true);
 		}
 	}
 

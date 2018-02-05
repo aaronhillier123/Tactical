@@ -229,10 +229,11 @@ public class Trooper : MonoBehaviour {
 			contents [3] = initialPosition.z + myfloor.z;
 		}
 		contents [4] = (float)cover;
-		PhotonNetwork.RaiseEvent ((byte)2, (object)contents, true, new RaiseEventOptions(){
+		PhotonNetwork.RaiseEvent ((byte)2, (object)contents, true, new RaiseEventOptions () {
 			Receivers = ReceiverGroup.All,
-			ForwardToWebhook = true,
-			CachingOption = EventCaching.AddToRoomCache});
+			ForwardToWebhook = true
+		});
+			//CachingOption = EventCaching.AddToRoomCache});
 		HudController._instance.CanAttack (false);	
 	}
 

@@ -261,8 +261,12 @@ public class Game : MonoBehaviour {
 	public void EndTurn(){
 
 		foreach (Trooper t in Game._instance.myPlayer.roster) {
+			try{
 			t.unselect ();
+			}catch{
+			}
 		}
+		
 		//Debug.Log (GetGameState());
 		HudController._instance.EndTurn ();
 		myPlayer.setTurn (false);
