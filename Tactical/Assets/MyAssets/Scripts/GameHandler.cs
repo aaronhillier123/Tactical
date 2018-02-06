@@ -64,7 +64,7 @@ public class GameHandler : MonoBehaviour {
 	public void RaiseTurnChange(){
 		Debug.Log ("RaiseTurnChange()");
 		int lastturn = GameHandler._instance.playersTurn;
-		int newturn = 0;
+		int newturn = lastturn;
 		if (lastturn == PhotonNetwork.room.PlayerCount || lastturn==0) {
 			newturn = 1;
 		} else {
@@ -125,7 +125,6 @@ public class GameHandler : MonoBehaviour {
 			List<string> ts = new List<string>(ta);
 			ts.RemoveAt (ts.Count - 1);
 			foreach(string s in ts){
-				//Debug.Log (s);
 				UpdateTroopFromCode (s);
 			}
 		}
