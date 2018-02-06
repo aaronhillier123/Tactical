@@ -179,7 +179,7 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public static void makeNotInvulnerable(byte id, object content, int senderID){
-		if (id == 9) {
+		if (id == 8) {
 			Trooper myTroop = Game._instance.GetTroop ((int)content);
 			GameObject TroopOb = myTroop.gameObject;
 			myTroop.isInvulnerable = false;

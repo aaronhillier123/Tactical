@@ -49,6 +49,7 @@ public class Game : MonoBehaviour {
 		PhotonNetwork.OnEventCall += Trooper.makeInvulnerable; //7
 		PhotonNetwork.OnEventCall += Trooper.makeNotInvulnerable;//8
 		PhotonNetwork.OnEventCall += Game.raiseBarrier; //15
+		PhotonNetwork.OnEventCall += GameHandler.SyncGameState;//9
 
 	}
 	
@@ -197,23 +198,6 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	/*
-	string GetGameState(){
-		return SerialPlayer (myPlayer);
-	}
-
-	string SerialPlayer(Player p){
-		string result = "";
-		result += "{\"team\": " + p.team + ",\n";
-		result += "\"roster\": [" + "\n";
-		foreach (Trooper t in p.roster) {
-			result += JsonUtility.ToJson (t, true);
-			result += ",";
-		}
-		result += "]}";
-		return result;
-	}
-*/
 	//list of all troopers who are NOT a specifc player's
 	public List<Trooper> notMyTroopers(Player p){
 		List<Trooper> nmt = new List<Trooper> ();
@@ -242,11 +226,9 @@ public class Game : MonoBehaviour {
 		BarrierHandler._instance.RemoveAllPrelimbs ();
 		Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
 		Vector3 newPos = Camera.main.transform.position;
-
 		Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);
 		GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
 		HudController._instance.GameHud.nextTroopPan ();
-
 		HudController._instance.BeginGame ();
 	}
 
@@ -304,7 +286,6 @@ public class Game : MonoBehaviour {
 
 	public static void raiseBarrier(byte id, object content, int senderID){
 		if (id == 15) {
-			//if (PhotonNetwork.player.ID != senderID) {
 				float[] info = (float[])content;
 				Vector3 location = new Vector3 (info [2], info [3], info [4]);
 				Vector3 Cylinderlocation = new Vector3 (info [5], info [6], info [7]);
@@ -313,7 +294,6 @@ public class Game : MonoBehaviour {
 				int bteam = (int)info [1];
 				Player myPlayer = GameHandler._instance.getPlayer (PhotonNetwork.player.ID);
 				BarrierHandler._instance.CreateBarrier (btype, location, Cylinderlocation, angles, bteam);
-			//}
 		}
 	}
 		

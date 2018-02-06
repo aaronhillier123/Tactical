@@ -36,7 +36,7 @@ public class Player : MonoBehaviour {
 
 	//booleans for player states
 	private bool attacking = false;
-	private bool ready = false;
+	public bool ready = false;
 
 	public Trooper getSelected(){
 		return Selected;

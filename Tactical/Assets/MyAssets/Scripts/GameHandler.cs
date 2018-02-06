@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class GameHandler : MonoBehaviour {
 	//handles macro game information such as turn stats and rosters
@@ -56,13 +57,12 @@ public class GameHandler : MonoBehaviour {
 					HudController._instance.showGameHud ();
 				}
 			}
-			ExitGames.Client.Photon.Hashtable ht = new ExitGames.Client.Photon.Hashtable ();
-			ht.Add ("Player" + PhotonNetwork.player.ID.ToString(), true);
 		}
 	}
 
 
 	public void RaiseTurnChange(){
+		Debug.Log ("RaiseTurnChange()");
 		int lastturn = GameHandler._instance.playersTurn;
 		int newturn = 0;
 		if (lastturn == PhotonNetwork.room.PlayerCount || lastturn==0) {
@@ -72,10 +72,23 @@ public class GameHandler : MonoBehaviour {
 		}
 		int[] turns = new int[]{ lastturn, newturn };
 		object turnObject = (object)turns;
-		PhotonNetwork.RaiseEvent (5, null, true, new RaiseEventOptions () {
+
+		//Raise Turn Change
+		PhotonNetwork.RaiseEvent(5, turnObject, true, new RaiseEventOptions(){
+			Receivers = ReceiverGroup.All});
+
+
+		//remove and send new state to cache
+		object ht = (object)GameHandler._instance.GetGameState ();
+		PhotonNetwork.RaiseEvent (9, null, true, new RaiseEventOptions () {
+			Receivers = ReceiverGroup.All, 
 			CachingOption = EventCaching.RemoveFromRoomCache
 		});
-		PhotonNetwork.RaiseEvent(5, turnObject, true, AllReceivers());
+		PhotonNetwork.RaiseEvent (9, ht, true, new RaiseEventOptions () {
+			Receivers = ReceiverGroup.All, 
+			CachingOption = EventCaching.AddToRoomCache,
+			ForwardToWebhook = true
+		});
 	}
 
 	public string TroopState(){
@@ -97,23 +110,22 @@ public class GameHandler : MonoBehaviour {
 					gamestate += "0";
 				}
 				gamestate += " ";
-				Debug.Log ("GAME STATE IS " + gamestate);
 			}
 		}
 		return gamestate;
 	}
 
-	public void UpdateTroopState(){
-		ExitGames.Client.Photon.Hashtable ht = PhotonNetwork.room.CustomProperties;
+	public void UpdateTroopState(Hashtable ht){
 		object troopsObject;
 		ht.TryGetValue ("Troops", out troopsObject);
 		string troopsString = (string)troopsObject;
 		if (troopsString != null) {
+			Debug.Log (troopsString);
 			string[] ta = troopsString.Split (' ');
 			List<string> ts = new List<string>(ta);
 			ts.RemoveAt (ts.Count - 1);
 			foreach(string s in ts){
-				Debug.Log (s);
+				//Debug.Log (s);
 				UpdateTroopFromCode (s);
 			}
 		}
@@ -149,25 +161,27 @@ public class GameHandler : MonoBehaviour {
 		return dogstate;
 	}
 
-	public void sendGameState(){
+	public Hashtable GetGameState(){
 		string troopstate = TroopState ();
 		string dogstate = dogState ();
-		ExitGames.Client.Photon.Hashtable ht = new ExitGames.Client.Photon.Hashtable ();
+		Hashtable ht = new Hashtable ();
 		ht.Add ("Troops", troopstate);
 		ht.Add ("Dogs", dogstate);
 		ht.Add ("Turn", turnNumber);
-		string deb;
-		Debug.Log ("SENDING GAME STATE TO ALL CLIENTS");
-		PhotonNetwork.room.SetCustomProperties (ht, null, true);
+		return ht;
+	}
+
+	public void SendGameState(){
+		PhotonNetwork.room.SetCustomProperties(GameHandler._instance.GetGameState(), null, true);
 	}
 
 	public void RaiseEndPlacements(){
+		PhotonNetwork.RaiseEvent(3, null, true, AllReceivers());
 		BarrierHandler._instance.PlaceAllBarriers ();
 		HudController._instance.removeStartHud ();
 		Game._instance.BeginGame ();
-		PhotonNetwork.RaiseEvent(3, null, true, AllReceivers());
 		int PlayersReady = 0;
-		foreach (Player p in GamePlayers) {
+		foreach (Player p in GameHandler._instance.GamePlayers) {
 			if (p.isReady ()) {
 				PlayersReady++;
 			}
@@ -185,14 +199,23 @@ public class GameHandler : MonoBehaviour {
 			int lastTurn = turns [0];
 			int newTurn = turns [1];
 			GameHandler._instance.playersTurn = newTurn;
+			Debug.Log ("Lastturn, newturn, myid " + lastTurn + " " + newTurn + " " + PhotonNetwork.player.ID);
 			if (lastTurn == PhotonNetwork.player.ID) {
-				GameHandler._instance.sendGameState ();
 				Game._instance.EndTurn ();
-			}	
+				Debug.Log ("ENDING TURN");
+			}
 			if (newTurn == PhotonNetwork.player.ID) {
-				GameHandler._instance.UpdateTroopState ();
+				Debug.Log ("Starting turn");
 				Game._instance.StartTurn ();
 			}
+		}
+	}
+
+	public static void SyncGameState(byte id, object content, int SenderID){
+		if (id == 9) {
+			Hashtable ht = (Hashtable)content;
+			PhotonNetwork.room.SetCustomProperties (ht, null, true);
+			GameHandler._instance.UpdateTroopState (ht);
 		}
 	}
 
