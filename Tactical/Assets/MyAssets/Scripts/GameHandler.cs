@@ -15,6 +15,7 @@ public class GameHandler : MonoBehaviour {
 	public GameObject PlayerObject;
 	private int playersTurn = 0;
 	private int turnNumber = 0;
+	private bool GamePhase = false;
 
 
 
@@ -62,7 +63,6 @@ public class GameHandler : MonoBehaviour {
 
 
 	public void RaiseTurnChange(){
-		Debug.Log ("RaiseTurnChange()");
 		int lastturn = GameHandler._instance.playersTurn;
 		int newturn = lastturn;
 		if (lastturn == PhotonNetwork.room.PlayerCount || lastturn==0) {
@@ -77,8 +77,10 @@ public class GameHandler : MonoBehaviour {
 		PhotonNetwork.RaiseEvent(5, turnObject, true, new RaiseEventOptions(){
 			Receivers = ReceiverGroup.All});
 
+		GameHandler._instance.refreshGameStates();
+	}
 
-		//remove and send new state to cache
+	public void refreshGameStates (){
 		object ht = (object)GameHandler._instance.GetGameState ();
 		PhotonNetwork.RaiseEvent (9, null, true, new RaiseEventOptions () {
 			Receivers = ReceiverGroup.All, 
@@ -179,6 +181,27 @@ public class GameHandler : MonoBehaviour {
 		BarrierHandler._instance.PlaceAllBarriers ();
 		HudController._instance.removeStartHud ();
 		Game._instance.BeginGame ();
+		if (GameHandler._instance.ReadyForChange ()) {
+			RaiseTurnChange ();
+			GamePhase = true;
+			PhotonNetwork.RaiseEvent (10, null, true, new RaiseEventOptions () {
+				Receivers = ReceiverGroup.All,
+				CachingOption = EventCaching.AddToRoomCache,
+				ForwardToWebhook = true
+			});
+		}
+	}
+
+	public static void SetGamePhase(byte id, object content, int senderID){
+		if (id == 10) {
+			if (GameHandler._instance.GamePhase == false) {
+				GameHandler._instance.GamePhase = true;
+				Game._instance.ReBeginGame ();
+			}
+		}
+	}
+
+	public bool ReadyForChange(){
 		int PlayersReady = 0;
 		foreach (Player p in GameHandler._instance.GamePlayers) {
 			if (p.isReady ()) {
@@ -187,8 +210,9 @@ public class GameHandler : MonoBehaviour {
 		}
 		int gpc = GameHandler._instance.GamePlayers.Count - 1;
 		if (PlayersReady == GameHandler._instance.GamePlayers.Count-1) {
-			RaiseTurnChange ();
+			return true;
 		}
+		return false;
 	}
 
 	//start turn for player {content[1]} and end turn for player {content[2]}
@@ -219,7 +243,6 @@ public class GameHandler : MonoBehaviour {
 	}
 
 	public static void EndPlacements(byte id, object content, int SenderID){
-
 		if(id == 3){
 			GameHandler._instance.getPlayer (SenderID).setReady(true);
 		}

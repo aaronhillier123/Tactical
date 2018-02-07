@@ -4,13 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayFab;
 
-[System.Serializable]
-public class GameJson {
-	public List<PlayerJson> players = new List<PlayerJson>();
-
-}
-
-
 
 public class Game : MonoBehaviour {
 
@@ -224,6 +217,15 @@ public class Game : MonoBehaviour {
 	public void BeginGame(){
 		Game._instance.SendBarriersToNetwork ();
 		BarrierHandler._instance.RemoveAllPrelimbs ();
+		Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
+		Vector3 newPos = Camera.main.transform.position;
+		Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);
+		GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
+		HudController._instance.GameHud.nextTroopPan ();
+		HudController._instance.BeginGame ();
+	}
+
+	public void ReBeginGame(){
 		Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
 		Vector3 newPos = Camera.main.transform.position;
 		Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);

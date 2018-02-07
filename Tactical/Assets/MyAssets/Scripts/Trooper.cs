@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class TroopJson{
-	public int id;
-	public int team;
-	public Vector3 position;
-	public Quaternion rotation;
-}
 
 public class Trooper : MonoBehaviour {
 

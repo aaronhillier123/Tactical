@@ -4,11 +4,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class PlayerJson{
-	public int team;
-	public List<TroopJson> troops = new List<TroopJson>();
-}
 
 public class Player : MonoBehaviour {
 
