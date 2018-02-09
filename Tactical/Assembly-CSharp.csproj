@@ -77,6 +77,7 @@
      <Compile Include="Assets\MyAssets\Scripts\HudController.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MenuControlScript.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MenuScript.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\MyGames.cs" />
      <Compile Include="Assets\MyAssets\Scripts\NaturalCover.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Player.cs" />
      <Compile Include="Assets\MyAssets\Scripts\PlayFabAuthenticator.cs" />

@@ -74,8 +74,14 @@ public class GameHandler : MonoBehaviour {
 		object turnObject = (object)turns;
 
 		//Raise Turn Change
+		PhotonNetwork.RaiseEvent(5, null, true, new RaiseEventOptions(){
+			Receivers = ReceiverGroup.All,
+			CachingOption = EventCaching.RemoveFromRoomCache});
+
 		PhotonNetwork.RaiseEvent(5, turnObject, true, new RaiseEventOptions(){
-			Receivers = ReceiverGroup.All});
+			Receivers = ReceiverGroup.All,
+			CachingOption = EventCaching.AddToRoomCache,
+			ForwardToWebhook = true});
 
 		GameHandler._instance.refreshGameStates();
 	}
@@ -181,9 +187,10 @@ public class GameHandler : MonoBehaviour {
 		BarrierHandler._instance.PlaceAllBarriers ();
 		HudController._instance.removeStartHud ();
 		Game._instance.BeginGame ();
+		GameHandler._instance.GamePhase = true;
 		if (GameHandler._instance.ReadyForChange ()) {
 			RaiseTurnChange ();
-			GamePhase = true;
+
 			PhotonNetwork.RaiseEvent (10, null, true, new RaiseEventOptions () {
 				Receivers = ReceiverGroup.All,
 				CachingOption = EventCaching.AddToRoomCache,
@@ -194,7 +201,9 @@ public class GameHandler : MonoBehaviour {
 
 	public static void SetGamePhase(byte id, object content, int senderID){
 		if (id == 10) {
+			Debug.Log ("Setting game phase");
 			if (GameHandler._instance.GamePhase == false) {
+				Debug.Log ("Inside game phase");
 				GameHandler._instance.GamePhase = true;
 				Game._instance.ReBeginGame ();
 			}
@@ -222,13 +231,10 @@ public class GameHandler : MonoBehaviour {
 			int lastTurn = turns [0];
 			int newTurn = turns [1];
 			GameHandler._instance.playersTurn = newTurn;
-			Debug.Log ("Lastturn, newturn, myid " + lastTurn + " " + newTurn + " " + PhotonNetwork.player.ID);
 			if (lastTurn == PhotonNetwork.player.ID) {
 				Game._instance.EndTurn ();
-				Debug.Log ("ENDING TURN");
 			}
 			if (newTurn == PhotonNetwork.player.ID) {
-				Debug.Log ("Starting turn");
 				Game._instance.StartTurn ();
 			}
 		}
@@ -239,6 +245,12 @@ public class GameHandler : MonoBehaviour {
 			Hashtable ht = (Hashtable)content;
 			PhotonNetwork.room.SetCustomProperties (ht, null, true);
 			GameHandler._instance.UpdateTroopState (ht);
+			Debug.Log ("RE SYNCING STATE");
+			if (PhotonNetwork.player.ID == GameHandler._instance.playersTurn) {
+				foreach (Trooper t in Game._instance.myPlayer.roster) {
+					t.reset ();
+				}
+			}
 		}
 	}
 

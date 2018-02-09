@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using PlayFab;
 using PlayFab.ClientModels;
+using System.Linq;
+
+using JsonObject = PlayFab.Json.JsonObject;
+
+public class GameListObject{
+	public string GameList;
+	public string Message;
+}
 
 public class MenuScript : MonoBehaviour {
 
@@ -12,9 +20,10 @@ public class MenuScript : MonoBehaviour {
 	private List<string> players;
 
 	private string _playFabPlayerIdCache;
-		
+	public string GameName = "Tester10";
 	private void AuthenticateWithPlayFab()  {
 		LogMessage("PlayFab authenticating using Custom ID...");
+		Debug.Log (PlayFabSettings.DeviceUniqueIdentifier + " is DUID");
 		PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest()
 			{
 				CreateAccount = true,
@@ -34,11 +43,30 @@ public class MenuScript : MonoBehaviour {
 	}
 		
 	private void AuthenticateWithPhoton(GetPhotonAuthenticationTokenResult obj) {
+		Debug.Log (_playFabPlayerIdCache + " is plafab cache id");
 		LogMessage("Photon token acquired: " + obj.PhotonCustomAuthenticationToken + "  Authentication complete.");
 		var customAuth = new AuthenticationValues { AuthType = CustomAuthenticationType.Custom };
 		customAuth.AddAuthParameter("username", _playFabPlayerIdCache);    // expected by PlayFab custom auth service
 		customAuth.AddAuthParameter("token", obj.PhotonCustomAuthenticationToken);
 		PhotonNetwork.AuthValues = customAuth;
+	}
+
+	public static void CloudGetMyGames(){
+		PlayFabClientAPI.ExecuteCloudScript (new ExecuteCloudScriptRequest () {
+			FunctionName = "GetMyGames",
+			FunctionParameter = new { name = "YOUR NAME"},
+			GeneratePlayStreamEvent = true,
+		}, OnGotGames, OnErrorShared);
+	}
+
+	public static void OnGotGames(ExecuteCloudScriptResult result){
+		
+		List<string> myList = PlayFab.Json.JsonWrapper.DeserializeObject<List<string>> (result.FunctionResult.ToString());
+		Debug.Log ("GETTING GAMES");
+		MyGames._instance.SetGames (myList);
+	}
+
+	public static void OnErrorShared(PlayFabError error){
 	}
 
 	private void OnPlayFabError(PlayFabError obj) {
@@ -84,33 +112,60 @@ public class MenuScript : MonoBehaviour {
 
 
 	}
-
+		
 	public void CreateGame(){
 		
 		if (PhotonNetwork.insideLobby) {
 			SceneManager.LoadScene ("GameScene");
-			if (PhotonNetwork.insideLobby) {
-				PhotonNetwork.JoinOrCreateRoom("TestRoom2", new RoomOptions () {
-					MaxPlayers = 4,
-					EmptyRoomTtl = 0,
-					PlayerTtl = -1,
-					IsVisible = true
-				}, null);
-			}
+			PhotonNetwork.CreateRoom(GameName, new RoomOptions () {
+				MaxPlayers = 4,
+				EmptyRoomTtl = 100,
+				PlayerTtl = -1,
+				IsVisible = true
+			}, null);
 		}
+	}
+
+	void OnPhotonCreateRoomFailed()
+	{
+
 	}
 
 	public void rejoinGame(){
 		if(PhotonNetwork.insideLobby){
 			SceneManager.LoadScene ("GameScene");
-			PhotonNetwork.ReJoinRoom ("TestRoom2");
+			PhotonNetwork.ReJoinRoom (GameName);
 		}
+	}
+
+	public void rejoinGame(string s){
+		if(PhotonNetwork.insideLobby){
+			SceneManager.LoadScene ("GameScene");
+			PhotonNetwork.ReJoinRoom (s);
+		}
+	}
+
+	public virtual void OnPhotonJoinRoomFailed(){
+		PhotonNetwork.CreateRoom(GameName, new RoomOptions () {
+			MaxPlayers = 4,
+			EmptyRoomTtl = 100,
+			PlayerTtl = -1,
+			IsVisible = true
+		}, null);
 	}
 
 	public virtual void OnPhotonRandomJoinFailed()
 	{
-		
+		PhotonNetwork.CreateRoom(null, new RoomOptions () {
+			MaxPlayers = 4,
+			EmptyRoomTtl = 100,
+			PlayerTtl = -1,
+			IsVisible = true
+		}, null);
+	}
 
+	public void loadGameScene(){
+		SceneManager.LoadScene ("MyGamesScene");
 	}
 
 	public virtual void OnReceivedRoomListUpdate(){

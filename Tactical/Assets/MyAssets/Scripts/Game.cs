@@ -43,6 +43,7 @@ public class Game : MonoBehaviour {
 		PhotonNetwork.OnEventCall += Trooper.makeNotInvulnerable;//8
 		PhotonNetwork.OnEventCall += Game.raiseBarrier; //15
 		PhotonNetwork.OnEventCall += GameHandler.SyncGameState;//9
+		PhotonNetwork.OnEventCall += GameHandler.SetGamePhase;//10
 
 	}
 	
@@ -232,9 +233,14 @@ public class Game : MonoBehaviour {
 		GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
 		HudController._instance.GameHud.nextTroopPan ();
 		HudController._instance.BeginGame ();
+		Debug.Log ("reseting troops");
+		foreach (Trooper t in Game._instance.myPlayer.roster) {
+			t.reset ();
+		}
 	}
 
 	public void StartTurn(){
+		Debug.Log ("reseting troops");
 		foreach (Trooper t in Game._instance.myPlayer.roster) {
 			t.reset ();
 		}
