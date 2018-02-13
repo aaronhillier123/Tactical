@@ -25,7 +25,7 @@ public class Player : MonoBehaviour {
 
 
 	//general player variables
-	public static int numberOfTroops = 3;
+	public static int numberOfTroops = 6;
 	private int dogtags = 3;
 	public List<ControlPoint> myControlPoints;
 
@@ -147,7 +147,9 @@ public class Player : MonoBehaviour {
 		float[] contentsFloat = new float[] {(float)Selected.id, point.x, point.y, point.z};
 		object contents = (object)contentsFloat;
 		Selected.DidSomething ();
-		PhotonNetwork.RaiseEvent ((byte)6, contents, true, GameHandler._instance.AllReceivers());
+		PhotonNetwork.RaiseEvent ((byte)6, contents, true, new RaiseEventOptions(){
+			Receivers = ReceiverGroup.All,
+			ForwardToWebhook = true});
 	}
 
 	//network grenade function

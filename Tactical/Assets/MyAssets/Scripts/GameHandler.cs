@@ -135,14 +135,32 @@ public class GameHandler : MonoBehaviour {
 			foreach(string s in ts){
 				UpdateTroopFromCode (s);
 			}
+
+			//if a troop is not in gameState, remove all traces of it
+			List<int> idsToRemove = new List<int>();
+			foreach(Trooper tt in Game._instance.allTroopers){
+				if (tt.isUpdated () == false) {
+					idsToRemove.Add(tt.id);
+				} else {
+					tt.SetUpdated (false);
+				}
+			}
+			foreach (int idd in idsToRemove) {
+				Trooper gone = Game._instance.GetTroop (idd);
+				Player gonePlayer = GameHandler._instance.getPlayer (gone.team);
+				Game._instance.allTroopers.Remove (gone);
+				gonePlayer.roster.Remove (gone);
+				Destroy (gone.gameObject);
+			}
 		}
 	}
 
 	public void UpdateTroopFromCode(string troopCode){
 		string[] tsa = troopCode.Split ('/');
 		Trooper t = Game._instance.GetTroop (int.Parse(tsa[0]));
+		//if troop exists, move to gameState position
 		if (t != null) {
-			t.team = int.Parse(tsa [1]);
+			t.team = int.Parse (tsa [1]);
 			float x = float.Parse (tsa [3]);
 			float y = float.Parse (tsa [4]);
 			float z = float.Parse (tsa [5]);
@@ -152,10 +170,29 @@ public class GameHandler : MonoBehaviour {
 			float ry = float.Parse (tsa [7]);
 			float rz = float.Parse (tsa [8]);
 			t.transform.eulerAngles = new Vector3 (rx, ry, rz);
-			if (int.Parse(tsa [9]) != 0) {
-				t.setPiece (BarrierHandler._instance.getPiece (int.Parse(tsa [9])));
+			if (int.Parse (tsa [9]) != 0) {
+				t.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
 			}
+			t.SetUpdated (true);
+		} else {
+			//if troop doesnt exists, create a troop at specs
+			float x = float.Parse (tsa [3]);
+			float y = float.Parse (tsa [4]);
+			float z = float.Parse (tsa [5]);
+			int newid = int.Parse (tsa [0]);
+			int newteam = int.Parse (tsa [1]);
+			float rx = float.Parse (tsa [6]);
+			float ry = float.Parse (tsa [7]);
+			float rz = float.Parse (tsa [8]);
+			Game._instance.myPlayer.CreateTroopAt (new Vector3 (x, y, z), Quaternion.Euler (new Vector3 (rx, ry, rz)), newteam, newid);
+			Trooper newTroop = Game._instance.GetTroop (newid);
+			if (int.Parse (tsa [9]) != 0) {
+				newTroop.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
+			}
+			newTroop.SetUpdated (true);
 		}
+
+
 	}
 
 	public string dogState(){
@@ -186,27 +223,19 @@ public class GameHandler : MonoBehaviour {
 		PhotonNetwork.RaiseEvent(3, null, true, AllReceivers());
 		BarrierHandler._instance.PlaceAllBarriers ();
 		HudController._instance.removeStartHud ();
-		Game._instance.BeginGame ();
+		Game._instance.SendBarriersToNetwork ();
+		BarrierHandler._instance.RemoveAllPrelimbs ();
+		PhotonNetwork.RaiseEvent (11, null, true, new RaiseEventOptions () {
+			CachingOption = EventCaching.AddToRoomCache,
+			Receivers = ReceiverGroup.All,
+			ForwardToWebhook = true
+		});
+
+
+		//Game._instance.BeginGame ();
 		GameHandler._instance.GamePhase = true;
 		if (GameHandler._instance.ReadyForChange ()) {
 			RaiseTurnChange ();
-
-			PhotonNetwork.RaiseEvent (10, null, true, new RaiseEventOptions () {
-				Receivers = ReceiverGroup.All,
-				CachingOption = EventCaching.AddToRoomCache,
-				ForwardToWebhook = true
-			});
-		}
-	}
-
-	public static void SetGamePhase(byte id, object content, int senderID){
-		if (id == 10) {
-			Debug.Log ("Setting game phase");
-			if (GameHandler._instance.GamePhase == false) {
-				Debug.Log ("Inside game phase");
-				GameHandler._instance.GamePhase = true;
-				Game._instance.ReBeginGame ();
-			}
 		}
 	}
 
@@ -281,7 +310,6 @@ public class GameHandler : MonoBehaviour {
 	public RaiseEventOptions AllReceivers(){
 		RaiseEventOptions ops = new RaiseEventOptions () {
 			ForwardToWebhook = true,
-			CachingOption = EventCaching.AddToRoomCache,
 			Receivers = ReceiverGroup.All,
 		};
 		return ops;

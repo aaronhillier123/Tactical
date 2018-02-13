@@ -61,6 +61,7 @@ public class BarrierHandler : MonoBehaviour {
 			g.GetComponent<BarrierPiece> ().myBarrier = myNewBarrier;
 		}
 		myNewBarrier.HidePrelimbs ();
+		myNewBarrier.placed = true;
 	}
 
 	public void RemoveAllPrelimbs(){

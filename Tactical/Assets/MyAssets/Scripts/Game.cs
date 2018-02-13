@@ -43,7 +43,8 @@ public class Game : MonoBehaviour {
 		PhotonNetwork.OnEventCall += Trooper.makeNotInvulnerable;//8
 		PhotonNetwork.OnEventCall += Game.raiseBarrier; //15
 		PhotonNetwork.OnEventCall += GameHandler.SyncGameState;//9
-		PhotonNetwork.OnEventCall += GameHandler.SetGamePhase;//10
+
+		PhotonNetwork.OnEventCall += Game.BeginGame;//11
 
 	}
 	
@@ -215,30 +216,21 @@ public class Game : MonoBehaviour {
 		return null;
 	}
 
-	public void BeginGame(){
-		Game._instance.SendBarriersToNetwork ();
-		BarrierHandler._instance.RemoveAllPrelimbs ();
-		Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
-		Vector3 newPos = Camera.main.transform.position;
-		Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);
-		GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
-		HudController._instance.GameHud.nextTroopPan ();
-		HudController._instance.BeginGame ();
-	}
+	public static void BeginGame(byte id, object content, int senderID){
 
-	public void ReBeginGame(){
-		Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
-		Vector3 newPos = Camera.main.transform.position;
-		Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);
-		GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
-		HudController._instance.GameHud.nextTroopPan ();
-		HudController._instance.BeginGame ();
-		Debug.Log ("reseting troops");
-		foreach (Trooper t in Game._instance.myPlayer.roster) {
-			t.reset ();
+		if (id == 11 && senderID == PhotonNetwork.player.ID) {
+			Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
+			Vector3 newPos = Camera.main.transform.position;
+			Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);
+			GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
+			HudController._instance.GameHud.nextTroopPan ();
+			HudController._instance.BeginGame ();
+			foreach (Trooper t in Game._instance.myPlayer.roster) {
+				t.reset ();
+			}
 		}
 	}
-
+		
 	public void StartTurn(){
 		Debug.Log ("reseting troops");
 		foreach (Trooper t in Game._instance.myPlayer.roster) {

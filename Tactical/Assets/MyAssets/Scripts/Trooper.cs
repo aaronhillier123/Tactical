@@ -31,7 +31,7 @@ public class Trooper : MonoBehaviour {
 	private float health = 100;
 	private BarrierPiece myPiece;
 	private Vector3 initialPosition;
-
+	private bool updated = false;
 	private float range = 100;
 
 	//identification
@@ -42,6 +42,7 @@ public class Trooper : MonoBehaviour {
 	public Player myPlayer;
 
 	public Vector3 currentPosition;
+	public Vector3 destinationPosition;
 	public Quaternion currentRotation;
 
 	//state of availability
@@ -96,11 +97,20 @@ public class Trooper : MonoBehaviour {
 	public float getMaxDistance(){
 		return maxDistance;
 	}
-
+	public void SetUpdated(bool ud){
+		updated = ud;
+	}
+	public bool isUpdated(){
+		return updated;
+	}
 
 	// Update is called once per frame
 	void Update () {
-		currentPosition = transform.position;
+		if (moving == false) {
+			currentPosition = transform.position;
+		} else {
+			currentPosition = destinationPosition;
+		}
 		currentRotation = transform.rotation;
 	}
 
@@ -226,7 +236,6 @@ public class Trooper : MonoBehaviour {
 			Receivers = ReceiverGroup.All,
 			ForwardToWebhook = true
 		});
-			//CachingOption = EventCaching.AddToRoomCache});
 		HudController._instance.CanAttack (false);	
 	}
 
@@ -237,6 +246,7 @@ public class Trooper : MonoBehaviour {
 	public IEnumerator moveToPosition(Vector3 destination, float speed)
 	{
 		moving = true;
+		destinationPosition = destination;
 		Vector3 direction = (destination - transform.position).normalized;
 		transform.rotation = Quaternion.LookRotation (direction);
 		animator.SetInteger ("AnimPar", 1);
@@ -248,7 +258,9 @@ public class Trooper : MonoBehaviour {
 		}
 		transform.position = destination;
 		stop ();
-		select ();
+		if (myPlayer.getSelected() == this && frozen == false) {
+			HudController._instance.CanAttack (true);
+		}
 	}
 
 	public IEnumerator MoveAfterSeconds(float time){
