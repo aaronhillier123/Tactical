@@ -131,7 +131,7 @@ public class Trooper : MonoBehaviour {
 		canMarathon = false;
 		if (isInvulnerable == true) {
 			isInvulnerable = false;
-			PhotonNetwork.RaiseEvent (9, (object)id, true, GameHandler._instance.AllReceivers ());
+			PhotonNetwork.RaiseEvent (8, (object)id, true, GameHandler._instance.AllReceivers ());
 		}
 		unFreeze ();
 	}
@@ -184,23 +184,26 @@ public class Trooper : MonoBehaviour {
 		}
 	}
 
+	public static void RaiseNotInvulnerable(byte id, object content, int senderID){
+		if (id == 8) {
+			Trooper myTroop = Game._instance.GetTroop ((int)content);
+			myTroop.makeNotInvulnerable ();
+		}
+	}
+
 	public void MakeInvulnerable(){
 		isInvulnerable = true;
 		GameObject myShield = Instantiate (TroopController._instance.TroopObjects[3], gameObject.transform);
 		myShield.GetComponent<MeshRenderer> ().material = TroopController._instance.ShieldMats[team];
 	}
 
-	public static void makeNotInvulnerable(byte id, object content, int senderID){
-		if (id == 8) {
-			Trooper myTroop = Game._instance.GetTroop ((int)content);
-			GameObject TroopOb = myTroop.gameObject;
-			myTroop.isInvulnerable = false;
-			GameObject myShield = TroopOb.transform.Find ("Shield(Clone)").gameObject;
+	public void makeNotInvulnerable(){
+			isInvulnerable = false;
+			GameObject myShield = transform.Find ("Shield(Clone)").gameObject;
 			if (myShield != null) {
 				Destroy (myShield);
 			}
 		}
-	}
 		
 	public static void move(byte id, object content, int senderID){
 		if (id == 2) {

@@ -88,7 +88,7 @@ public class GameHandler : MonoBehaviour {
 
 	public void refreshGameStates (){
 		object ht = (object)GameHandler._instance.GetGameState ();
-		PhotonNetwork.RaiseEvent (9, null, true, new RaiseEventOptions () {
+		PhotonNetwork.RaiseEvent (9, ht, true, new RaiseEventOptions () {
 			Receivers = ReceiverGroup.All, 
 			CachingOption = EventCaching.RemoveFromRoomCache
 		});
@@ -117,11 +117,11 @@ public class GameHandler : MonoBehaviour {
 				} else {
 						gamestate += "0/";
 				}
-				if (t.isInvulnerable) {
-					gamestate += "1/";
-				} else {
-					gamestate += "0/";
-				}
+				//if (t.isInvulnerable) {
+				//	gamestate += "1";
+				//} else {
+				//	gamestate += "0";
+				//}
 				gamestate += " ";
 			}
 		}
@@ -180,8 +180,8 @@ public class GameHandler : MonoBehaviour {
 				t.transform.Rotate(new Vector3(0, 180f, 0));
 				t.setAnimation (11);
 			}
-			if (int.Parse (tsa [10]) == 1)
-				t.MakeInvulnerable ();
+			//if (int.Parse (tsa [10]) == 1)
+				//t.MakeInvulnerable ();
 			t.SetUpdated (true);
 		} else {
 			//if troop doesnt exists, create a troop at specs
@@ -201,8 +201,8 @@ public class GameHandler : MonoBehaviour {
 				newTroop.transform.Rotate (new Vector3 (0, 180f, 0));
 				newTroop.setAnimation (11);
 			}
-			if (int.Parse (tsa [10]) == 1) 
-				t.MakeInvulnerable ();
+			//if (int.Parse (tsa [10]) == 1) 
+			//	t.MakeInvulnerable ();
 			newTroop.SetUpdated (true);
 		}
 	}

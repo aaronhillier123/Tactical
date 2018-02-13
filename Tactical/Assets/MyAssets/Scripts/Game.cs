@@ -40,7 +40,7 @@ public class Game : MonoBehaviour {
 		PhotonNetwork.OnEventCall += GameHandler.setTurn; //5
 		PhotonNetwork.OnEventCall += Player.throwGrenade; //6
 		PhotonNetwork.OnEventCall += Trooper.RaiseInvulnerable; //7
-		PhotonNetwork.OnEventCall += Trooper.makeNotInvulnerable;//8
+		PhotonNetwork.OnEventCall += Trooper.RaiseNotInvulnerable;//8
 		PhotonNetwork.OnEventCall += Game.raiseBarrier; //15
 		PhotonNetwork.OnEventCall += GameHandler.SyncGameState;//9
 
