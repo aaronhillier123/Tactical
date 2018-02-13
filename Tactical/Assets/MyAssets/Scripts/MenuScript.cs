@@ -126,6 +126,13 @@ public class MenuScript : MonoBehaviour {
 		}
 	}
 
+	public void JoinGame(){
+		if (PhotonNetwork.insideLobby) {
+			SceneManager.LoadScene ("GameScene");
+			PhotonNetwork.JoinRandomRoom ();
+		}
+	}
+
 	void OnPhotonCreateRoomFailed()
 	{
 

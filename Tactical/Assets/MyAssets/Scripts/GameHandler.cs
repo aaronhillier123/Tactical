@@ -112,10 +112,15 @@ public class GameHandler : MonoBehaviour {
 				gamestate += t.currentRotation.eulerAngles.x.ToString () + "/";
 				gamestate += t.currentRotation.eulerAngles.y.ToString () + "/";
 				gamestate += t.currentRotation.eulerAngles.z.ToString () + "/";
-				if (t.getPiece () != null) {
-					gamestate += t.getPiece ().id.ToString ();
+				if(t.getPiece () != null){
+					gamestate += t.getPiece ().id.ToString () + "/";
 				} else {
-					gamestate += "0";
+						gamestate += "0/";
+				}
+				if (t.isInvulnerable) {
+					gamestate += "1/";
+				} else {
+					gamestate += "0/";
 				}
 				gamestate += " ";
 			}
@@ -135,7 +140,6 @@ public class GameHandler : MonoBehaviour {
 			foreach(string s in ts){
 				UpdateTroopFromCode (s);
 			}
-
 			//if a troop is not in gameState, remove all traces of it
 			List<int> idsToRemove = new List<int>();
 			foreach(Trooper tt in Game._instance.allTroopers){
@@ -172,7 +176,12 @@ public class GameHandler : MonoBehaviour {
 			t.transform.eulerAngles = new Vector3 (rx, ry, rz);
 			if (int.Parse (tsa [9]) != 0) {
 				t.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
+				t.covering = true;
+				t.transform.Rotate(new Vector3(0, 180f, 0));
+				t.setAnimation (11);
 			}
+			if (int.Parse (tsa [10]) == 1)
+				t.MakeInvulnerable ();
 			t.SetUpdated (true);
 		} else {
 			//if troop doesnt exists, create a troop at specs
@@ -188,11 +197,14 @@ public class GameHandler : MonoBehaviour {
 			Trooper newTroop = Game._instance.GetTroop (newid);
 			if (int.Parse (tsa [9]) != 0) {
 				newTroop.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
+				newTroop.covering = true;
+				newTroop.transform.Rotate (new Vector3 (0, 180f, 0));
+				newTroop.setAnimation (11);
 			}
+			if (int.Parse (tsa [10]) == 1) 
+				t.MakeInvulnerable ();
 			newTroop.SetUpdated (true);
 		}
-
-
 	}
 
 	public string dogState(){

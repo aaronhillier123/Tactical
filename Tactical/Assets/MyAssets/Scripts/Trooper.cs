@@ -114,6 +114,10 @@ public class Trooper : MonoBehaviour {
 		currentRotation = transform.rotation;
 	}
 
+	public void setAnimation(int anim){
+		animator.SetInteger ("AnimPar", anim);
+	}
+
 	public void stop(){
 		moving = false;
 		animator.SetInteger ("AnimPar", 0);
@@ -172,13 +176,18 @@ public class Trooper : MonoBehaviour {
 	}
 		
 
-	public static void makeInvulnerable(byte id, object content, int senderID){
+
+	public static void RaiseInvulnerable(byte id, object content, int senderID){
 		if (id == 7) {
 			Trooper myTroop = Game._instance.GetTroop ((int)content);
-			myTroop.isInvulnerable = true;
-			GameObject myShield = Instantiate (TroopController._instance.TroopObjects[3], myTroop.gameObject.transform);
-			myShield.GetComponent<MeshRenderer> ().material = TroopController._instance.ShieldMats[myTroop.team];
+			myTroop.MakeInvulnerable ();
 		}
+	}
+
+	public void MakeInvulnerable(){
+		isInvulnerable = true;
+		GameObject myShield = Instantiate (TroopController._instance.TroopObjects[3], gameObject.transform);
+		myShield.GetComponent<MeshRenderer> ().material = TroopController._instance.ShieldMats[team];
 	}
 
 	public static void makeNotInvulnerable(byte id, object content, int senderID){

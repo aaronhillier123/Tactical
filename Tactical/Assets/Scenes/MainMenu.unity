@@ -867,7 +867,7 @@ Prefab:
     - target: {fileID: 114991521537524760, guid: 64a63eda500eac7478bfb89e7583df81,
         type: 2}
       propertyPath: GameName
-      value: MyGame1
+      value: MyGame5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 64a63eda500eac7478bfb89e7583df81, type: 2}
@@ -1446,7 +1446,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1310458112}
-        m_MethodName: rejoinGame
+        m_MethodName: JoinGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
