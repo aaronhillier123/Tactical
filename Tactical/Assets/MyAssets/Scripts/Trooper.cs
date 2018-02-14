@@ -333,7 +333,7 @@ public class Trooper : MonoBehaviour {
 	public void gotShot(){
 		StopAllCoroutines ();
 		animator.SetInteger ("AnimPar", 5);
-		decreaseHealth (50f);
+		decreaseHealth (100f);
 	}
 
 	public IEnumerator die(){

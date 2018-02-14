@@ -162,6 +162,7 @@ public class GameHandler : MonoBehaviour {
 		object dogObject;
 		ht.TryGetValue ("Dogs", out dogObject);
 		string dogsString = (string)dogObject;
+		Debug.Log ("FULL DOG STRING " + dogsString);
 		if (dogsString != null) {
 			string[] da = dogsString.Split (' ');
 			List<string> ds = new List<string> (da);
@@ -173,7 +174,7 @@ public class GameHandler : MonoBehaviour {
 			//if a dogtag is not in gameState, remove all traces of it
 			List<int> idsToRemove = new List<int>();
 			foreach (DogTag dg in Game._instance.allDogTags) {
-				if (dg.updated = false) {
+				if (dg.updated == false) {
 					idsToRemove.Add (dg.id);
 				} else {
 					dg.updated = false;
@@ -265,9 +266,10 @@ public class GameHandler : MonoBehaviour {
 		foreach (DogTag d in Game._instance.allDogTags) {
 			dogstate += d.id + "/";
 			dogstate += d.transform.position.x.ToString () + "/";
-			dogstate += d.transform.position.x.ToString () + "/";
-			dogstate += d.transform.position.x.ToString () + " ";
+			dogstate += d.transform.position.y.ToString () + "/";
+			dogstate += d.transform.position.z.ToString () + " ";
 		}
+		Debug.Log ("Created Dogstate " + dogstate);
 		return dogstate;
 	}
 
