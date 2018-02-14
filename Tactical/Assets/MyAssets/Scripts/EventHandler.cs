@@ -23,7 +23,6 @@ public class EventHandler : MonoBehaviour {
 					Receivers = ReceiverGroup.All,
 					CachingOption = EventCaching.AddToRoomCache
 				});
-				Debug.Log ("EVENT IS " + response);
 			}
 			gameStarted = true;
 		}

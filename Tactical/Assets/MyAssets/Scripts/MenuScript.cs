@@ -43,7 +43,7 @@ public class MenuScript : MonoBehaviour {
 	}
 		
 	private void AuthenticateWithPhoton(GetPhotonAuthenticationTokenResult obj) {
-		Debug.Log (_playFabPlayerIdCache + " is plafab cache id");
+		//Debug.Log (_playFabPlayerIdCache + " is plafab cache id");
 		LogMessage("Photon token acquired: " + obj.PhotonCustomAuthenticationToken + "  Authentication complete.");
 		var customAuth = new AuthenticationValues { AuthType = CustomAuthenticationType.Custom };
 		customAuth.AddAuthParameter("username", _playFabPlayerIdCache);    // expected by PlayFab custom auth service
@@ -62,7 +62,6 @@ public class MenuScript : MonoBehaviour {
 	public static void OnGotGames(ExecuteCloudScriptResult result){
 		
 		List<string> myList = PlayFab.Json.JsonWrapper.DeserializeObject<List<string>> (result.FunctionResult.ToString());
-		Debug.Log ("GETTING GAMES");
 		MyGames._instance.SetGames (myList);
 	}
 

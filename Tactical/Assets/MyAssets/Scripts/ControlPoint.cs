@@ -35,6 +35,15 @@ public class ControlPoint : MonoBehaviour {
 		}
 	}
 
+	public void setTeam(int currentTeam, int noNeed){
+		if (currentTeam != 0) {
+			Player myPlayer = GameHandler._instance.getPlayer (currentTeam);
+			team = currentTeam;
+			myFlag.GetComponent<MeshRenderer> ().material = FlagMaterials [team];
+			myPlayer.addControlPoint (this);
+		}
+	}
+
 	public IEnumerator changeFlag(Trooper troop){
 		
 		Vector3 og = myFlag.transform.position;

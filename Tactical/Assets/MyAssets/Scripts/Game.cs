@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayFab;
-
+using System.Linq;
 
 public class Game : MonoBehaviour {
 
@@ -161,7 +161,8 @@ public class Game : MonoBehaviour {
 						
 								} else if (myPlayer.getSelected().hasGrenade) {
 									//if current player is not attacking and player is carrying a grenade
-									myPlayer.RaiseGrenade (hit.point);
+
+									myPlayer.getSelected().RaiseGrenade (hit.point);
 
 								} else {
 									HudController._instance.showHealthBar (clickedOn.id);
@@ -175,15 +176,18 @@ public class Game : MonoBehaviour {
 							//if player is selected
 							if (myPlayer.getSelected().hasGrenade) {
 								//if grenade is equipped
-								myPlayer.RaiseGrenade(hit.point);
+								myPlayer.getSelected().RaiseGrenade(hit.point);
 							} else {
 								//regular player movement
 								if (hit.collider.CompareTag ("Barrier")) {
-									myPlayer.getSelected().takingCover = true;
-									myPlayer.getSelected().RaiseMovement (hit.point, 1);
+									myPlayer.getSelected ().takingCover = true;
+									myPlayer.getSelected ().RaiseMovement (hit.point, 1, 0);
+								} else if (hit.collider.CompareTag ("Terrain")) {
+									myPlayer.getSelected ().takingCover = false;
+									myPlayer.getSelected ().RaiseMovement (hit.point, 0, 1);
 								} else {
-									myPlayer.getSelected().takingCover= false;
-									myPlayer.getSelected().RaiseMovement (hit.point, 0);
+									myPlayer.getSelected ().takingCover = false;
+									myPlayer.getSelected ().RaiseMovement (hit.point, 0, 0);
 								}
 							}
 						}
@@ -216,6 +220,11 @@ public class Game : MonoBehaviour {
 		return null;
 	}
 
+	public List<ControlPoint> allControlPoints(){
+		ControlPoint[] cps = (GameObject.FindObjectsOfType (typeof(ControlPoint)) as ControlPoint[]);
+		return cps.ToList();
+	}
+
 	public static void BeginGame(byte id, object content, int senderID){
 
 		if (id == 11 && senderID == PhotonNetwork.player.ID) {
@@ -225,14 +234,10 @@ public class Game : MonoBehaviour {
 			GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
 			HudController._instance.GameHud.nextTroopPan ();
 			HudController._instance.BeginGame ();
-			//foreach (Trooper t in Game._instance.myPlayer.roster) {
-			//	t.reset ();
-			//}
 		}
 	}
 		
 	public void StartTurn(){
-		Debug.Log ("reseting troops");
 		foreach (Trooper t in Game._instance.myPlayer.roster) {
 			t.reset ();
 		}
@@ -249,7 +254,6 @@ public class Game : MonoBehaviour {
 			}
 		}
 		
-		//Debug.Log (GetGameState());
 		HudController._instance.EndTurn ();
 		myPlayer.setTurn (false);
 	}

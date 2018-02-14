@@ -126,12 +126,42 @@ public class GameHandler : MonoBehaviour {
 		return gamestate;
 	}
 
+	public string CpState(){
+		string cpstate = "";
+		foreach (ControlPoint cp in Game._instance.allControlPoints()) {
+			cpstate += cp.id + "/";
+			cpstate += cp.team + " ";
+		}
+		return cpstate;
+	}
+
+	public void UpdateCpState(Hashtable ht){
+		object cpObject;
+		ht.TryGetValue ("Cps", out cpObject);
+		string cpString = (string)cpObject;
+		if(cpString !=null){
+			string[] cpa = cpString.Split (' ');
+			List<string> cps = new List<string> (cpa);
+			cps.RemoveAt (cps.Count - 1);
+			foreach (string s in cps) {
+				UpdateCpFromCode (s);
+			}
+		}
+	}
+
+	public void UpdateCpFromCode(string cpCode){
+		string[] cpa = cpCode.Split ('/');
+		ControlPoint cp = Game._instance.getConrolPoint (int.Parse (cpa [0]));
+		if (cp != null) {
+			cp.setTeam (int.Parse (cpa [1]), 0);
+		}
+	}
+
 	public void UpdateTroopState(Hashtable ht){
 		object troopsObject;
 		ht.TryGetValue ("Troops", out troopsObject);
 		string troopsString = (string)troopsObject;
 		if (troopsString != null) {
-			Debug.Log (troopsString);
 			string[] ta = troopsString.Split (' ');
 			List<string> ts = new List<string>(ta);
 			ts.RemoveAt (ts.Count - 1);
@@ -162,7 +192,6 @@ public class GameHandler : MonoBehaviour {
 		object dogObject;
 		ht.TryGetValue ("Dogs", out dogObject);
 		string dogsString = (string)dogObject;
-		Debug.Log ("FULL DOG STRING " + dogsString);
 		if (dogsString != null) {
 			string[] da = dogsString.Split (' ');
 			List<string> ds = new List<string> (da);
@@ -269,17 +298,18 @@ public class GameHandler : MonoBehaviour {
 			dogstate += d.transform.position.y.ToString () + "/";
 			dogstate += d.transform.position.z.ToString () + " ";
 		}
-		Debug.Log ("Created Dogstate " + dogstate);
 		return dogstate;
 	}
 
 	public Hashtable GetGameState(){
 		string troopstate = TroopState ();
 		string dogstate = dogState ();
+		string cpState = CpState ();
 		Hashtable ht = new Hashtable ();
 		ht.Add ("Troops", troopstate);
 		ht.Add ("Dogs", dogstate);
 		ht.Add ("Turn", turnNumber);
+		ht.Add ("Cps", cpState);
 		return ht;
 	}
 
@@ -343,6 +373,7 @@ public class GameHandler : MonoBehaviour {
 			PhotonNetwork.room.SetCustomProperties (ht, null, true);
 			GameHandler._instance.UpdateTroopState (ht);
 			GameHandler._instance.UpdateDogState (ht);
+			GameHandler._instance.UpdateCpState (ht);
 		}
 	}
 

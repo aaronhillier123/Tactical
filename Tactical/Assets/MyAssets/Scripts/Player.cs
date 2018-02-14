@@ -148,15 +148,7 @@ public class Player : MonoBehaviour {
 		Game._instance.allDogTags.Add(newDogTag.GetComponent<DogTag>());
 	}
 
-	public void RaiseGrenade(Vector3 point){
 
-		float[] contentsFloat = new float[] {(float)Selected.id, point.x, point.y, point.z};
-		object contents = (object)contentsFloat;
-		Selected.DidSomething ();
-		PhotonNetwork.RaiseEvent ((byte)6, contents, true, new RaiseEventOptions(){
-			Receivers = ReceiverGroup.All,
-			ForwardToWebhook = true});
-	}
 
 	//network grenade function
 	public static void throwGrenade(byte id, object content, int senderID){

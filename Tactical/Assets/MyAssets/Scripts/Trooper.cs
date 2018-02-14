@@ -10,7 +10,8 @@ public class Trooper : MonoBehaviour {
 	//public GameObject hitmisOb;
 	[System.NonSerialized]
 	private GameObject limit;
-
+	[System.NonSerialized]
+	private GameObject gLimit;
 	//animation
 	private Animator animator;
 	//0 - idle
@@ -33,7 +34,7 @@ public class Trooper : MonoBehaviour {
 	private Vector3 initialPosition;
 	private bool updated = false;
 	private float range = 100;
-
+	private float grenadeMax = 40f;
 	//identification
 	public int id;
 	public int team;
@@ -130,12 +131,10 @@ public class Trooper : MonoBehaviour {
 		isSniper = false;
 		canMarathon = false;
 		if (isInvulnerable == true) {
-			Debug.Log ("THERE IS AN INVULNERABLE TROOP");
 			PhotonNetwork.RaiseEvent (8, (object)id, true, new RaiseEventOptions(){
 				Receivers = ReceiverGroup.All, 
 				ForwardToWebhook = true});
 		} else {
-			Debug.Log ("NOT INVULNBERABLE");
 		}
 		unFreeze ();
 	}
@@ -233,10 +232,14 @@ public class Trooper : MonoBehaviour {
 		}
 	}
 		
-	public void RaiseMovement(Vector3 point, int cover){
+	public void RaiseMovement(Vector3 point, int cover, int terrain){
 		HudController._instance.AttackMode (false);
-		Vector3 floor = toFloor (point);
-		Debug.Log ("Floor level is " + floor.y);
+		Vector3 floor;
+		if (terrain == 0) {
+			floor = toFloor (point);
+		} else {
+			floor = point;
+		}
 		float[] contents = new float[6];
 		contents [0] = (float)myPlayer.getSelected().id;
 		if (Vector3.Distance (floor, myPlayer.getSelected().getInPos()) <= myPlayer.getSelected().getMaxDistance()) {
@@ -257,6 +260,29 @@ public class Trooper : MonoBehaviour {
 			ForwardToWebhook = true
 		});
 		HudController._instance.CanAttack (false);	
+	}
+
+	public void RaiseGrenade(Vector3 point){
+		Vector3 floor = toFloor (point);
+		Vector3 landing = ((floor - initialPosition).normalized) * grenadeMax;
+		float[] contentsFloat = new float[4];
+		contentsFloat [0] = id;
+		if (Vector3.Distance (floor, transform.position) <= grenadeMax) {
+			//if the click point is within the troops walking distance
+			contentsFloat [1] = point.x;
+			contentsFloat [2] = floor.y;
+			contentsFloat [3] = floor.z;
+		} else {
+			//find farthest point that troop can currently travel
+			contentsFloat [1] = initialPosition.x + landing.x;
+			contentsFloat [2] = initialPosition.y + landing.y;
+			contentsFloat [3] = initialPosition.z + landing.z;
+		}
+		object contents = (object)contentsFloat;
+		DidSomething ();
+		PhotonNetwork.RaiseEvent ((byte)6, contents, true, new RaiseEventOptions(){
+			Receivers = ReceiverGroup.All,
+			ForwardToWebhook = true});
 	}
 
 	public Vector3 toFloor(Vector3 point){
@@ -351,6 +377,7 @@ public class Trooper : MonoBehaviour {
 		
 	public void giveGrenade(){
 		hasGrenade = true;
+		ShowGrenadeLimit ();
 	}
 
 	public void giveSniper(){
@@ -392,6 +419,7 @@ public class Trooper : MonoBehaviour {
 
 	public void throwGrenade(Vector3 target){
 		StopAllCoroutines ();
+		RemoveGLimit ();
 		animator.SetInteger ("AnimPar", 3);
 		StartCoroutine (throwCoroutine (target));
 		Invoke ("stop", 1f);
@@ -431,7 +459,6 @@ public class Trooper : MonoBehaviour {
 		Destroy (myGrenade);
 		yield return new WaitForSeconds (1f);
 		Destroy (ex);
-		Debug.Log ("Stop2");
 		stop ();
 		if (covering == true) {
 			animator.SetInteger ("AnimPar", 11);
@@ -503,6 +530,20 @@ public class Trooper : MonoBehaviour {
 		}
 	}
 
+	public void ShowGrenadeLimit(){
+		GameObject limiter = Instantiate (TroopController._instance.TroopObjects [6], currentPosition, Quaternion.identity, transform);
+		gLimit = limiter;
+		gLimit.GetComponent<Projector> ().orthographicSize = 80;
+		gLimit.transform.SetParent (null);
+		gLimit.transform.rotation = Quaternion.Euler (90f, 0, 0);
+	}
+
+	public void RemoveGLimit(){
+		if(gLimit!=null){
+			Destroy (gLimit.gameObject);
+		}
+	}
+
 	public void RemoveWalkLimit(){
 		if(limit!=null){
 			Destroy (limit.gameObject);
@@ -510,8 +551,9 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void goBack(float distance){
-		Vector3 direction = (initialPosition - gameObject.transform.position).normalized;
-		gameObject.transform.Translate (direction * distance);
+		Vector3 direction = gameObject.transform.eulerAngles + new Vector3 (0, 180, 0);
+		Vector3 newPos = direction * distance;
+		gameObject.transform.Translate (newPos.x, 0, newPos.z);
 	}
 		
 	public void unselect(){

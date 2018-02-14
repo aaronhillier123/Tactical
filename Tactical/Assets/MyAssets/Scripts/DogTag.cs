@@ -22,10 +22,8 @@ public class DogTag : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider coll){
-		Debug.Log ("trigger endered");
 		Trooper myTroop = coll.gameObject.GetComponent<Trooper> ();
 		if (myTroop != null) {
-			Debug.Log ("trigger troop is " + myTroop.id);
 			myTroop.myPlayer.addDogTags(1);
 			Hud.updateDogTags (myTroop.myPlayer.getDogTags());
 			Game._instance.allDogTags.Remove (this);
