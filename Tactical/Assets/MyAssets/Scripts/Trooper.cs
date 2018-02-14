@@ -60,7 +60,7 @@ public class Trooper : MonoBehaviour {
 	public bool hasGrenade = false;
 	[System.NonSerialized]
 	public bool isSniper = false;
-	[System.NonSerialized]
+	//[System.NonSerialized]
 	public bool isInvulnerable = false;
 	[System.NonSerialized]
 	public bool canMarathon = false;
@@ -130,8 +130,12 @@ public class Trooper : MonoBehaviour {
 		isSniper = false;
 		canMarathon = false;
 		if (isInvulnerable == true) {
-			isInvulnerable = false;
-			PhotonNetwork.RaiseEvent (8, (object)id, true, GameHandler._instance.AllReceivers ());
+			Debug.Log ("THERE IS AN INVULNERABLE TROOP");
+			PhotonNetwork.RaiseEvent (8, (object)id, true, new RaiseEventOptions(){
+				Receivers = ReceiverGroup.All, 
+				ForwardToWebhook = true});
+		} else {
+			Debug.Log ("NOT INVULNBERABLE");
 		}
 		unFreeze ();
 	}
@@ -192,18 +196,22 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void MakeInvulnerable(){
-		isInvulnerable = true;
-		GameObject myShield = Instantiate (TroopController._instance.TroopObjects[3], gameObject.transform);
-		myShield.GetComponent<MeshRenderer> ().material = TroopController._instance.ShieldMats[team];
+		if (isInvulnerable == false) {
+			isInvulnerable = true;
+			GameObject myShield = Instantiate (TroopController._instance.TroopObjects [3], gameObject.transform);
+			myShield.GetComponent<MeshRenderer> ().material = TroopController._instance.ShieldMats [team];
+		}
 	}
 
 	public void makeNotInvulnerable(){
+		if (isInvulnerable == true) {
 			isInvulnerable = false;
 			GameObject myShield = transform.Find ("Shield(Clone)").gameObject;
 			if (myShield != null) {
 				Destroy (myShield);
 			}
 		}
+	}
 		
 	public static void move(byte id, object content, int senderID){
 		if (id == 2) {
@@ -351,8 +359,9 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void giveInvulnerability(){
-		isInvulnerable = true;
-		PhotonNetwork.RaiseEvent (7, (object)id, true, GameHandler._instance.AllReceivers());
+		PhotonNetwork.RaiseEvent (7, (object)id, true, new RaiseEventOptions(){
+			Receivers = ReceiverGroup.All,
+			ForwardToWebhook = true});
 	}
 
 	public void giveMarathon(){

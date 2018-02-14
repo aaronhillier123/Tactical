@@ -72,7 +72,7 @@ public class GameHandler : MonoBehaviour {
 		}
 		int[] turns = new int[]{ lastturn, newturn };
 		object turnObject = (object)turns;
-
+		GameHandler._instance.refreshGameStates();
 		//Raise Turn Change
 		PhotonNetwork.RaiseEvent(5, null, true, new RaiseEventOptions(){
 			Receivers = ReceiverGroup.All,
@@ -83,7 +83,11 @@ public class GameHandler : MonoBehaviour {
 			CachingOption = EventCaching.AddToRoomCache,
 			ForwardToWebhook = true});
 
-		GameHandler._instance.refreshGameStates();
+		if (playersTurn > 0) {
+			foreach (Trooper t in GameHandler._instance.getPlayer(GameHandler._instance.playersTurn).roster) {
+				t.reset ();
+			}
+		}
 	}
 
 	public void refreshGameStates (){
@@ -117,11 +121,11 @@ public class GameHandler : MonoBehaviour {
 				} else {
 						gamestate += "0/";
 				}
-				//if (t.isInvulnerable) {
-				//	gamestate += "1";
-				//} else {
-				//	gamestate += "0";
-				//}
+				if (t.isInvulnerable) {
+					gamestate += "1";
+				} else {
+					gamestate += "0";
+				}
 				gamestate += " ";
 			}
 		}
@@ -139,6 +143,13 @@ public class GameHandler : MonoBehaviour {
 			ts.RemoveAt (ts.Count - 1);
 			foreach(string s in ts){
 				UpdateTroopFromCode (s);
+			}
+
+			//remove invulnerability
+			if (GameHandler._instance.playersTurn > 0) {
+				foreach (Trooper t in GameHandler._instance.getPlayer(GameHandler._instance.playersTurn).roster) {
+					t.reset ();
+				}
 			}
 			//if a troop is not in gameState, remove all traces of it
 			List<int> idsToRemove = new List<int>();
@@ -180,8 +191,11 @@ public class GameHandler : MonoBehaviour {
 				t.transform.Rotate(new Vector3(0, 180f, 0));
 				t.setAnimation (11);
 			}
-			//if (int.Parse (tsa [10]) == 1)
-				//t.MakeInvulnerable ();
+			if (int.Parse (tsa [10]) == 1) {
+				t.MakeInvulnerable ();
+			} else {
+				t.makeNotInvulnerable ();
+			}
 			t.SetUpdated (true);
 		} else {
 			//if troop doesnt exists, create a troop at specs
@@ -201,8 +215,8 @@ public class GameHandler : MonoBehaviour {
 				newTroop.transform.Rotate (new Vector3 (0, 180f, 0));
 				newTroop.setAnimation (11);
 			}
-			//if (int.Parse (tsa [10]) == 1) 
-			//	t.MakeInvulnerable ();
+			if (int.Parse (tsa [10]) == 1) 
+				t.MakeInvulnerable ();
 			newTroop.SetUpdated (true);
 		}
 	}
@@ -286,12 +300,6 @@ public class GameHandler : MonoBehaviour {
 			Hashtable ht = (Hashtable)content;
 			PhotonNetwork.room.SetCustomProperties (ht, null, true);
 			GameHandler._instance.UpdateTroopState (ht);
-			Debug.Log ("RE SYNCING STATE");
-			if (PhotonNetwork.player.ID == GameHandler._instance.playersTurn) {
-				foreach (Trooper t in Game._instance.myPlayer.roster) {
-					t.reset ();
-				}
-			}
 		}
 	}
 

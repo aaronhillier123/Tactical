@@ -867,7 +867,7 @@ Prefab:
     - target: {fileID: 114991521537524760, guid: 64a63eda500eac7478bfb89e7583df81,
         type: 2}
       propertyPath: GameName
-      value: MyGame11
+      value: MyGame4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 64a63eda500eac7478bfb89e7583df81, type: 2}
