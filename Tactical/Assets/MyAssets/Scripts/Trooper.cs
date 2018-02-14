@@ -178,7 +178,46 @@ public class Trooper : MonoBehaviour {
 		StartCoroutine(ContinueAnimation(0.8f, 10, currentAnimation));
 	}
 		
+	public void RaiseAttack(Trooper EnemyTroop){
+		myPlayer.setAttacking(false);
+		freeze ();
+		HudController._instance.removeChances ();
 
+		//Randomize hit based on distance and troop range
+		float distance = Vector3.Distance (transform.position, EnemyTroop.transform.position);
+		float hit = (Random.Range (0, getRange()) - distance) > 0 ? 1 : 0;
+		Vector3 enemypos = EnemyTroop.transform.position + new Vector3(0f, 3f, 0f);
+
+		//under cover may be blocked by barrier
+		if (EnemyTroop.getPiece() != null) {
+			Vector3 enemyCenter = EnemyTroop.GetComponent<CapsuleCollider> ().bounds.center;
+			Vector3 barrierCenter = EnemyTroop.getPiece().GetComponent<BoxCollider> ().bounds.center;
+			float DistanceToEnemy = Vector3.Distance (transform.position, enemyCenter);
+			float DistanceToBarrier = Vector3.Distance (transform.position, barrierCenter);
+			if (DistanceToEnemy > DistanceToBarrier) {
+				hit = 2;
+			}
+		}
+
+		//determine if enemy is behind terrain or cover
+		RaycastHit hitcast;
+		Gizmos.color = Color.white;
+		Gizmos.DrawLine (GetComponent<Renderer> ().bounds.center, EnemyTroop.GetComponent<Renderer> ().bounds.center);
+		if(Physics.Linecast(GetComponent<Renderer>().bounds.center, EnemyTroop.GetComponent<Renderer>().bounds.center, out hitcast)){
+			if(hitcast.collider.CompareTag("Terrain") || hitcast.collider.CompareTag("NaturalCover")){
+				hit = 0;
+			}
+		}
+
+
+		float[] targets = new float[3];
+		targets [0] = id;
+		targets [1] = EnemyTroop.id;
+		targets [2] = hit;
+		DidSomething ();
+		object target = (object)targets;
+		PhotonNetwork.RaiseEvent (4, target, true, GameHandler._instance.AllReceivers());
+	}
 
 	public static void RaiseInvulnerable(byte id, object content, int senderID){
 		if (id == 7) {

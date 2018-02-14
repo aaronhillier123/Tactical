@@ -100,34 +100,7 @@ public class Player : MonoBehaviour {
 		myControlPoints.Remove (cp);
 	}
 		
-	public void RaiseAttack(Trooper EnemyTroop){
-		attacking = false;
-		Selected.freeze ();
-		HudController._instance.removeChances ();
 
-		float distance = Vector3.Distance (Selected.transform.position, EnemyTroop.transform.position);
-		float hit = (Random.Range (0, Selected.getRange()) - distance) > 0 ? 1 : 0;
-		Vector3 enemypos = EnemyTroop.transform.position + new Vector3(0f, 3f, 0f);
-
-		//under cover may be blocked by barrier
-		if (EnemyTroop.getPiece() != null) {
-			Vector3 enemyCenter = EnemyTroop.GetComponent<CapsuleCollider> ().bounds.center;
-			Vector3 barrierCenter = EnemyTroop.getPiece().GetComponent<BoxCollider> ().bounds.center;
-			float DistanceToEnemy = Vector3.Distance (Selected.transform.position, enemyCenter);
-			float DistanceToBarrier = Vector3.Distance (Selected.transform.position, barrierCenter);
-			if (DistanceToEnemy > DistanceToBarrier) {
-				hit = 2;
-			}
-		}
-
-		float[] targets = new float[3];
-		targets [0] = Selected.id;
-		targets [1] = EnemyTroop.id;
-		targets [2] = hit;
-		Selected.DidSomething ();
-		object target = (object)targets;
-		PhotonNetwork.RaiseEvent (4, target, true, GameHandler._instance.AllReceivers());
-	}
 
 	//network attack function
 	public static void attack(byte id, object content, int senderID){

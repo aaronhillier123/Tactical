@@ -157,7 +157,7 @@ public class Game : MonoBehaviour {
 										
 								if (myPlayer.isAttacking() == true) {
 									//if current player is attacking
-									myPlayer.RaiseAttack (clickedOn);
+									myPlayer.getSelected().RaiseAttack (clickedOn);
 						
 								} else if (myPlayer.getSelected().hasGrenade) {
 									//if current player is not attacking and player is carrying a grenade
