@@ -343,11 +343,11 @@ public class Trooper : MonoBehaviour {
 		yield return new WaitForSeconds (2f);
 		myPlayer.roster.Remove (this);
 		Game._instance.allTroopers.Remove (this);
-		GameObject newDogTag = Instantiate (TroopController._instance.TroopObjects[4], transform.position + new Vector3 (0, 3f, 0), Quaternion.identity);
-		Game._instance.allDogTags.Add(newDogTag.GetComponent<DogTag>());
+		myPlayer.CreateDogTagAt(transform.position + new Vector3 (0, 3f, 0), id);
 		HudController._instance.removeHealthBar (id);
 		Destroy (gameObject);
 	}
+
 		
 	public void giveGrenade(){
 		hasGrenade = true;

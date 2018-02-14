@@ -25,7 +25,7 @@ public class Player : MonoBehaviour {
 
 
 	//general player variables
-	public static int numberOfTroops = 6;
+	public static int numberOfTroops = 5;
 	private int dogtags = 3;
 	public List<ControlPoint> myControlPoints;
 
@@ -141,6 +141,12 @@ public class Player : MonoBehaviour {
 			}
 		}
 
+	public void CreateDogTagAt(Vector3 pos, int dogId){
+		GameObject newDogTag = Instantiate (TroopController._instance.TroopObjects[4], pos, Quaternion.identity);
+		DogTag dt = newDogTag.GetComponent<DogTag> ();
+		dt.id = dogId;
+		Game._instance.allDogTags.Add(newDogTag.GetComponent<DogTag>());
+	}
 
 	public void RaiseGrenade(Vector3 point){
 

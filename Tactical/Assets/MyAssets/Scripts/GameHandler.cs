@@ -82,12 +82,6 @@ public class GameHandler : MonoBehaviour {
 			Receivers = ReceiverGroup.All,
 			CachingOption = EventCaching.AddToRoomCache,
 			ForwardToWebhook = true});
-
-		if (playersTurn > 0) {
-			foreach (Trooper t in GameHandler._instance.getPlayer(GameHandler._instance.playersTurn).roster) {
-				t.reset ();
-			}
-		}
 	}
 
 	public void refreshGameStates (){
@@ -144,13 +138,7 @@ public class GameHandler : MonoBehaviour {
 			foreach(string s in ts){
 				UpdateTroopFromCode (s);
 			}
-
-			//remove invulnerability
-			if (GameHandler._instance.playersTurn > 0) {
-				foreach (Trooper t in GameHandler._instance.getPlayer(GameHandler._instance.playersTurn).roster) {
-					t.reset ();
-				}
-			}
+				
 			//if a troop is not in gameState, remove all traces of it
 			List<int> idsToRemove = new List<int>();
 			foreach(Trooper tt in Game._instance.allTroopers){
@@ -165,6 +153,35 @@ public class GameHandler : MonoBehaviour {
 				Player gonePlayer = GameHandler._instance.getPlayer (gone.team);
 				Game._instance.allTroopers.Remove (gone);
 				gonePlayer.roster.Remove (gone);
+				Destroy (gone.gameObject);
+			}
+		}
+	}
+
+	public void UpdateDogState(Hashtable ht){
+		object dogObject;
+		ht.TryGetValue ("Dogs", out dogObject);
+		string dogsString = (string)dogObject;
+		if (dogsString != null) {
+			string[] da = dogsString.Split (' ');
+			List<string> ds = new List<string> (da);
+			ds.RemoveAt (ds.Count - 1);
+			foreach (string s in ds) {
+				UpdateDogFromCode (s);
+			}
+
+			//if a dogtag is not in gameState, remove all traces of it
+			List<int> idsToRemove = new List<int>();
+			foreach (DogTag dg in Game._instance.allDogTags) {
+				if (dg.updated = false) {
+					idsToRemove.Add (dg.id);
+				} else {
+					dg.updated = false;
+				}
+			}
+			foreach (int idd in idsToRemove) {
+				DogTag gone = Game._instance.GetTag (idd);
+				Game._instance.allDogTags.Remove (gone);
 				Destroy (gone.gameObject);
 			}
 		}
@@ -221,9 +238,32 @@ public class GameHandler : MonoBehaviour {
 		}
 	}
 
+	public void UpdateDogFromCode(string dogCode){
+		string[] tsa = dogCode.Split ('/');
+		DogTag dg = Game._instance.GetTag (int.Parse(tsa[0]));
+		//if troop exists, move to gameState position
+		if (dg != null) {
+			float x = float.Parse (tsa [1]);
+			float y = float.Parse (tsa [2]);
+			float z = float.Parse (tsa [3]);
+			dg.transform.position = new Vector3 (x, y, z);
+			dg.updated = true;
+		} else {
+			//if troop doesnt exists, create a troop at specs
+			float x = float.Parse (tsa [1]);
+			float y = float.Parse (tsa [2]);
+			float z = float.Parse (tsa [3]);
+			int newid = int.Parse (tsa [0]);
+
+			Game._instance.myPlayer.CreateDogTagAt (new Vector3 (x, y, z), newid);
+			Game._instance.GetTag (newid).updated = true;
+		}
+	}
+
 	public string dogState(){
 		string dogstate = "";
 		foreach (DogTag d in Game._instance.allDogTags) {
+			dogstate += d.id + "/";
 			dogstate += d.transform.position.x.ToString () + "/";
 			dogstate += d.transform.position.x.ToString () + "/";
 			dogstate += d.transform.position.x.ToString () + " ";
@@ -300,6 +340,7 @@ public class GameHandler : MonoBehaviour {
 			Hashtable ht = (Hashtable)content;
 			PhotonNetwork.room.SetCustomProperties (ht, null, true);
 			GameHandler._instance.UpdateTroopState (ht);
+			GameHandler._instance.UpdateDogState (ht);
 		}
 	}
 

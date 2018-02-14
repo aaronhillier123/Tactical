@@ -9,6 +9,8 @@ public class DogTagJson{
 
 public class DogTag : MonoBehaviour {
 
+	public bool updated = false;
+	public int id;
 	// Use this for initialization
 	void Start () {
 		

@@ -225,9 +225,9 @@ public class Game : MonoBehaviour {
 			GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
 			HudController._instance.GameHud.nextTroopPan ();
 			HudController._instance.BeginGame ();
-			foreach (Trooper t in Game._instance.myPlayer.roster) {
-				t.reset ();
-			}
+			//foreach (Trooper t in Game._instance.myPlayer.roster) {
+			//	t.reset ();
+			//}
 		}
 	}
 		
@@ -305,6 +305,15 @@ public class Game : MonoBehaviour {
 			}
 		}
 		return null;
+	}
+
+	public DogTag GetTag(int id){
+		foreach (DogTag dg in allDogTags) {
+			if (dg.id == id) {
+				return dg;
+			}
+		}
+			return null;
 	}
 
 }
