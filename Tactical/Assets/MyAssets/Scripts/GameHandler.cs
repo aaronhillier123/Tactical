@@ -125,7 +125,7 @@ public class GameHandler : MonoBehaviour {
 				if(t.getPiece () != null){
 					gamestate += t.getPiece ().id.ToString () + "/";
 				} else {
-						gamestate += "0/";
+						gamestate += "-1/";
 				}
 				if (t.isInvulnerable) {
 					gamestate += "1";
@@ -244,10 +244,10 @@ public class GameHandler : MonoBehaviour {
 			float ry = float.Parse (tsa [7]);
 			float rz = float.Parse (tsa [8]);
 			t.transform.eulerAngles = new Vector3 (rx, ry, rz);
-			if (int.Parse (tsa [9]) != 0) {
+			if (int.Parse (tsa [9]) != -1) {
 				t.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
 				t.covering = true;
-				t.transform.Rotate(new Vector3(0, 180f, 0));
+				Debug.Log ("setting to cover");
 				t.setAnimation (11);
 			}
 			if (int.Parse (tsa [10]) == 1) {
@@ -268,10 +268,11 @@ public class GameHandler : MonoBehaviour {
 			float rz = float.Parse (tsa [8]);
 			Game._instance.myPlayer.CreateTroopAt (new Vector3 (x, y, z), Quaternion.Euler (new Vector3 (rx, ry, rz)), newteam, newid);
 			Trooper newTroop = Game._instance.GetTroop (newid);
-			if (int.Parse (tsa [9]) != 0) {
+			if (int.Parse (tsa [9]) != -1) {
 				newTroop.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
 				newTroop.covering = true;
 				newTroop.transform.Rotate (new Vector3 (0, 180f, 0));
+				Debug.Log ("setting to cover");
 				newTroop.setAnimation (11);
 			}
 			if (int.Parse (tsa [10]) == 1) 

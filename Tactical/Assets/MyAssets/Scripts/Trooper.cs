@@ -13,7 +13,7 @@ public class Trooper : MonoBehaviour {
 	[System.NonSerialized]
 	private GameObject gLimit;
 	//animation
-	private Animator animator;
+	public Animator animator;
 	//0 - idle
 	//1 - run
 	//2 - shoot
@@ -71,9 +71,9 @@ public class Trooper : MonoBehaviour {
 	public bool hasAirStrike = false;
 
 
-	void Start () {
+	void awake () {
 		myPlayer = GetComponentInParent<Player>();
-		animator = gameObject.GetComponentInChildren<Animator> ();
+		//animator = gameObject.GetComponentInChildren<Animator> ();
 		assignColor (); 
 	}
 
@@ -114,6 +114,9 @@ public class Trooper : MonoBehaviour {
 	public void AddAbility(int a){
 		abilities.Add(a);
 	}
+	public bool isMoving(){
+		return moving;
+	}
 	// Update is called once per frame
 	void Update () {
 		if (moving == false) {
@@ -125,12 +128,20 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void setAnimation(int anim){
-		animator.SetInteger ("AnimPar", anim);
+		Debug.Log (anim + " is anim number");
+		if (animator != null) {
+			animator.SetInteger ("AnimPar", anim);
+		} else {
+			Debug.Log ("no animator");
+		}
 	}
 
 	public void stop(){
 		moving = false;
-		animator.SetInteger ("AnimPar", 0);
+		if (covering == false) {
+			Debug.Log ("stopping the troop");
+			animator.SetInteger ("AnimPar", 0);
+		}
 	}
 
 	public void reset(){
@@ -165,7 +176,8 @@ public class Trooper : MonoBehaviour {
 			Vector3 newPos = transform.position + (dir*-0.5f);
 			transform.position = newPos;
 			rotateTo (point);
-			this.stop ();
+			Debug.Log ("stopping cause taking cover");
+			stop ();
 			/*
 			if (myPiece != null) {
 				Vector3 towardBarrier = (myPiece.transform.position - transform.position).normalized;
@@ -181,6 +193,7 @@ public class Trooper : MonoBehaviour {
 	IEnumerator ContinueAnimation(float time, int startAnimation, int animation){
 		yield return new WaitForSeconds (time);
 		if (animator.GetInteger ("AnimPar") == startAnimation) {
+			Debug.Log ("THIS IS WHERE");
 			animator.SetInteger ("AnimPar", animation);
 		}
 	}
@@ -384,6 +397,7 @@ public class Trooper : MonoBehaviour {
 			yield return null;
 		}
 		transform.position = destination;
+		Debug.Log ("Making stop move to position");
 		stop ();
 		if (myPlayer.getSelected() == this && frozen == false) {
 			HudController._instance.CanAttack (true);
@@ -648,6 +662,7 @@ public class Trooper : MonoBehaviour {
 		Destroy (myGrenade);
 		yield return new WaitForSeconds (1f);
 		Destroy (ex);
+		Debug.Log ("making stop grenade throw");
 		stop ();
 		if (covering == true) {
 			animator.SetInteger ("AnimPar", 11);

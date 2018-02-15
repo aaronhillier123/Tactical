@@ -23,12 +23,15 @@ public class BarrierPiece : MonoBehaviour {
 	void OnTriggerEnter(Collider coll){
 		Trooper myTroop = coll.gameObject.GetComponent<Trooper> ();
 		if (myTroop != null && GameHandler._instance.getPlayersTurn()>0) {
-			if (myTroop.takingCover == true || myTroop.covering == true) {
+			if (myTroop.takingCover == true) {
+				Debug.Log ("Taking cover");
 				myTroop.setPiece (this);
 				Vector3 dir = ( GetComponent<BoxCollider> ().bounds.center - myTroop.GetComponent<CapsuleCollider> ().bounds.center).normalized;
 				myTroop.takeCover (dir);
 			} else {
-				myTroop.jumpBarrier ();
+				if (myTroop.isMoving ()) {
+					myTroop.jumpBarrier ();
+				}
 			}
 		}
 	}

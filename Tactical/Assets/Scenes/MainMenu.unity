@@ -371,7 +371,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 92049877}
   m_OnClick:
     m_PersistentCalls:
@@ -567,7 +567,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 285644693}
   m_OnClick:
     m_PersistentCalls:
@@ -924,7 +924,7 @@ Prefab:
     - target: {fileID: 114991521537524760, guid: 64a63eda500eac7478bfb89e7583df81,
         type: 2}
       propertyPath: GameName
-      value: MyGame1
+      value: NewGame2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 64a63eda500eac7478bfb89e7583df81, type: 2}
@@ -1497,7 +1497,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1645291075}
   m_OnClick:
     m_PersistentCalls:
@@ -1687,7 +1687,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1927228772}
   m_OnClick:
     m_PersistentCalls:

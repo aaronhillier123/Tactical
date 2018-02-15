@@ -118,6 +118,7 @@
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAddSoft.shader" />
      <None Include="Assets\Standard Assets\Environment\Water\Water\Shaders\FXWaterPro.shader" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\MyAssets\Materials\Textures\Outlined Diffuse.shader" />
      <None Include="Assets\ProjectorFolder\ProjectorAdditiveTint.shader" />
      <None Include="Assets\Photon Unity Networking\readme.txt" />

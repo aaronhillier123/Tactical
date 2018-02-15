@@ -1364,12 +1364,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 973a6d582edd01943adff5ebd8ca301d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 95922183692251136}
   id: 0
   team: 0
   currentPosition: {x: 0, y: 0, z: 0}
+  destinationPosition: {x: 0, y: 0, z: 0}
   currentRotation: {x: 0, y: 0, z: 0, w: 0}
+  abilities: 
   frozen: 0
   covering: 0
+  hasGrenade: 0
+  isSniper: 0
+  isInvulnerable: 0
+  canMarathon: 0
+  hasDoubleShot: 0
+  hasAirStrike: 0
 --- !u!136 &136593428701476908
 CapsuleCollider:
   m_ObjectHideFlags: 1

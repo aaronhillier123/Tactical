@@ -34,7 +34,7 @@ namespace UnityEditor.FacebookEditor
         public static void OnPostProcessBuild(BuildTarget target, string path)
         {
             // If integrating with facebook on any platform, throw a warning if the app id is invalid
-            if (!Facebook.Unity.FacebookSettings.IsValidAppId)
+            if (!global::Facebook.Unity.FacebookSettings.IsValidAppId)
             {
                 Debug.LogWarning("You didn't specify a Facebook app ID.  Please add one using the Facebook menu in the main Unity editor.");
             }
@@ -51,7 +51,7 @@ namespace UnityEditor.FacebookEditor
             if (target == BuildTarget.Android)
             {
                 // The default Bundle Identifier for Unity does magical things that causes bad stuff to happen
-                if (PlayerSettings.bundleIdentifier == "com.Company.ProductName")
+                if (PlayerSettings.applicationIdentifier == "com.Company.ProductName")
                 {
                     Debug.LogError("The default Unity Bundle Identifier (com.Company.ProductName) will not work correctly.");
                 }

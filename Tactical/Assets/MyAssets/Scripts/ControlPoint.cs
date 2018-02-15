@@ -57,6 +57,7 @@ public class ControlPoint : MonoBehaviour {
 			yield return null;
 		}
 		myFlag.transform.position = og;
+		Debug.Log ("making stop control point");
 		troop.stop ();
 	}
 

@@ -18,6 +18,7 @@ public class TrenchWall : MonoBehaviour {
 			timeFromColl = Time.time - timeOfColl;
 			if (timeFromColl > 0.25f && collidingTroop != null) {
 				collidingTroop.StopAllCoroutines ();
+				Debug.Log ("stopping cause of update in trenchwall");
 				collidingTroop.stop ();
 				collidingTroop = null;
 				timeOfColl = 0;

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Facebook.Unity;
 using PlayFab;
 using PlayFab.ClientModels;
 using System.Linq;
-
+using LoginResult = PlayFab.ClientModels.LoginResult;
 using JsonObject = PlayFab.Json.JsonObject;
+using UnityEngine.UI;
 
 public class GameListObject{
 	public string GameList;
@@ -19,8 +21,12 @@ public class MenuScript : MonoBehaviour {
 	private string roomName = "";
 	private List<string> players;
 
+	private string _message;
+
 	private string _playFabPlayerIdCache;
 	public string GameName = "Tester10";
+
+	/*
 	private void AuthenticateWithPlayFab()  {
 		LogMessage("PlayFab authenticating using Custom ID...");
 		Debug.Log (PlayFabSettings.DeviceUniqueIdentifier + " is DUID");
@@ -30,6 +36,7 @@ public class MenuScript : MonoBehaviour {
 				CustomId = PlayFabSettings.DeviceUniqueIdentifier+"EDITOR"
 			}, RequestPhotonToken, OnPlayFabError);
 	}
+	*/
 
 	private void RequestPhotonToken(LoginResult obj) {
 		LogMessage("PlayFab authenticated. Requesting photon token...");
@@ -43,12 +50,40 @@ public class MenuScript : MonoBehaviour {
 	}
 		
 	private void AuthenticateWithPhoton(GetPhotonAuthenticationTokenResult obj) {
-		//Debug.Log (_playFabPlayerIdCache + " is plafab cache id");
-		LogMessage("Photon token acquired: " + obj.PhotonCustomAuthenticationToken + "  Authentication complete.");
-		var customAuth = new AuthenticationValues { AuthType = CustomAuthenticationType.Custom };
-		customAuth.AddAuthParameter("username", _playFabPlayerIdCache);    // expected by PlayFab custom auth service
-		customAuth.AddAuthParameter("token", obj.PhotonCustomAuthenticationToken);
+
+		/*
+		Debug.Log ("Authenting with Photon");
+		string aToken = AccessToken.CurrentAccessToken.TokenString;
+		string facebookid = AccessToken.CurrentAccessToken.UserId;
+		PhotonNetwork.AuthValues = new AuthenticationValues ();
+		PhotonNetwork.AuthValues.AuthType = CustomAuthenticationType.Facebook;
+		PhotonNetwork.AuthValues.UserId = facebookid;
+		PhotonNetwork.AuthValues.AddAuthParameter ("token", aToken);
+		PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
+		*/
+
+		var customAuth = new AuthenticationValues {
+			AuthType = CustomAuthenticationType.Custom
+		};
+
+		customAuth.AddAuthParameter ("username", _playFabPlayerIdCache);
+
+		customAuth.AddAuthParameter ("token", obj.PhotonCustomAuthenticationToken);
+
 		PhotonNetwork.AuthValues = customAuth;
+
+		PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
+	}
+
+	private void OnConnectedToMaster(){
+		foreach (Button b in GameObject.FindObjectsOfType<Button>()) {
+			b.interactable = true;
+		}
+		PhotonNetwork.JoinLobby ();
+	}
+
+	private void OnCustomAuthenticationFailed(string debugMessage){
+		Debug.LogErrorFormat ("Error with facebook auth: {0} ", debugMessage);
 	}
 
 	public static void CloudGetMyGames(){
@@ -78,19 +113,73 @@ public class MenuScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		SetMessage ("Initializing Facebook...");
+		if (!FB.IsInitialized) {
+			FB.Init (OnFacebookInitialized);
+		}
+
+
+		DontDestroyOnLoad (gameObject);
+		//ConnectToLobby ();
+		//AuthenticateWithPlayFab ();
+		PhotonNetwork.autoJoinLobby = false;
 		
 	}
 
+	private void OnFacebookInitialized(){
+
+		SetMessage ("Logging into facebook");
+
+		if (FB.IsLoggedIn) {
+			FB.LogOut ();
+		}
+
+		FB.LogInWithReadPermissions (null, OnFacebookLoggedIn);
+
+	}
+
+	private void OnFacebookLoggedIn(ILoginResult result){
+		if (result == null || string.IsNullOrEmpty (result.Error)) {
+
+			SetMessage ("Facebook Auth Complete! Access Token: " + AccessToken.CurrentAccessToken.TokenString + "\nLogging into Playfab...");
+
+			PlayFabClientAPI.LoginWithFacebook (new LoginWithFacebookRequest {
+				CreateAccount = true,
+				AccessToken = AccessToken.CurrentAccessToken.TokenString
+			},
+				RequestPhotonToken, OnPlayfabFacebookAuthFailed);
+		
+		} else {
+			SetMessage ("Facebook Auth Failed: " + result.Error + "\n" + result.RawResult, true);
+		}
+
+	}
+
+	private void OnPlayfabFacebookAuthComplete(LoginResult result){
+		SetMessage ("Playfab Facebook Auth Complete. Session ticket: " + result.SessionTicket);
+
+	}
+
+	private void OnPlayfabFacebookAuthFailed(PlayFabError error){
+		SetMessage ("PlfayFab Facebook Auth Failed: " + error.GenerateErrorReport (), true);
+	}
+
+	public void SetMessage(string message, bool error=false)
+	{
+		_message = message;
+		if(error){
+			Debug.LogError (_message);
+		}else {
+			Debug.Log(_message);
+		}
+	}
+
 	void Awake(){
-		DontDestroyOnLoad (gameObject);
-		ConnectToLobby ();
-		AuthenticateWithPlayFab ();
-		PhotonNetwork.autoJoinLobby = true;
+		
 	}
 
 	public void ConnectToLobby(){
-		PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
-		PhotonNetwork.JoinLobby ();
+		
 	}
 
 
@@ -99,11 +188,7 @@ public class MenuScript : MonoBehaviour {
 
 	}
 
-	public virtual void OnConnectedToMaster()
-	{
-		Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
-		//AuthenticateWithPlayFab ();
-	}
+
 
 	public virtual void OnJoinedLobby()
 	{
