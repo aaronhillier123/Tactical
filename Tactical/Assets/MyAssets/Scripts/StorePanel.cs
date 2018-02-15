@@ -21,6 +21,23 @@ public class StorePanel : MonoBehaviour {
 		CurrentInfoPanel = InfoPanels [item];
 		CurrentInfoPanel.transform.SetParent (HudController._instance.GameHud.transform);
 		CurrentInfoPanel.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+		Trooper t = Game._instance.myPlayer.getSelected ();
+		if (t != null) {
+			List<int> abs = t.GetAbilities ();
+			if (abs.Contains (item)) {
+				try {
+					CurrentInfoPanel.transform.Find ("Buy").transform.Find ("BuyText").GetComponent<Text> ().text = "Sell";
+				} catch {
+					Debug.Log ("Some error");
+				}
+			} else {
+				try {
+					CurrentInfoPanel.transform.Find ("Buy").transform.Find ("BuyText").GetComponent<Text> ().text = "Buy";
+				} catch {
+					Debug.Log ("Some error");
+				}
+			}
+		}
 	}
 
 	public void removeInfoPanel(){
@@ -31,10 +48,23 @@ public class StorePanel : MonoBehaviour {
 
 	public void refresh(){
 		for (int i = 0; i < ItemButtons.Count; ++i) {
-			if (GameHandler._instance.getPlayer (PhotonNetwork.player.ID).getDogTags() >= ItemPrices [i]) {
-				ItemButtons [i].interactable = true;
-			} else {
+			Trooper t = Game._instance.myPlayer.getSelected ();
+			if (t == null) {
 				ItemButtons [i].interactable = false;
+			} else {
+				if (GameHandler._instance.getPlayer (PhotonNetwork.player.ID).getDogTags () >= ItemPrices [i]) {
+					ItemButtons [i].interactable = true;
+				} else {
+					ItemButtons [i].interactable = false;
+				}
+				List<int> abs = t.GetAbilities ();
+				if (abs.Contains (i)) {
+					ItemButtons [i].GetComponent<Image> ().color = Color.green;
+				} else {
+					ItemButtons [i].GetComponent<Image> ().color = Color.yellow;
+				}
+
+
 			}
 		}
 	}

@@ -74,6 +74,14 @@ public class GameHandler : MonoBehaviour {
 		object turnObject = (object)turns;
 		GameHandler._instance.refreshGameStates();
 		//Raise Turn Change
+
+		//SetDogTagsForPlayer
+		Hashtable PlayerHt = new Hashtable();
+		Player myPlayer = GameHandler._instance.getPlayer (PhotonNetwork.player.ID);
+		int myTags = myPlayer.getDogTags ();
+		PlayerHt.Add ("DogTags", myTags);
+		PhotonNetwork.player.SetCustomProperties (PlayerHt, null, true);
+
 		PhotonNetwork.RaiseEvent(5, null, true, new RaiseEventOptions(){
 			Receivers = ReceiverGroup.All,
 			CachingOption = EventCaching.RemoveFromRoomCache});

@@ -76,10 +76,11 @@ public class Hud : MonoBehaviour {
 		Store.Retract ();
 	}
 
-	public static void updateDogTags(int amount){
-		if (HudController._instance.myPlayer.isTurn()) {
-			GameObject.Find ("DogTagsText").GetComponent<Text> ().text = "x " + amount.ToString ();
-		}
+	public void updateDogTags(int amount){
+		Debug.Log ("Updating to " + amount + " tags on screen");
+		//if (HudController._instance.myPlayer.isTurn()) {
+			GameObject.Find ("DogTagsText").GetComponent<Text> ().text = "DOGTAGS x " + amount.ToString ();
+		//}
 	}
 
 	public void nextTroopPan(){

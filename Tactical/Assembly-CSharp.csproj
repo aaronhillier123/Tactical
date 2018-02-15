@@ -56,8 +56,6 @@
      <Compile Include="Assets\DecalSystem\Plugins\DecalSystem\Utils\DecalUtils.cs" />
      <Compile Include="Assets\DecalSystem\Plugins\DecalSystem\Utils\MeshBuilder.cs" />
      <Compile Include="Assets\DecalSystem\Plugins\DecalSystem\Utils\PolygonClippingUtils.cs" />
-     <Compile Include="Assets\Explosion.cs" />
-     <Compile Include="Assets\Missile.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Barrier.cs" />
      <Compile Include="Assets\MyAssets\Scripts\BarrierHandler.cs" />
      <Compile Include="Assets\MyAssets\Scripts\BarrierPiece.cs" />
@@ -70,6 +68,7 @@
      <Compile Include="Assets\MyAssets\Scripts\ControlPoint.cs" />
      <Compile Include="Assets\MyAssets\Scripts\DogTag.cs" />
      <Compile Include="Assets\MyAssets\Scripts\EventHandler.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\Explosion.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Game.cs" />
      <Compile Include="Assets\MyAssets\Scripts\GameHandler.cs" />
      <Compile Include="Assets\MyAssets\Scripts\GamePlayPanel.cs" />
@@ -79,6 +78,7 @@
      <Compile Include="Assets\MyAssets\Scripts\HudController.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MenuControlScript.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MenuScript.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\Missile.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MyGames.cs" />
      <Compile Include="Assets\MyAssets\Scripts\NaturalCover.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Player.cs" />
@@ -87,6 +87,7 @@
      <Compile Include="Assets\MyAssets\Scripts\SpawnArea.cs" />
      <Compile Include="Assets\MyAssets\Scripts\StartHud.cs" />
      <Compile Include="Assets\MyAssets\Scripts\StorePanel.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\TrenchWall.cs" />
      <Compile Include="Assets\MyAssets\Scripts\TroopController.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Trooper.cs" />
      <Compile Include="Assets\MyAssets\Scripts\WaitForPlayers.cs" />
@@ -257,7 +258,6 @@
      <Compile Include="Assets\PlayFabSdk\Shared\SignalR.NET20\Transports\ServerSentEventsTransport.cs" />
      <Compile Include="Assets\PlayFabSdk\Shared\SignalR.NET20\Transports\SseEvent.cs" />
      <Compile Include="Assets\ProjectorFolder\SelectableUnitComponent.cs" />
-     <Compile Include="Assets\TrenchWall.cs" />
      <None Include="Assets\PlayFabSdk\link.xml" />
      <None Include="Assets\Photon Unity Networking\link.xml" />
      <None Include="Assets\Plugins\Photon3Unity3D.xml" />

@@ -27,7 +27,7 @@ public class ControlPoint : MonoBehaviour {
 			myTroop.StopAllCoroutines ();
 			myTroop.myPlayer.addControlPoint (this);
 			myTroop.myPlayer.addDogTags (2);
-			Hud.updateDogTags (myTroop.myPlayer.getDogTags());
+			HudController._instance.updateDogTags (myTroop.myPlayer.getDogTags());
 			myTroop.flagPull ();
 			StartCoroutine (changeFlag(myTroop));
 			team = myTroop.team;

@@ -59,6 +59,8 @@ public class HudController : MonoBehaviour {
 
 	public void StartTurn(){
 		HudController._instance.removeWaitingScreen ();
+		RefreshStore ();
+		updateDogTags (myPlayer.getDogTags ());
 		AttackMode (false);
 		GameHud.StartTurn ();
 	}
@@ -106,8 +108,13 @@ public class HudController : MonoBehaviour {
 		HudController._instance.removeStartHud ();
 		HudController._instance.showGameHud ();
 		HudController._instance.showWaitingScreen ();
+		Debug.Log("Calling update dog tags for amount of " + myPlayer.getDogTags ());
+		HudController._instance.updateDogTags (myPlayer.getDogTags ());
 	}
 
+	public void updateDogTags(int amount){
+		GameHud.updateDogTags (amount);
+	}
 	// Update is called once per frame
 	void Update () {
 		if(myPlayer==null){

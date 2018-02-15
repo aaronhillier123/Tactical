@@ -37,6 +37,7 @@ public class HealthBar : MonoBehaviour {
 	void showOnHead(){
 		troopPos = Camera.main.WorldToScreenPoint (myTroop.transform.position);
 		transform.position = new Vector2(troopPos.x, troopPos.y+50);
-		gameObject.GetComponent<Slider> ().value = myTroopScript.getHealth ();
+		Slider slide = GetComponent<Slider> ();
+		slide.value = myTroopScript.getHealth ();
 	}
 }

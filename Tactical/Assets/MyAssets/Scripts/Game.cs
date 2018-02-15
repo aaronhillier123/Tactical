@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayFab;
 using System.Linq;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Game : MonoBehaviour {
 
@@ -250,6 +251,19 @@ public class Game : MonoBehaviour {
 		foreach (Trooper t in Game._instance.myPlayer.roster) {
 			t.reset ();
 		}
+
+
+
+		Hashtable MyHash = PhotonNetwork.player.CustomProperties;
+		object TagsOut;
+		if (MyHash.TryGetValue ("DogTags", out TagsOut)) {
+			int tags = (int)TagsOut;
+			Debug.Log ("DOG TAG NUMBER: " + tags);
+			myPlayer.setDogTags (tags);
+		} else {
+			Debug.Log ("No hash could be found");
+			myPlayer.setDogTags (3);
+		}
 		HudController._instance.StartTurn ();
 		myPlayer.setTurn (true);
 	}
@@ -268,10 +282,9 @@ public class Game : MonoBehaviour {
 	}
 		
 	public void giveAbility(int ability){
-		if (myPlayer.getSelected() != null) {
-			myPlayer.getSelected().giveAbility (ability);
+		if (myPlayer.getSelected () != null) {
+			myPlayer.getSelected ().giveAbility (ability);
 		}
-		myPlayer.spendDogTags(HudController._instance.GameHud.Store.ItemPrices [ability]);
 		HudController._instance.GameHud.Store.removeInfoPanel ();
 		HudController._instance.RefreshStore ();
 	}

@@ -45,7 +45,7 @@ public class Trooper : MonoBehaviour {
 	public Vector3 currentPosition;
 	public Vector3 destinationPosition;
 	public Quaternion currentRotation;
-
+	public List<int> abilities = new List<int> ();
 	//state of availability
 	private bool moving = false;
 
@@ -57,17 +57,17 @@ public class Trooper : MonoBehaviour {
 	public bool takingCover = false;
 
 	//bools for abilities
-	[System.NonSerialized]
+	//[System.NonSerialized]
 	public bool hasGrenade = false;
-	[System.NonSerialized]
+	//[System.NonSerialized]
 	public bool isSniper = false;
 	//[System.NonSerialized]
 	public bool isInvulnerable = false;
-	[System.NonSerialized]
+	//[System.NonSerialized]
 	public bool canMarathon = false;
-	[System.NonSerialized]
+	//[System.NonSerialized]
 	public bool hasDoubleShot = false;
-	[System.NonSerialized]
+	//[System.NonSerialized]
 	public bool hasAirStrike = false;
 
 
@@ -108,7 +108,12 @@ public class Trooper : MonoBehaviour {
 	public bool isUpdated(){
 		return updated;
 	}
-
+	public List<int> GetAbilities(){
+		return abilities;
+	}
+	public void AddAbility(int a){
+		abilities.Add(a);
+	}
 	// Update is called once per frame
 	void Update () {
 		if (moving == false) {
@@ -134,6 +139,7 @@ public class Trooper : MonoBehaviour {
 		hasGrenade = false;
 		isSniper = false;
 		canMarathon = false;
+		abilities.Clear ();
 		if (isInvulnerable == true) {
 			PhotonNetwork.RaiseEvent (8, (object)id, true, new RaiseEventOptions(){
 				Receivers = ReceiverGroup.All, 
@@ -188,6 +194,8 @@ public class Trooper : MonoBehaviour {
 			freeze ();
 		} else {
 			hasDoubleShot = false;
+			abilities.Remove (4);
+			HudController._instance.RefreshStore ();
 		}
 		HudController._instance.removeChances ();
 
@@ -443,57 +451,107 @@ public class Trooper : MonoBehaviour {
 	}
 
 		
-	public void giveGrenade(){
-		hasGrenade = true;
-		ShowGrenadeLimit ();
+	public void giveGrenade(bool give){
+		if (give) {
+			hasGrenade = true;
+			ShowGrenadeLimit ();
+		} else {
+			hasGrenade = false;
+			RemoveGLimit ();
+		}
 	}
 
-	public void giveSniper(){
-		isSniper = true;
-		range += 100;
+	public void giveSniper(bool give){
+		if (give) {
+			isSniper = true;
+			range += 100;
+		} else {
+			isSniper = false;
+			range -= 100;
+			if (range < 0) {
+				range = 0;
+			}
+		}
 	}
 
-	public void giveInvulnerability(){
-		PhotonNetwork.RaiseEvent (7, (object)id, true, new RaiseEventOptions(){
-			Receivers = ReceiverGroup.All,
-			ForwardToWebhook = true});
+	public void giveInvulnerability(bool give){
+		if (give) {
+			PhotonNetwork.RaiseEvent (7, (object)id, true, new RaiseEventOptions () {
+				Receivers = ReceiverGroup.All,
+				ForwardToWebhook = true
+			});
+		} else {
+			PhotonNetwork.RaiseEvent (8, (object)id, true, new RaiseEventOptions () {
+				Receivers = ReceiverGroup.All,
+				ForwardToWebhook = true
+			});
+		}
 	}
 
-	public void giveMarathon(){
-		canMarathon = true;
-		maxDistance += 50;
-		resetDistance ();
-		select ();
+	public void giveMarathon(bool give){
+		if (give) {
+			canMarathon = true;
+			maxDistance += 50;
+			resetDistance ();
+			select ();
+		} else {
+			canMarathon = false;
+			maxDistance -= 50;
+			if (Vector3.Distance (currentPosition, initialPosition) > maxDistance) {
+				transform.position = initialPosition;
+				myPlayer.spendDogTags (1);
+			}
+			resetDistance ();
+			select ();
+		}
 	}
 
-	public void giveDoubleShot(){
-		hasDoubleShot = true;
+	public void giveDoubleShot(bool give){
+		if (give) {
+			hasDoubleShot = true;
+		} else {
+			hasDoubleShot = false;
+		}
 	}
 
-	public void giveAirstrike(){
-		Debug.Log ("NOW HAS AIRSTRIKE");
-		hasAirStrike = true;
+	public void giveAirstrike(bool give){
+		if (give) {
+			hasAirStrike = true;
+		} else {
+			hasAirStrike = false;
+		}
 	}
 
 	public void giveAbility(int ability){
+
+		bool give = abilities.Contains (ability);
+
+		if (give) {
+			myPlayer.addDogTags (HudController._instance.GameHud.Store.ItemPrices [ability]);
+			abilities.Remove (ability);
+		} else {
+			myPlayer.spendDogTags (HudController._instance.GameHud.Store.ItemPrices [ability]);
+			abilities.Add (ability);
+		}
+		HudController._instance.RefreshStore ();
 		switch(ability){
 		case 0:
-			giveGrenade();
+			giveGrenade(!give);
 			break;
 		case 1:
-			giveSniper();
+			giveSniper (!give);
 			break;
 		case 2:
-			giveInvulnerability();
+			giveMarathon (!give);
 			break;
 		case 3:
-			giveMarathon();
+			giveInvulnerability (!give);
 			break;
 		case 4:
-			giveDoubleShot ();
+			giveDoubleShot (!give);
 			break;
 		case 5:
-			giveAirstrike ();
+			giveAirstrike (!give);
 			break;
 		default:
 			break;
@@ -510,6 +568,7 @@ public class Trooper : MonoBehaviour {
 
 	public IEnumerator throwCoroutine(Vector3 position){
 		hasGrenade = false;
+		abilities.Remove (0);
 		rotateTo (position);
 		CameraController._instance.setFollowedObject (gameObject, 0);
 		yield return new WaitForSeconds (1f);
