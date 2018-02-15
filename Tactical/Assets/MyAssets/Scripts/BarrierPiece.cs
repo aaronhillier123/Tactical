@@ -25,7 +25,8 @@ public class BarrierPiece : MonoBehaviour {
 		if (myTroop != null && GameHandler._instance.getPlayersTurn()>0) {
 			if (myTroop.takingCover == true || myTroop.covering == true) {
 				myTroop.setPiece (this);
-				myTroop.takeCover ();
+				Vector3 dir = ( GetComponent<BoxCollider> ().bounds.center - myTroop.GetComponent<CapsuleCollider> ().bounds.center).normalized;
+				myTroop.takeCover (dir);
 			} else {
 				myTroop.jumpBarrier ();
 			}

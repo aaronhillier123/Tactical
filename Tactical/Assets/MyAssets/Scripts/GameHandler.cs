@@ -39,6 +39,8 @@ public class GameHandler : MonoBehaviour {
 				Game._instance.myPlayer = newPlayer;
 				HudController._instance.myPlayer = newPlayer;
 			}
+
+
 			GameObject[] spawns = GameObject.FindGameObjectsWithTag ("Respawn");
 			SpawnArea mySpawn = new SpawnArea ();
 			foreach (GameObject g in spawns) {
@@ -46,6 +48,7 @@ public class GameHandler : MonoBehaviour {
 					mySpawn = g.GetComponent<SpawnArea>();
 				}
 			}
+
 
 			for (int i = 0; i < Player.numberOfTroops; ++i) {
 				Vector3 newPos = mySpawn.spawnPoints [i].position;

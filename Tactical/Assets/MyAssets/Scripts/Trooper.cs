@@ -157,11 +157,14 @@ public class Trooper : MonoBehaviour {
 		animator.SetInteger ("AnimPar", 8);
 	}
 		
-	public void takeCover(){
+	public void takeCover(Vector3 dir){
 		if (takingCover == true) {
 			takingCover = false;
 			this.StopAllCoroutines ();
-			this.goBack (1f);
+			Vector3 point = transform.position + (dir*5);
+			Vector3 newPos = transform.position + (dir*-0.5f);
+			transform.position = newPos;
+			rotateTo (point);
 			this.stop ();
 			/*
 			if (myPiece != null) {
@@ -354,6 +357,8 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void CallAirstrike(Vector3 point){
+		hasAirStrike = false;
+		abilities.Remove (5);
 		DidSomething ();
 		stab ();
 		Vector3 skyPoint = point + new Vector3 (0f, 100f, 0f);
@@ -522,6 +527,39 @@ public class Trooper : MonoBehaviour {
 		}
 	}
 
+	public void giveMedkit(bool give){
+		if (give) {
+			health = 100f;
+			Instantiate (TroopController._instance.TroopObjects [8], currentPosition, currentRotation, transform);
+			abilities.Remove (6);
+		} else {
+
+		}
+	}
+
+	public void giveNewTroop(bool give){
+		if (give) {
+			
+			GameObject[] spawns = GameObject.FindGameObjectsWithTag ("Respawn");
+			SpawnArea mySpawn = new SpawnArea ();
+			foreach (GameObject g in spawns) {
+				if (g.GetComponent<SpawnArea> ().team == myPlayer.team) {
+					mySpawn = g.GetComponent<SpawnArea>();
+				}
+			}
+			if (myPlayer.roster.Count < mySpawn.spawnPoints.Count) {
+				Vector3 newPos = mySpawn.spawnPoints [myPlayer.roster.Count].position;
+				myPlayer.RaiseTroopAt (newPos, mySpawn.FacingOut, myPlayer.team, Game._instance.allTroopers.Count);
+			} else {
+				Debug.Log ("MAX TROOPS EXCEEDED");
+			}
+			abilities.Remove (7);
+		} else {
+
+
+		}
+	}
+
 	public void giveAbility(int ability){
 
 		bool give = abilities.Contains (ability);
@@ -552,6 +590,12 @@ public class Trooper : MonoBehaviour {
 			break;
 		case 5:
 			giveAirstrike (!give);
+			break;
+		case 6:
+			giveMedkit (!give);
+			break;
+		case 7:
+			giveNewTroop (!give);
 			break;
 		default:
 			break;
@@ -685,6 +729,8 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void goBack(float distance){
+		Vector3 v = GetComponent<Rigidbody> ().velocity;
+		Debug.Log ("IN GOBACK " + v.x + " " + v.y + " " + v.z + " ");
 		Vector3 direction = gameObject.transform.eulerAngles + new Vector3 (0, 180, 0);
 		Vector3 newPos = direction * distance;
 		gameObject.transform.Translate (newPos.x, 0, newPos.z);
@@ -730,6 +776,7 @@ public class Trooper : MonoBehaviour {
 		t.decreaseHealth (100f);
 
 	}
+		
 
 	void OnCollisionEnter(Collision coll){
 		Trooper t = coll.gameObject.GetComponent<Trooper> ();

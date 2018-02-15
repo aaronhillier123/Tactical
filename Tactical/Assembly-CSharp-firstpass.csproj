@@ -120,6 +120,7 @@
      <None Include="Assets\MyAssets\Materials\Textures\Outlined Diffuse.shader" />
      <None Include="Assets\ProjectorFolder\ProjectorAdditiveTint.shader" />
      <None Include="Assets\Photon Unity Networking\readme.txt" />
+     <None Include="Assets\Facebook\Scripts\Canvas\Resources\JSSDKBindings.txt" />
      <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
      <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAdd.shader" />

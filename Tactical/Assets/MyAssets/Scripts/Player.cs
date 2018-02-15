@@ -96,6 +96,37 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public void RaiseTroopAt(Vector3 location, Quaternion eulersQ, int troopTeam, int troopId){
+		float[] CA = new float[8];
+		CA [0] = location.x;
+		CA [1] = location.y;
+		CA [2] = location.z;
+		Vector3 eulers = eulersQ.eulerAngles;
+		CA [3] = eulers.x;
+		CA [4] = eulers.y;
+		CA [5] = eulers.z;
+		CA [6] = (int)troopTeam;
+		CA [7] = (int)troopId;
+		object content = (object)CA;
+		PhotonNetwork.RaiseEvent ((byte)13, content, true, new RaiseEventOptions () {
+			Receivers = ReceiverGroup.All,
+			ForwardToWebhook = true
+		});
+	}
+
+	public static void NetworkTroopAt(byte id, object content, int senderID){
+		if (id == 13) {
+			float[] CA = (float[])content;
+			Vector3 pos = new Vector3 (CA [0], CA [1], CA [2]);
+			Vector3 eul = new Vector3 (CA [3], CA [4], CA [5]);
+			int tteam = (int)CA [6];
+			int tid = (int)CA [7];
+			Quaternion rot = Quaternion.Euler (eul);
+			Game._instance.myPlayer.CreateTroopAt (pos, rot, tteam, tid);
+			CameraController._instance.setFollowedObject (Game._instance.GetTroop (tid).gameObject, 1);
+		}
+	}
+
 	public void addControlPoint(ControlPoint cp){
 		myControlPoints.Add(cp);
 	}

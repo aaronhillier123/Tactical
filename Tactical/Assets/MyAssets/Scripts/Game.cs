@@ -46,7 +46,7 @@ public class Game : MonoBehaviour {
 		PhotonNetwork.OnEventCall += GameHandler.SyncGameState;//9
 		PhotonNetwork.OnEventCall += Player.airStrike; //12
 		PhotonNetwork.OnEventCall += Game.BeginGame;//11
-
+		PhotonNetwork.OnEventCall += Player.NetworkTroopAt;//13
 	}
 	
 	// Update is called once per frame

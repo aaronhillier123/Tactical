@@ -221,8 +221,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114072109189879612, guid: 8ec38f3944f13b64bbdcca49e5c15ab7,
-          type: 2}
+      - m_Target: {fileID: 0}
         m_MethodName: removeInfoPanel
         m_Mode: 1
         m_Arguments:
