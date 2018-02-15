@@ -86,10 +86,11 @@ public class GameHandler : MonoBehaviour {
 
 	public void refreshGameStates (){
 		object ht = (object)GameHandler._instance.GetGameState ();
-		PhotonNetwork.RaiseEvent (9, ht, true, new RaiseEventOptions () {
+		PhotonNetwork.RaiseEvent (9, null, true, new RaiseEventOptions () {
 			Receivers = ReceiverGroup.All, 
 			CachingOption = EventCaching.RemoveFromRoomCache
 		});
+
 		PhotonNetwork.RaiseEvent (9, ht, true, new RaiseEventOptions () {
 			Receivers = ReceiverGroup.All, 
 			CachingOption = EventCaching.AddToRoomCache,

@@ -37,8 +37,8 @@ Projector:
   m_GameObject: {fileID: 166266}
   m_Enabled: 1
   serializedVersion: 2
-  m_NearClipPlane: -5
-  m_FarClipPlane: 5
+  m_NearClipPlane: -10
+  m_FarClipPlane: 10
   m_FieldOfView: 60
   m_AspectRatio: 1
   m_Orthographic: 1

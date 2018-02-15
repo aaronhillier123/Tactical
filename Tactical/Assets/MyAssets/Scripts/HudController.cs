@@ -89,6 +89,7 @@ public class HudController : MonoBehaviour {
 	public void showGameHud(){
 		GameHud.transform.SetParent (canvas.transform);
 		GameHud.transform.localPosition = new Vector3 (0, 0, 0);
+		GameHud.transform.localScale = new Vector3 (1.2f, 1.2f, 1.2f);
 	}
 
 	public void showWaitingScreen(){
@@ -159,12 +160,18 @@ public class HudController : MonoBehaviour {
 	}
 
 	//show all percentages of hits from selected troop to other players' troops
-	public void showAllChances(){
+	public void showChance(Trooper shooter, Trooper target){
+		GameObject cho = Instantiate (ChanceObject, canvas.transform);
+		Chance thisChance = cho.GetComponent<Chance> ();
+		thisChance.target = target;
+		thisChance.shooter = shooter;
+	}
+
+	public void showAllChances(Trooper t){
+		Player myPlayer = t.myPlayer;
 		List<Trooper> others = Game._instance.notMyTroopers (myPlayer);
-		foreach (Trooper t in others) {
-			GameObject chance = Instantiate (ChanceObject, GameObject.Find ("Canvas").transform);
-			chance.GetComponent<Chance> ().target = myPlayer.getSelected ();
-			chance.GetComponent<Chance> ().id = t.id;
+		foreach (Trooper oth in others) {
+			showChance (t, oth);
 		}
 	}
 

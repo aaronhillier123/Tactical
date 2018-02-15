@@ -56,6 +56,8 @@
      <Compile Include="Assets\DecalSystem\Plugins\DecalSystem\Utils\DecalUtils.cs" />
      <Compile Include="Assets\DecalSystem\Plugins\DecalSystem\Utils\MeshBuilder.cs" />
      <Compile Include="Assets\DecalSystem\Plugins\DecalSystem\Utils\PolygonClippingUtils.cs" />
+     <Compile Include="Assets\Explosion.cs" />
+     <Compile Include="Assets\Missile.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Barrier.cs" />
      <Compile Include="Assets\MyAssets\Scripts\BarrierHandler.cs" />
      <Compile Include="Assets\MyAssets\Scripts\BarrierPiece.cs" />

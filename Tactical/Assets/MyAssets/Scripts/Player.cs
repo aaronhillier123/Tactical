@@ -133,6 +133,16 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public static void airStrike(byte id, object content, int senderID){
+		if (id == 12) {
+			Debug.Log ("In airstrike network function");
+			float[] cA = (float[])content;
+			Vector3 point = new Vector3 (cA [1], cA [2], cA [3]);
+			Trooper t = Game._instance.GetTroop( (int)cA [0]);
+			t.CallAirstrike(point);
+		}
+	}
+
 	public void selectTrooper(Trooper a){
 		a.select();
 	}

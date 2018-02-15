@@ -6,7 +6,7 @@ public class TroopController : MonoBehaviour {
 
 	public static TroopController _instance;
 
-	public GameObject[] TroopObjects = new GameObject[7];
+	public GameObject[] TroopObjects = new GameObject[8];
 	public Material[] SelectedMats = new Material[5];
 	public Material[] TroopMats = new Material[5];
 	public Material[] FrozenMats = new Material[5];

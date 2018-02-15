@@ -43,7 +43,7 @@ public class Game : MonoBehaviour {
 		PhotonNetwork.OnEventCall += Trooper.RaiseNotInvulnerable;//8
 		PhotonNetwork.OnEventCall += Game.raiseBarrier; //15
 		PhotonNetwork.OnEventCall += GameHandler.SyncGameState;//9
-
+		PhotonNetwork.OnEventCall += Player.airStrike; //12
 		PhotonNetwork.OnEventCall += Game.BeginGame;//11
 
 	}
@@ -155,17 +155,23 @@ public class Game : MonoBehaviour {
 							//if it is an enemy player
 							if (myPlayer.getSelected() != null) {
 										
-								if (myPlayer.isAttacking() == true) {
+								if (myPlayer.isAttacking () == true) {
 									//if current player is attacking
-									myPlayer.getSelected().RaiseAttack (clickedOn);
+									myPlayer.getSelected ().RaiseAttack (clickedOn);
 						
-								} else if (myPlayer.getSelected().hasGrenade) {
+								} else if (myPlayer.getSelected ().hasGrenade) {
 									//if current player is not attacking and player is carrying a grenade
 
-									myPlayer.getSelected().RaiseGrenade (hit.point);
+									myPlayer.getSelected ().RaiseGrenade (hit.point);
+
+								} else if (myPlayer.getSelected ().hasAirStrike) {
+									myPlayer.getSelected ().hasAirStrike = false;
+									myPlayer.getSelected ().RaiseAirstrike (hit.point);
 
 								} else {
 									HudController._instance.showHealthBar (clickedOn.id);
+									myPlayer.getSelected ().takingCover = false;
+									myPlayer.getSelected ().RaiseMovement (hit.point, 0, 0);
 								}
 							}
 						}
@@ -174,10 +180,13 @@ public class Game : MonoBehaviour {
 						//if player clicked on terrain/ground
 						if (myPlayer.getSelected() != null) {
 							//if player is selected
-							if (myPlayer.getSelected().hasGrenade) {
+							if (myPlayer.getSelected ().hasGrenade) {
 								//if grenade is equipped
-								myPlayer.getSelected().RaiseGrenade(hit.point);
-							} else {
+								myPlayer.getSelected ().RaiseGrenade (hit.point);
+							} else if (myPlayer.getSelected ().hasAirStrike) {
+								myPlayer.getSelected ().hasAirStrike = false;
+								myPlayer.getSelected ().RaiseAirstrike (hit.point);
+							}else {
 								//regular player movement
 								if (hit.collider.CompareTag ("Barrier")) {
 									myPlayer.getSelected ().takingCover = true;

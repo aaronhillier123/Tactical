@@ -7,60 +7,52 @@ using System;
 public class Chance : MonoBehaviour {
 
 	public int id;
-	private GameObject myTroop;
-	private Trooper myTroopScript;
-	private Vector3 troopPos;
-	//private bool found = false;
+	public Trooper shooter;
 	public Trooper target;
-	private GameObject canv;
-	private RaycastHit hit;
+	public Text myText;
 	// Use this for initialization
 	void Start () {
 	}
 
 	// Update is called once per frame
 	void Update () {
-
-		if (target!=null) {
-			showOnHead ();
-			} else {
-		}
+		showOnHead ();
 	}
 
 	void showOnHead(){
-		try{
-			myTroopScript = Game._instance.GetTroop (id);
-			myTroop = myTroopScript.gameObject;
-			troopPos = Camera.main.WorldToScreenPoint (myTroop.transform.position);
-			transform.position = new Vector2(troopPos.x, troopPos.y+50);
-			Vector3 enemypos = target.gameObject.transform.position;
-			Vector3 mypos = myTroopScript.gameObject.transform.position;
-			Vector3 enemyhip = new Vector3 (enemypos.x, enemypos.y + 3, enemypos.z);
-			Vector3 myhip = new Vector3 (mypos.x, mypos.y + 3, mypos.z);
-			Vector3 dir = (enemyhip - myhip);
-			float per;
-			if (Physics.Raycast (myhip, dir, out hit, 200f)) {
-				if (hit.collider.CompareTag ("NaturalCover")) {
-					per = 0f;
-				} else {
-					float dis = Vector3.Distance (target.gameObject.transform.position, myTroop.transform.position);
-					if(target.isSniper == false){
-						per = (float)Math.Round((100f - dis), 2);
-					}
-					else{
-						per = (float)Math.Round((200f - dis), 2);
-						per = per / 2.0f;
-					}
-					if (per < 0) {
-						per = 0;
-					}
-				}
-		string chance = per.ToString() + "%";
-		gameObject.GetComponent<Text> ().text = chance;
-		gameObject.GetComponent<Text> ().color = Color.white;
+		//Randomize hit based on distance and troop range
+		float distance = Vector3.Distance (shooter.transform.position, target.transform.position);
+		float percentOfHit = shooter.getRange () - distance;
+		Color colorKey = Color.green;
+
+		Vector3 enemypos = target.transform.position + new Vector3(0f, 3f, 0f);
+		Vector3 mypos = shooter.transform.position + new Vector3 (0f, 3f, 0f);
+
+		//under cover may be blocked by barrier
+		if (target.getPiece() != null) {
+			Vector3 enemyCenter = target.GetComponent<CapsuleCollider> ().bounds.center;
+			Vector3 barrierCenter = target.getPiece().GetComponent<BoxCollider> ().bounds.center;
+			float DistanceToEnemy = Vector3.Distance (transform.position, enemyCenter);
+			float DistanceToBarrier = Vector3.Distance (transform.position, barrierCenter);
+			if (DistanceToEnemy > DistanceToBarrier) {
+				percentOfHit = percentOfHit / 2;
+				colorKey = Color.yellow;
 			}
 		}
-		catch{
+
+		//determine if enemy is behind terrain or cover
+		RaycastHit hitcast;
+
+		if(Physics.Linecast(mypos, enemypos, out hitcast)){
+			if(hitcast.collider.CompareTag("Terrain") || hitcast.collider.CompareTag("NaturalCover")){
+				percentOfHit = 0;
+				colorKey = Color.red;
+			}
 		}
+
+		Vector2 chancePos = Camera.main.WorldToScreenPoint (enemypos);
+		transform.position = chancePos + new Vector2 (0, 50f);
+		myText.text = Mathf.Round(percentOfHit).ToString () + "%";
+		myText.color = colorKey;
 	}
 }

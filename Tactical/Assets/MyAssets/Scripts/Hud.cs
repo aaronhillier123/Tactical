@@ -62,7 +62,8 @@ public class Hud : MonoBehaviour {
 
 	public void AttackMode(bool attack){
 		if (attack == true) {
-			HudController._instance.showAllChances ();
+			Trooper a = Game._instance.myPlayer.getSelected ();
+			HudController._instance.showAllChances (a);
 			GamePlay.Attack.image.color = Color.green;
 			GamePlay.Attack.interactable = false;
 		} else {

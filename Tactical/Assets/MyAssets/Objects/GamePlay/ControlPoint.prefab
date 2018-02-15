@@ -84,7 +84,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1504883498467630}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 282.2, y: 10, z: 126.399994}
+  m_LocalPosition: {x: 149, y: 15, z: 142.4}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 4453083542554448}
@@ -227,15 +227,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8efe27483e3624e89af563f3dbef1adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 3
+  id: 5
   team: 0
   FlagMaterials:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  myFlag: {fileID: 0}
+  - {fileID: 2100000, guid: fdf7129378ef947019baf337cdbca408, type: 2}
+  - {fileID: 2100000, guid: 5f7eaf6a75ebf82459a2c210b29409d6, type: 2}
+  - {fileID: 2100000, guid: 6d0a2baba3730684f8e7c7e899375476, type: 2}
+  - {fileID: 2100000, guid: e78a005a08040204bbd327c449a99359, type: 2}
+  - {fileID: 2100000, guid: 97683c0348d42934395a401978c85404, type: 2}
+  myFlag: {fileID: 1923858697343608}
 --- !u!136 &136598486205235048
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -243,7 +243,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1504883498467630}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 1
   m_Height: 7

@@ -26,7 +26,7 @@ public class Trooper : MonoBehaviour {
 	//10 - jump barrier
 	//11 - take cover
 
-
+	private GameObject partSys;
 	private int animInt;
 	private float maxDistance = 50f;
 	private float health = 100;
@@ -65,6 +65,10 @@ public class Trooper : MonoBehaviour {
 	public bool isInvulnerable = false;
 	[System.NonSerialized]
 	public bool canMarathon = false;
+	[System.NonSerialized]
+	public bool hasDoubleShot = false;
+	[System.NonSerialized]
+	public bool hasAirStrike = false;
 
 
 	void Start () {
@@ -180,14 +184,18 @@ public class Trooper : MonoBehaviour {
 		
 	public void RaiseAttack(Trooper EnemyTroop){
 		myPlayer.setAttacking(false);
-		freeze ();
+		if (hasDoubleShot == false) {
+			freeze ();
+		} else {
+			hasDoubleShot = false;
+		}
 		HudController._instance.removeChances ();
 
 		//Randomize hit based on distance and troop range
 		float distance = Vector3.Distance (transform.position, EnemyTroop.transform.position);
 		float hit = (Random.Range (0, getRange()) - distance) > 0 ? 1 : 0;
 		Vector3 enemypos = EnemyTroop.transform.position + new Vector3(0f, 3f, 0f);
-
+		Vector3 mypos = transform.position + new Vector3 (0f, 3f, 0f);
 		//under cover may be blocked by barrier
 		if (EnemyTroop.getPiece() != null) {
 			Vector3 enemyCenter = EnemyTroop.GetComponent<CapsuleCollider> ().bounds.center;
@@ -201,11 +209,14 @@ public class Trooper : MonoBehaviour {
 
 		//determine if enemy is behind terrain or cover
 		RaycastHit hitcast;
-		Gizmos.color = Color.white;
-		Gizmos.DrawLine (GetComponent<Renderer> ().bounds.center, EnemyTroop.GetComponent<Renderer> ().bounds.center);
-		if(Physics.Linecast(GetComponent<Renderer>().bounds.center, EnemyTroop.GetComponent<Renderer>().bounds.center, out hitcast)){
+		Debug.Log ("DRAWING RAY from ");
+		Vector3 enemyWorldPos = EnemyTroop.transform.TransformPoint (Vector3.up * 3);
+		Debug.DrawLine (mypos, enemypos, Color.red, 3f, false);
+
+		if(Physics.Linecast(mypos, enemypos, out hitcast)){
 			if(hitcast.collider.CompareTag("Terrain") || hitcast.collider.CompareTag("NaturalCover")){
 				hit = 0;
+				Debug.Log ("HIT TERRAIN OR NATURAL COVER");
 			}
 		}
 
@@ -324,6 +335,24 @@ public class Trooper : MonoBehaviour {
 			ForwardToWebhook = true});
 	}
 
+	public void RaiseAirstrike(Vector3 point){
+		Debug.Log ("Calling in airstrike");
+		float[] contentArray = new float[4] { id, point.x, point.y, point.z };
+		object content = (object)contentArray;
+		PhotonNetwork.RaiseEvent ((byte)12, content, true, new RaiseEventOptions () {
+			Receivers = ReceiverGroup.All,
+			ForwardToWebhook = true,
+		});
+	}
+
+	public void CallAirstrike(Vector3 point){
+		DidSomething ();
+		stab ();
+		Vector3 skyPoint = point + new Vector3 (0f, 100f, 0f);
+		GameObject myStrike = Instantiate (TroopController._instance.TroopObjects [7], skyPoint, Quaternion.Euler (new Vector3 (90, 0, 0))); 
+		CameraController._instance.setFollowedObject (myStrike, 0);
+	}
+
 	public Vector3 toFloor(Vector3 point){
 		return new Vector3 (point.x, Game._instance.floor, point.z);
 	}
@@ -437,6 +466,15 @@ public class Trooper : MonoBehaviour {
 		select ();
 	}
 
+	public void giveDoubleShot(){
+		hasDoubleShot = true;
+	}
+
+	public void giveAirstrike(){
+		Debug.Log ("NOW HAS AIRSTRIKE");
+		hasAirStrike = true;
+	}
+
 	public void giveAbility(int ability){
 		switch(ability){
 		case 0:
@@ -450,6 +488,12 @@ public class Trooper : MonoBehaviour {
 			break;
 		case 3:
 			giveMarathon();
+			break;
+		case 4:
+			giveDoubleShot ();
+			break;
+		case 5:
+			giveAirstrike ();
 			break;
 		default:
 			break;
@@ -493,8 +537,11 @@ public class Trooper : MonoBehaviour {
 			yield return null;
 		}
 		yield return new WaitForSeconds (.5f);
-		hurtNearByEnemies (myGrenade.transform.position, 20f, 20f);
 		GameObject ex = GameObject.Instantiate (TroopController._instance.TroopObjects[2], myGrenade.transform.position, Quaternion.identity);
+		Explosion now = ex.GetComponent<Explosion> ();
+		if (now != null) {
+			now.type = 1;
+		}
 		Destroy (myGrenade);
 		yield return new WaitForSeconds (1f);
 		Destroy (ex);
@@ -503,19 +550,7 @@ public class Trooper : MonoBehaviour {
 			animator.SetInteger ("AnimPar", 11);
 		}
 	}
-
-	public void hurtNearByEnemies(Vector3 point, float distance, float damage){
-		Player myPlayer = GameHandler._instance.getPlayer (team);
-		List<Trooper> others = Game._instance.notMyTroopers (myPlayer);
-		foreach(Trooper t in others){
-			if(Vector3.Distance(point, t.gameObject.transform.position) < distance){
-				HudController._instance.showHealthBar (t.id);
-				t.rotateTo (point);
-				t.naded ();
-				t.decreaseHealth (damage);
-			}
-		}
-	}
+		
 		
 	public void naded(){
 		animator.SetInteger ("AnimPar", 7);
@@ -523,6 +558,7 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void stab(){
+		Debug.Log ("Stabbing");
 		animator.SetInteger ("AnimPar", 4);
 		Invoke ("stop", 1f);
 	}
@@ -625,5 +661,42 @@ public class Trooper : MonoBehaviour {
 	public void DidSomething(){
 		unselect ();
 		resetDistance ();
+	}
+
+	public IEnumerator stabTroop(Trooper t){
+		
+		rotateTo (t.currentPosition);
+		stab ();
+		yield return new WaitForSeconds (1f);
+		t.decreaseHealth (100f);
+
+	}
+
+	void OnCollisionEnter(Collision coll){
+		Trooper t = coll.gameObject.GetComponent<Trooper> ();
+		if (t != null) {
+			if (t.team != PhotonNetwork.player.ID) {
+				StopAllCoroutines ();
+				StartCoroutine (stabTroop (t));
+			}
+		}
+	}
+
+	void OnParticleCollision(GameObject ex){
+		if (ex != partSys) {
+			partSys = ex;
+			Explosion myEx = ex.GetComponent<Explosion> ();
+			if (myEx != null) {
+				if (myEx.type == 1) {
+					Debug.Log ("GRENADE");
+				} else if (myEx.type == 2) {
+					Debug.Log ("AIRSTRIKE");
+				}
+			}
+			HudController._instance.showHealthBar (id);
+			rotateTo (ex.transform.position);
+			naded ();
+			decreaseHealth (20f);
+		}
 	}
 }
