@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using UnityEngine.SceneManagement;
 
 public class GameHandler : MonoBehaviour {
 	//handles macro game information such as turn stats and rosters
@@ -83,6 +84,7 @@ public class GameHandler : MonoBehaviour {
 		Player myPlayer = GameHandler._instance.getPlayer (PhotonNetwork.player.ID);
 		int myTags = myPlayer.getDogTags ();
 		PlayerHt.Add ("DogTags", myTags);
+		Debug.Log ("Sending new properties");
 		PhotonNetwork.player.SetCustomProperties (PlayerHt, null, true);
 
 		PhotonNetwork.RaiseEvent(5, null, true, new RaiseEventOptions(){
@@ -247,7 +249,6 @@ public class GameHandler : MonoBehaviour {
 			if (int.Parse (tsa [9]) != -1) {
 				t.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
 				t.covering = true;
-				Debug.Log ("setting to cover");
 				t.setAnimation (11);
 			}
 			if (int.Parse (tsa [10]) == 1) {
@@ -325,10 +326,7 @@ public class GameHandler : MonoBehaviour {
 		ht.Add ("Cps", cpState);
 		return ht;
 	}
-
-	public void SendGameState(){
-		PhotonNetwork.room.SetCustomProperties(GameHandler._instance.GetGameState(), null, true);
-	}
+		
 
 	public void RaiseEndPlacements(){
 		PhotonNetwork.RaiseEvent(3, null, true, AllReceivers());
@@ -336,6 +334,7 @@ public class GameHandler : MonoBehaviour {
 		HudController._instance.removeStartHud ();
 		Game._instance.SendBarriersToNetwork ();
 		BarrierHandler._instance.RemoveAllPrelimbs ();
+		Debug.Log ("ENDING ALL PLACEMENTS");
 		PhotonNetwork.RaiseEvent (11, null, true, new RaiseEventOptions () {
 			CachingOption = EventCaching.AddToRoomCache,
 			Receivers = ReceiverGroup.All,
@@ -383,6 +382,7 @@ public class GameHandler : MonoBehaviour {
 	public static void SyncGameState(byte id, object content, int SenderID){
 		if (id == 9) {
 			Hashtable ht = (Hashtable)content;
+			Debug.Log ("sending new properties 2");
 			PhotonNetwork.room.SetCustomProperties (ht, null, true);
 			GameHandler._instance.UpdateTroopState (ht);
 			GameHandler._instance.UpdateDogState (ht);
@@ -431,5 +431,7 @@ public class GameHandler : MonoBehaviour {
 
 		return ops;
 	}
+
+
 
 }

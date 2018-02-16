@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: 38d59731664f84d0f95fa5eb8a4bc8d6
-timeCreated: 1498620335
+timeCreated: 1518804710
 licenseType: Free
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - FriendsListObject: {fileID: 1354149433373808, guid: 6fa2b544a92a6cf4f9b4b2e8b135f797,
+      type: 2}
+  - OptionsObject: {fileID: 1094366897451982, guid: a240ee8cce765aa4c8eeb5a5caeeac86,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

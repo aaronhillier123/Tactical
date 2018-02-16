@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayFab;
+using PlayFab.ClientModels;
+
 public class FriendsOverlay : MonoBehaviour {
 
 
@@ -14,6 +17,10 @@ public class FriendsOverlay : MonoBehaviour {
 		cancel.onClick.AddListener (delegate {
 			CancelMe ();
 		});
+
+		invite.onClick.AddListener (delegate {
+			InviteAll (ids);
+		});
 	}
 
 
@@ -21,6 +28,21 @@ public class FriendsOverlay : MonoBehaviour {
 		Destroy (this.gameObject);
 	}
 
+	public void InviteAll(List<string> fid){
+		PlayFabClientAPI.ExecuteCloudScript (new ExecuteCloudScriptRequest () {
+			FunctionName = "InviteFriends",
+			FunctionParameter = new {all = fid, room = PhotonNetwork.room.Name},
+			GeneratePlayStreamEvent = true,
+		}, OnSentInvites, OnInviteError);
+		CancelMe ();
+	}
+
+	public void OnSentInvites(ExecuteCloudScriptResult result){
+
+	}
+	public void OnInviteError(PlayFabError error){
+
+	}
 	// Update is called once per frame
 	void Update () {
 		

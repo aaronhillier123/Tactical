@@ -77,7 +77,6 @@ public class Hud : MonoBehaviour {
 	}
 
 	public void updateDogTags(int amount){
-		Debug.Log ("Updating to " + amount + " tags on screen");
 		//if (HudController._instance.myPlayer.isTurn()) {
 			GameObject.Find ("DogTagsText").GetComponent<Text> ().text = "DOGTAGS x " + amount.ToString ();
 		//}

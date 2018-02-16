@@ -90,6 +90,7 @@ public class Player : MonoBehaviour {
 		if (firstTroop != null) {
 			firstTroop.team = troopTeam;
 			firstTroop.id = troopId;
+			firstTroop.myPlayer = GameHandler._instance.getPlayer (troopTeam);
 			firstTroop.setInPos(firstTroop.gameObject.transform.position);
 			Game._instance.allTroopers.Add (firstTroop);
 			roster.Add (firstTroop);

@@ -108,7 +108,6 @@ public class HudController : MonoBehaviour {
 		HudController._instance.removeStartHud ();
 		HudController._instance.showGameHud ();
 		HudController._instance.showWaitingScreen ();
-		Debug.Log("Calling update dog tags for amount of " + myPlayer.getDogTags ());
 		HudController._instance.updateDogTags (myPlayer.getDogTags ());
 	}
 

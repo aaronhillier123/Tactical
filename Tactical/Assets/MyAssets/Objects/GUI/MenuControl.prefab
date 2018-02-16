@@ -52,4 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Version: 1
-  GameName: MyGame4
+  FriendsListObject: {fileID: 1354149433373808, guid: 6fa2b544a92a6cf4f9b4b2e8b135f797,
+    type: 2}
+  OptionsObject: {fileID: 1094366897451982, guid: a240ee8cce765aa4c8eeb5a5caeeac86,
+    type: 2}
+  GameName: NewGame3

@@ -39,7 +39,7 @@ public class Trooper : MonoBehaviour {
 	public int id;
 	public int team;
 
-	[System.NonSerialized]
+
 	public Player myPlayer;
 
 	public Vector3 currentPosition;
@@ -128,7 +128,6 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void setAnimation(int anim){
-		Debug.Log (anim + " is anim number");
 		if (animator != null) {
 			animator.SetInteger ("AnimPar", anim);
 		} else {
@@ -139,7 +138,6 @@ public class Trooper : MonoBehaviour {
 	public void stop(){
 		moving = false;
 		if (covering == false) {
-			Debug.Log ("stopping the troop");
 			animator.SetInteger ("AnimPar", 0);
 		}
 	}
@@ -176,7 +174,6 @@ public class Trooper : MonoBehaviour {
 			Vector3 newPos = transform.position + (dir*-0.5f);
 			transform.position = newPos;
 			rotateTo (point);
-			Debug.Log ("stopping cause taking cover");
 			stop ();
 			/*
 			if (myPiece != null) {

@@ -34,6 +34,7 @@ public class Game : MonoBehaviour {
 
 	void Start () {
 		_instance = this;
+		/*
 		PhotonNetwork.OnEventCall += GameHandler.CreatePlayer; //1
 		PhotonNetwork.OnEventCall += Trooper.move; //2
 		PhotonNetwork.OnEventCall += GameHandler.EndPlacements;//3
@@ -47,6 +48,7 @@ public class Game : MonoBehaviour {
 		PhotonNetwork.OnEventCall += Player.airStrike; //12
 		PhotonNetwork.OnEventCall += Game.BeginGame;//11
 		PhotonNetwork.OnEventCall += Player.NetworkTroopAt;//13
+		*/
 	}
 	
 	// Update is called once per frame
@@ -238,6 +240,7 @@ public class Game : MonoBehaviour {
 	public static void BeginGame(byte id, object content, int senderID){
 
 		if (id == 11 && senderID == PhotonNetwork.player.ID) {
+			Debug.Log ("begining game!");
 			Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
 			Vector3 newPos = Camera.main.transform.position;
 			Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);
@@ -258,7 +261,6 @@ public class Game : MonoBehaviour {
 		object TagsOut;
 		if (MyHash.TryGetValue ("DogTags", out TagsOut)) {
 			int tags = (int)TagsOut;
-			Debug.Log ("DOG TAG NUMBER: " + tags);
 			myPlayer.setDogTags (tags);
 		} else {
 			Debug.Log ("No hash could be found");

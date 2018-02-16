@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114072109189879612}
   - component: {fileID: 114729294860979986}
   - component: {fileID: 114067649287764146}
+  - component: {fileID: 114100822276313044}
   m_Layer: 0
   m_Name: Game
   m_TagString: GameController
@@ -84,13 +85,30 @@ MonoBehaviour:
     type: 2}
   ChanceObject: {fileID: 1514796243048310, guid: d45ebfdee800749728345b8442db71ab,
     type: 2}
-  HitOrMissObject: {fileID: 0}
+  HitOrMissObject: {fileID: 1852571342250770, guid: d121f351e42734dd08641a9b3dbce879,
+    type: 2}
   GameHudObject: {fileID: 0}
   StartHudObject: {fileID: 0}
   WaitingHudObject: {fileID: 0}
   canvas: {fileID: 0}
   GameHud: {fileID: 0}
   StartHud: {fileID: 0}
+--- !u!114 &114100822276313044
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1353295196620484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42973d82a60f30c408455a6fc98a0a1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  follow: {fileID: 0}
+  cpo: {fileID: 0}
+  czo: {fileID: 0}
+  cp: {fileID: 0}
+  cz: {fileID: 0}
 --- !u!114 &114532689118140036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -103,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPlayer: {fileID: 0}
-  floor: 49
+  floor: 54
   allTroopers: []
   allDogTags: []
 --- !u!114 &114580300703801790
@@ -124,6 +142,9 @@ MonoBehaviour:
   - {fileID: 1129943201227556, guid: a861fad98bad94389834138acc4c2fea, type: 2}
   - {fileID: 1916340171200896, guid: 76d195a0d922a4d1d94a6793a9e2c88b, type: 2}
   - {fileID: 166266, guid: dc884a6ec589ce249acc9b5326859165, type: 2}
+  - {fileID: 166266, guid: 2d8cf55dd48fbb546bdc21d6e0fad0d1, type: 2}
+  - {fileID: 162538, guid: 8360bcdf5f97bdc44ae3e39b8aca3404, type: 2}
+  - {fileID: 1308839006926026, guid: a966094a24cf32a4a8d1639610cabfb1, type: 2}
   SelectedMats:
   - {fileID: 2100000, guid: 2e6fb79f8fd9f4cc794eb07ec0e99383, type: 2}
   - {fileID: 2100000, guid: 2e6fb79f8fd9f4cc794eb07ec0e99383, type: 2}

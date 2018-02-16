@@ -11,7 +11,7 @@ public class StorePanel : MonoBehaviour {
 	public GameObject CurrentInfoPanel;
 	public Button retract;
 	public static bool retracted = false;
-
+	public GameObject store;
 	// Use this for initialization
 	void Start () {
 		
@@ -78,12 +78,10 @@ public class StorePanel : MonoBehaviour {
 	{
 		
 		if (retracted == false) {
-			retract.GetComponentInChildren<Text> ().text = ">";
-			transform.Translate (-1 * Screen.width/5, 0f, 0f);
+			store.GetComponent<RectTransform> ().sizeDelta = new Vector2 (0f, 0f);
 			retracted = true;
 		} else {
-			transform.Find ("Retract").GetChild (0).GetComponent<Text> ().text = "<";
-			transform.Translate (Screen.width/5, 0f, 0f);
+			store.GetComponent<RectTransform> ().sizeDelta = new Vector2 (130f, 160f);
 			retracted = false;
 		}
 	}
