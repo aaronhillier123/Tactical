@@ -9,6 +9,7 @@ using System.Linq;
 using LoginResult = PlayFab.ClientModels.LoginResult;
 using JsonObject = PlayFab.Json.JsonObject;
 using UnityEngine.UI;
+using Friend = PlayFab.ClientModels.FriendInfo;
 
 public class GameListObject{
 	public string GameList;
@@ -20,6 +21,8 @@ public class MenuScript : MonoBehaviour {
 	public byte Version = 1;
 	private string roomName = "";
 	private List<string> players;
+
+	public GameObject FriendsListObject;
 
 	private string _message;
 
@@ -92,6 +95,25 @@ public class MenuScript : MonoBehaviour {
 			FunctionParameter = new { name = "YOUR NAME"},
 			GeneratePlayStreamEvent = true,
 		}, OnGotGames, OnErrorShared);
+	}
+
+	public void GetFriendsList(){
+		GetFriendsListRequest request = new GetFriendsListRequest ();
+		request.IncludeFacebookFriends = true;
+		PlayFabClientAPI.GetFriendsList (request, GotFriendsList, FriendsListError);
+	}
+
+	private void GotFriendsList(GetFriendsListResult result){
+		
+		List<Friend> friends = result.Friends;
+		Debug.Log ("HOW MANY FRIENDS?:" + friends.Count);
+		GameObject g = Instantiate (FriendsListObject,GameObject.Find ("Canvas").transform, false);
+		FriendsPanel fp = g.GetComponentInChildren<FriendsPanel> ();
+		fp.CreateFriend (friends);
+	}
+
+	private void FriendsListError(PlayFabError obj){
+		Debug.Log ("NOPE");
 	}
 
 	public static void OnGotGames(ExecuteCloudScriptResult result){
