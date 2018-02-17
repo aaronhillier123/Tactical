@@ -18,7 +18,9 @@ public class EventHandler : MonoBehaviour {
 		if (PhotonNetwork.inRoom && gameStarted==false){
 			Player isPlayer = GameHandler._instance.getPlayer (PhotonNetwork.player.ID);
 			if (isPlayer == null) {
-				var response = PhotonNetwork.RaiseEvent (1, null, true, new RaiseEventOptions () {
+
+
+				PhotonNetwork.RaiseEvent (1, null, true, new RaiseEventOptions () {
 					ForwardToWebhook = true,
 					Receivers = ReceiverGroup.All,
 					CachingOption = EventCaching.AddToRoomCache
