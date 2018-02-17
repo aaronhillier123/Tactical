@@ -25,6 +25,7 @@ public class MenuScript : MonoBehaviour {
 
 	public GameObject FriendsListObject;
 	public GameObject OptionsObject;
+	public GameObject GameOverPanel;
 	public bool running = false;
 	private GameObject optionsPanel;
 
@@ -101,6 +102,7 @@ public class MenuScript : MonoBehaviour {
 			PhotonNetwork.OnEventCall += Player.airStrike; //12
 			PhotonNetwork.OnEventCall += Game.BeginGame;//11
 			PhotonNetwork.OnEventCall += Player.NetworkTroopAt;//13
+			PhotonNetwork.OnEventCall += GameHandler.EndGame;//14
 			running = true;
 		}
 		PhotonNetwork.JoinLobby ();
@@ -136,8 +138,26 @@ public class MenuScript : MonoBehaviour {
 		//PhotonNetwork.LeaveRoom();
 	}
 
+	public void DoneWithGame(){
+		string name = PhotonNetwork.room.Name;
+		LeaveRoom ();
+		PlayFabClientAPI.ExecuteCloudScript (new ExecuteCloudScriptRequest () {
+			FunctionName = "DoneWithGame",
+			FunctionParameter = new {roomName = name},
+			GeneratePlayStreamEvent = true,
+		}, OnFinishedGame, OnFinishedGameError);
+			
+	}
+
+	public void OnFinishedGame(ExecuteCloudScriptResult result){
+
+	}
+	public void OnFinishedGameError(PlayFabError error){
+
+	}
+
 	void OnLeftRoom(){
-		System.Threading.Thread.Sleep (1000);
+		//System.Threading.Thread.Sleep (1000);
 		SceneManager.LoadScene ("MainMenu");
 		SceneManager.UnloadSceneAsync ("GameScene");
 	}
@@ -223,6 +243,8 @@ public class MenuScript : MonoBehaviour {
 		}
 	}
 
+
+
 	private void OnFacebookLoggedIn(ILoginResult result){
 		if (result == null || string.IsNullOrEmpty (result.Error)) {
 
@@ -271,6 +293,8 @@ public class MenuScript : MonoBehaviour {
 		}, OnSentInvites, OnInviteError);
 
 	}
+
+
 
 	public void OnSentInvites(ExecuteCloudScriptResult result){
 

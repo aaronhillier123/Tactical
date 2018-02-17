@@ -28,6 +28,7 @@ public class Game : MonoBehaviour {
 
 	private bool barrierSelected = false;
 	private bool rotatingBarrier = false;
+	public bool over = false;
 	private BKnob selectedKnob;
 
 
@@ -48,6 +49,7 @@ public class Game : MonoBehaviour {
 		PhotonNetwork.OnEventCall += Player.airStrike; //12
 		PhotonNetwork.OnEventCall += Game.BeginGame;//11
 		PhotonNetwork.OnEventCall += Player.NetworkTroopAt;//13
+		PhotonNetwork.OnEventCall += GameHandler.EndGame;//14
 		*/
 	}
 	
@@ -104,7 +106,7 @@ public class Game : MonoBehaviour {
 				if (myPlayer != null) {
 					myPlayer.setBarrierSelected (null);
 				}
-				if (timeDiff < .2f) {
+			if (timeDiff < .2f && over==false) {
 					OnClick ();
 				}
 				timeDiff = 0;
@@ -251,6 +253,7 @@ public class Game : MonoBehaviour {
 	}
 		
 	public void StartTurn(){
+		
 		foreach (Trooper t in Game._instance.myPlayer.roster) {
 			t.reset ();
 		}
@@ -266,8 +269,13 @@ public class Game : MonoBehaviour {
 			Debug.Log ("No hash could be found");
 			myPlayer.setDogTags (3);
 		}
-		HudController._instance.StartTurn ();
-		myPlayer.setTurn (true);
+
+		if (Game._instance.myPlayer.roster.Count == 0) {
+			GameHandler._instance.RaiseTurnChange ();
+		} else {
+			HudController._instance.StartTurn ();
+			myPlayer.setTurn (true);
+		}
 	}
 
 	public void EndTurn(){

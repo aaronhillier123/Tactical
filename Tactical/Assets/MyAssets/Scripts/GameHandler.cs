@@ -4,6 +4,7 @@ using UnityEngine;
 using PlayFab;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameHandler : MonoBehaviour {
 	//handles macro game information such as turn stats and rosters
@@ -17,7 +18,7 @@ public class GameHandler : MonoBehaviour {
 	private int playersTurn = 0;
 	private int turnNumber = 0;
 	private bool GamePhase = false;
-
+	public GameObject GameOverPanel;
 
 
 	void Start () {
@@ -388,6 +389,50 @@ public class GameHandler : MonoBehaviour {
 			GameHandler._instance.UpdateDogState (ht);
 			GameHandler._instance.UpdateCpState (ht);
 		}
+	}
+
+	public void CheckForEnd(){
+		int playersLeft = 0;
+		int winner = 0;
+		foreach (Player p in GameHandler._instance.GamePlayers) {
+			if (p.roster.Count > 0) {
+				playersLeft++;
+				winner = p.team;
+			}
+		}
+		if (playersLeft == 1) {
+			PhotonNetwork.RaiseEvent ((byte)14, (object)winner, true, new RaiseEventOptions () {
+				Receivers = ReceiverGroup.All,
+				ForwardToWebhook = true, 
+				CachingOption = EventCaching.AddToRoomCache,
+			});
+		}
+	}
+
+	public void showGameOver(int win){
+		GameObject winObject = Instantiate (GameOverPanel, GameObject.Find ("Canvas").transform, false);
+		winObject.GetComponent<GameOver> ().show (win);
+
+	}
+
+	public static void EndGame(byte id, object content, int senderID){
+		if (id == 14) {
+			Game._instance.over = true;
+			int winner = (int)content;
+			Button[] allButons = GameObject.FindObjectsOfType<Button> ();
+			foreach (Button b in allButons) {
+				b.interactable = false;
+			}
+			HudController._instance.removeWaitingScreen ();
+			if (PhotonNetwork.player.ID == winner) {
+				GameHandler._instance.showGameOver (1);
+
+			} else {
+				///you are loser
+				GameHandler._instance.showGameOver(0);
+			}
+		}
+
 	}
 
 	public static void EndPlacements(byte id, object content, int SenderID){

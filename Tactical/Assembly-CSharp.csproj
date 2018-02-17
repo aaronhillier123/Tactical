@@ -153,11 +153,13 @@
      <Compile Include="Assets\MyAssets\Scripts\DogTag.cs" />
      <Compile Include="Assets\MyAssets\Scripts\EventHandler.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Explosion.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\FoxHole.cs" />
      <Compile Include="Assets\MyAssets\Scripts\FriendSlice.cs" />
      <Compile Include="Assets\MyAssets\Scripts\FriendsOverlay.cs" />
      <Compile Include="Assets\MyAssets\Scripts\FriendsPanel.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Game.cs" />
      <Compile Include="Assets\MyAssets\Scripts\GameHandler.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\GameOver.cs" />
      <Compile Include="Assets\MyAssets\Scripts\GamePlayPanel.cs" />
      <Compile Include="Assets\MyAssets\Scripts\HealthBar.cs" />
      <Compile Include="Assets\MyAssets\Scripts\HitMiss.cs" />

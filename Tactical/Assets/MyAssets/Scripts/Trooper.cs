@@ -55,7 +55,7 @@ public class Trooper : MonoBehaviour {
 
 	[System.NonSerialized]
 	public bool takingCover = false;
-
+	public bool inFoxHole = false;
 	//bools for abilities
 	//[System.NonSerialized]
 	public bool hasGrenade = false;
@@ -211,12 +211,8 @@ public class Trooper : MonoBehaviour {
 			HudController._instance.RefreshStore ();
 		}
 		HudController._instance.removeChances ();
+		float deduct = 0;
 
-		//Randomize hit based on distance and troop range
-		float distance = Vector3.Distance (transform.position, EnemyTroop.transform.position);
-		float hit = (Random.Range (0, getRange()) - distance) > 0 ? 1 : 0;
-		Vector3 enemypos = EnemyTroop.transform.position + new Vector3(0f, 3f, 0f);
-		Vector3 mypos = transform.position + new Vector3 (0f, 3f, 0f);
 		//under cover may be blocked by barrier
 		if (EnemyTroop.getPiece() != null) {
 			Vector3 enemyCenter = EnemyTroop.GetComponent<CapsuleCollider> ().bounds.center;
@@ -224,9 +220,23 @@ public class Trooper : MonoBehaviour {
 			float DistanceToEnemy = Vector3.Distance (transform.position, enemyCenter);
 			float DistanceToBarrier = Vector3.Distance (transform.position, barrierCenter);
 			if (DistanceToEnemy > DistanceToBarrier) {
-				hit = 2;
+				deduct += 0.5f;
 			}
 		}
+
+		if (EnemyTroop.inFoxHole) {
+			deduct += 0.5f;
+		}
+
+
+		//Randomize hit based on distance and troop range
+		float distance = Vector3.Distance (transform.position, EnemyTroop.transform.position);
+		distance = distance + (distance * deduct);
+		float hit = (Random.Range (0, getRange()) - distance) > 0 ? 1 : 0;
+		Vector3 enemypos = EnemyTroop.transform.position + new Vector3(0f, 3f, 0f);
+		Vector3 mypos = transform.position + new Vector3 (0f, 3f, 0f);
+
+
 
 		//determine if enemy is behind terrain or cover
 		RaycastHit hitcast;
@@ -443,6 +453,10 @@ public class Trooper : MonoBehaviour {
 		default:
 				break;
 		}
+
+		if (enemy.myPiece != null) {
+			hit = 2;
+		}
 		HudController._instance.HitOrMiss (mybullet.transform.position, hit);
 		Destroy (mybullet);
 		enemy.Invoke ("stop", 1f);
@@ -463,6 +477,7 @@ public class Trooper : MonoBehaviour {
 		Game._instance.allTroopers.Remove (this);
 		myPlayer.CreateDogTagAt(transform.position + new Vector3 (0, 3f, 0), id);
 		HudController._instance.removeHealthBar (id);
+		GameHandler._instance.CheckForEnd ();
 		Destroy (gameObject);
 	}
 
