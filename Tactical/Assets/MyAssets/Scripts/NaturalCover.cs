@@ -18,7 +18,7 @@ public class NaturalCover : MonoBehaviour {
 		Trooper myTroop = coll.gameObject.GetComponent<Trooper> ();
 		if (myTroop != null) {
 			myTroop.StopAllCoroutines ();
-			myTroop.goBack (2f);
+
 			Debug.Log ("Stopping cause of collision enter");
 			myTroop.stop ();
 		} else {

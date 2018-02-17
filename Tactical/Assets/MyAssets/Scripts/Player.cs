@@ -92,6 +92,7 @@ public class Player : MonoBehaviour {
 			firstTroop.id = troopId;
 			firstTroop.myPlayer = GameHandler._instance.getPlayer (troopTeam);
 			firstTroop.setInPos(firstTroop.gameObject.transform.position);
+			firstTroop.assignColor ();
 			Game._instance.allTroopers.Add (firstTroop);
 			roster.Add (firstTroop);
 		}

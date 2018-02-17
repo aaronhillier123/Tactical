@@ -156,6 +156,12 @@ public class MenuScript : MonoBehaviour {
 		MyGames._instance.SetGames (myList);
 	}
 
+	public static void OnGotInvites(ExecuteCloudScriptResult result){
+
+		List<string> myList = PlayFab.Json.JsonWrapper.DeserializeObject<List<string>> (result.FunctionResult.ToString());
+		MyGames._instance.SetInvites (myList);
+	}
+
 	public static void OnErrorShared(PlayFabError error){
 	}
 
@@ -205,7 +211,16 @@ public class MenuScript : MonoBehaviour {
 	}
 
 	public void showOptionsPanel(){
-		optionsPanel = Instantiate(OptionsObject, GameObject.Find("Canvas").transform, false);
+		if (optionsPanel == null) {
+			optionsPanel = Instantiate (OptionsObject, GameObject.Find ("Canvas").transform, false);
+			if (GameHandler._instance.getPlayersTurn () > 0) {
+				try {
+					optionsPanel.transform.Find ("FriendsButton").gameObject.GetComponent<Button> ().interactable = false;
+				} catch {
+
+				}
+			}
+		}
 	}
 
 	private void OnFacebookLoggedIn(ILoginResult result){
@@ -272,6 +287,17 @@ public class MenuScript : MonoBehaviour {
 		}, OnGotGames, OnErrorShared);
 	}
 
+	public static void CloudGetMyInvites(){
+		PlayFabClientAPI.ExecuteCloudScript (new ExecuteCloudScriptRequest () {
+			FunctionName = "GetMyInvites",
+			FunctionParameter = new { name = "YOUR NAME"},
+			GeneratePlayStreamEvent = true,
+		}, OnGotInvites, OnErrorInvites);
+	}
+
+	public static void OnErrorInvites(PlayFabError error){
+	}
+
 	public virtual void OnJoinedLobby()
 	{
 		Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList()");
@@ -283,7 +309,7 @@ public class MenuScript : MonoBehaviour {
 		
 		if (PhotonNetwork.insideLobby) {
 			SceneManager.LoadScene ("GameScene");
-			PhotonNetwork.CreateRoom(GameName, new RoomOptions () {
+			PhotonNetwork.CreateRoom(null, new RoomOptions () {
 				MaxPlayers = 4,
 				EmptyRoomTtl = 1000,
 				PlayerTtl = -1,
@@ -296,6 +322,13 @@ public class MenuScript : MonoBehaviour {
 		if (PhotonNetwork.insideLobby) {
 			SceneManager.LoadScene ("GameScene");
 			PhotonNetwork.JoinRandomRoom ();
+		}
+	}
+
+	public void JoinGame(string name){
+		if (PhotonNetwork.insideLobby) {
+			SceneManager.LoadScene ("GameScene");
+			PhotonNetwork.JoinRoom (name);
 		}
 	}
 

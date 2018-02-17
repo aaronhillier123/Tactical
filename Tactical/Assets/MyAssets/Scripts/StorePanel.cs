@@ -12,6 +12,7 @@ public class StorePanel : MonoBehaviour {
 	public Button retract;
 	public static bool retracted = false;
 	public GameObject store;
+	public GameObject viewPort;
 	// Use this for initialization
 	void Start () {
 		
@@ -79,9 +80,12 @@ public class StorePanel : MonoBehaviour {
 		
 		if (retracted == false) {
 			store.GetComponent<RectTransform> ().sizeDelta = new Vector2 (0f, 0f);
+			viewPort.GetComponent<RectTransform> ().sizeDelta = new Vector2 (0f, 0f);
 			retracted = true;
 		} else {
 			store.GetComponent<RectTransform> ().sizeDelta = new Vector2 (130f, 160f);
+			viewPort.GetComponent<RectTransform> ().sizeDelta = new Vector2 (120f, 150f);
+
 			retracted = false;
 		}
 	}

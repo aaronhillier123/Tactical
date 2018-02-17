@@ -140,9 +140,6 @@
      <Compile Include="Assets\Facebook\Scripts\Utils\IFacebookLogger.cs" />
      <Compile Include="Assets\Facebook\Scripts\Utils\MiniJson.cs" />
      <Compile Include="Assets\Facebook\Scripts\Utils\Utilities.cs" />
-     <Compile Include="Assets\FriendSlice.cs" />
-     <Compile Include="Assets\FriendsOverlay.cs" />
-     <Compile Include="Assets\FriendsPanel.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Barrier.cs" />
      <Compile Include="Assets\MyAssets\Scripts\BarrierHandler.cs" />
      <Compile Include="Assets\MyAssets\Scripts\BarrierPiece.cs" />
@@ -156,6 +153,9 @@
      <Compile Include="Assets\MyAssets\Scripts\DogTag.cs" />
      <Compile Include="Assets\MyAssets\Scripts\EventHandler.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Explosion.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\FriendSlice.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\FriendsOverlay.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\FriendsPanel.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Game.cs" />
      <Compile Include="Assets\MyAssets\Scripts\GameHandler.cs" />
      <Compile Include="Assets\MyAssets\Scripts\GamePlayPanel.cs" />

@@ -771,7 +771,7 @@ public class Trooper : MonoBehaviour {
 		frozen = false;
 	}
 
-	void assignColor(){
+	public void assignColor(){
 		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
 	}
 
