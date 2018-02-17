@@ -396,7 +396,17 @@ public class Trooper : MonoBehaviour {
 		destinationPosition = destination;
 		Vector3 direction = (destination - transform.position).normalized;
 		transform.rotation = Quaternion.LookRotation (direction);
-		animator.SetInteger ("AnimPar", 1);
+		if (myPiece != null) {
+			if (Vector3.Distance (currentPosition, destination) > Vector3.Distance (myPiece.GetComponent<BoxCollider> ().bounds.center, destination)) {
+				animator.SetInteger ("AnimPar", 11);
+				StartCoroutine (MoveAfterSeconds (0.5f));
+			} else {
+				animator.SetInteger ("AnimPar", 1);
+			}
+		} else {
+			animator.SetInteger ("AnimPar", 1);
+			myPiece = null;
+		}
 		myPiece = null;
 		while(Vector3.Distance(transform.position, destination) > 1f)
 		{

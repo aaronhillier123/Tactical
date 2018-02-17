@@ -150,6 +150,20 @@ public class GameHandler : MonoBehaviour {
 		return cpstate;
 	}
 
+	public void setMyTags(Hashtable ht){
+		string myName = "Player" + PhotonNetwork.player.ID.ToString ();
+		object myTagsOb;
+		int myTags = 3;
+		if (ht.TryGetValue (myName, out myTagsOb)) {
+			myTags = (int)myTagsOb;
+			Debug.Log ("my tag number is " + myTags);
+		}
+
+		Debug.Log ("Setting dog tags to " + myTags);
+
+		Game._instance.myPlayer.setDogTags (myTags);
+	}
+
 	public void UpdateCpState(Hashtable ht){
 		object cpObject;
 		ht.TryGetValue ("Cps", out cpObject);
@@ -320,11 +334,15 @@ public class GameHandler : MonoBehaviour {
 		string troopstate = TroopState ();
 		string dogstate = dogState ();
 		string cpState = CpState ();
+
+		int myTags = Game._instance.myPlayer.getDogTags ();
+		string myName = "Player" + PhotonNetwork.player.ID.ToString ();
 		Hashtable ht = new Hashtable ();
 		ht.Add ("Troops", troopstate);
 		ht.Add ("Dogs", dogstate);
 		ht.Add ("Turn", turnNumber);
 		ht.Add ("Cps", cpState);
+		ht.Add (myName, myTags);
 		return ht;
 	}
 		
@@ -388,6 +406,7 @@ public class GameHandler : MonoBehaviour {
 			GameHandler._instance.UpdateTroopState (ht);
 			GameHandler._instance.UpdateDogState (ht);
 			GameHandler._instance.UpdateCpState (ht);
+			GameHandler._instance.setMyTags (ht);
 		}
 	}
 

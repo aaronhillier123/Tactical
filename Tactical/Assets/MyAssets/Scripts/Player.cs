@@ -26,7 +26,7 @@ public class Player : MonoBehaviour {
 
 	//general player variables
 	public static int numberOfTroops = 1;
-	private int dogtags;
+	private int dogtags = 3;
 	public List<ControlPoint> myControlPoints;
 
 	//booleans for player states
@@ -54,6 +54,7 @@ public class Player : MonoBehaviour {
 	}
 	public void setDogTags(int d){
 		dogtags = d;
+		HudController._instance.updateDogTags (dogtags);
 	}
 	public bool isAttacking(){
 		return attacking;

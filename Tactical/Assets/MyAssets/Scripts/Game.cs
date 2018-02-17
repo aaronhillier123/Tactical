@@ -257,18 +257,7 @@ public class Game : MonoBehaviour {
 		foreach (Trooper t in Game._instance.myPlayer.roster) {
 			t.reset ();
 		}
-
-
-
-		Hashtable MyHash = PhotonNetwork.player.CustomProperties;
-		object TagsOut;
-		if (MyHash.TryGetValue ("DogTags", out TagsOut)) {
-			int tags = (int)TagsOut;
-			myPlayer.setDogTags (tags);
-		} else {
-			Debug.Log ("No hash could be found");
-			myPlayer.setDogTags (3);
-		}
+			
 
 		if (Game._instance.myPlayer.roster.Count == 0) {
 			GameHandler._instance.RaiseTurnChange ();
