@@ -57,6 +57,7 @@ public class GameHandler : MonoBehaviour {
 				newPlayer.CreateTroopAt (newPos, mySpawn.FacingOut, senderID, ((senderID-1) * Player.numberOfTroops) + i);
 			}
 			if (PhotonNetwork.player.ID == newPlayer.team) {
+				CameraPan._instnace.moveToObject (newPlayer.roster [0].gameObject);
 				if (GameHandler._instance.turnNumber == 0) {
 					HudController._instance.showStartHud ();
 				} else {

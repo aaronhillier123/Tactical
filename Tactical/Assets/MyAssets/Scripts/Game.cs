@@ -23,7 +23,7 @@ public class Game : MonoBehaviour {
 	private float secondTime;
 	private float timeDiff;
 	private bool mouseDown = false;
-	private bool dragOccuring = false;
+	//private bool dragOccuring = false;
 	private Vector3 previousMousePosition;
 
 	private bool barrierSelected = false;
@@ -83,45 +83,51 @@ public class Game : MonoBehaviour {
 					previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 					firstTime = Time.time;
 					mouseDown = true;
-				}
-			}
-
-			if (mouseDown == true) {
-				timeDiff = Time.time - firstTime;
-			}
-			if (timeDiff > 0f) {
-				if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject ()) {
-					dragOccuring = true;
-				}
-			}
-			if (Input.GetMouseButtonUp (0)) {
-				mouseDown = false;
-				dragOccuring = false;
-				barrierSelected = false;
-				rotatingBarrier = false;
-				if (selectedKnob != null) {
-					selectedKnob.selected = false;
-					selectedKnob = null;
-				}
-				if (myPlayer != null) {
-					myPlayer.setBarrierSelected (null);
-				}
-			if (timeDiff < .2f && over==false) {
-					OnClick ();
-				}
-				timeDiff = 0;
 			}
 		}
+
+		if (mouseDown == true) {
+			timeDiff = Time.time - firstTime;
+		}
+		if (timeDiff > 0f) {
+			if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject ()) {
+				CameraPan._instnace.drag ();
+				//dragOccuring = true;
+			}
+		}
+		if (Input.GetMouseButtonUp (0)) {
+			mouseDown = false;
+			CameraPan._instnace.release ();
+			//CameraPan._instnace.dragging = false;
+			//dragOccuring = false;
+			barrierSelected = false;
+			rotatingBarrier = false;
+			if (selectedKnob != null) {
+				selectedKnob.selected = false;
+				selectedKnob = null;
+			}
+			if (myPlayer != null) {
+				myPlayer.setBarrierSelected (null);
+			}
+		if (timeDiff < .12f && over==false) {
+				OnClick ();
+			}
+			timeDiff = 0;
+		}
+	}
 		
 
 	void OnDrag(){
-		if (dragOccuring == true) {
+		if (CameraPan._instnace.dragging== true) {
 			if (barrierSelected == false && rotatingBarrier == false) {
 				//drag camera/screen with mouse
 
 				Vector3 camDifference = Camera.main.ScreenToViewportPoint (Input.mousePosition) - previousMousePosition;
-				Camera.main.transform.parent.transform.Translate (camDifference.y * 30f, 0f, camDifference.x * -30f);
+				//Camera.main.transform.parent.transform.Translate (camDifference.y * 30f, 0f, camDifference.x * -30f);
+				CameraPan._instnace.transform.Translate (camDifference.y * 30f, 0f, camDifference.x * -30f);
 				previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+
+
 			} else if (barrierSelected == false) {
 			} else {
 				//moving barrier on drag

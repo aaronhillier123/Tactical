@@ -88,7 +88,7 @@ public class Hud : MonoBehaviour {
 		if (myPlayer.lookingAt >= myPlayer.roster.Count) {
 			myPlayer.lookingAt = 0;
 		}
-		CameraController._instance.setFollowedObject(myPlayer.roster [myPlayer.lookingAt].gameObject, 1);
+		CameraPan._instnace.moveToObject(myPlayer.roster [myPlayer.lookingAt].gameObject);
 	}
 
 
