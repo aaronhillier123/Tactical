@@ -22,6 +22,7 @@ public class StorePanel : MonoBehaviour {
 		CurrentInfoPanel = InfoPanels [item];
 		CurrentInfoPanel.transform.SetParent (HudController._instance.GameHud.transform);
 		CurrentInfoPanel.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+		CurrentInfoPanel.GetComponent<RectTransform> ().localScale= new Vector3 (.45f, .45f, .45f);
 		Trooper t = Game._instance.myPlayer.getSelected ();
 		if (t != null) {
 			List<int> abs = t.GetAbilities ();

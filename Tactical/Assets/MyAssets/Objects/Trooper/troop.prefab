@@ -1367,12 +1367,14 @@ MonoBehaviour:
   animator: {fileID: 95922183692251136}
   id: 0
   team: 0
+  myPlayer: {fileID: 0}
   currentPosition: {x: 0, y: 0, z: 0}
   destinationPosition: {x: 0, y: 0, z: 0}
   currentRotation: {x: 0, y: 0, z: 0, w: 0}
   abilities: 
   frozen: 0
   covering: 0
+  inFoxHole: 0
   hasGrenade: 0
   isSniper: 0
   isInvulnerable: 0
@@ -1388,7 +1390,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1
+  m_Radius: 1.5
   m_Height: 6
   m_Direction: 1
   m_Center: {x: 0, y: 3, z: 0}

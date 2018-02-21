@@ -25,4 +25,4 @@ Material:
     m_Floats:
     - _Attenuation: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0.409}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.147}

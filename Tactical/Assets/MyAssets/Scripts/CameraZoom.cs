@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class CameraZoom : MonoBehaviour {
 
-	float deltaWheel;
+	public static CameraZoom _instance;
+
+	float deltaZoom;
 	float originalZoom;
 	float maxZoom;
 	float currentZoom;
 	// Use this for initialization
 	void Start () {
-		deltaWheel = 0;
+		_instance = this;
+		deltaZoom = 0;
 		currentZoom = gameObject.transform.position.y;
 		originalZoom = gameObject.transform.position.y;
 		maxZoom = 20;
@@ -19,17 +22,27 @@ public class CameraZoom : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		currentZoom = gameObject.transform.position.y;
-		deltaWheel = Input.GetAxis ("Mouse ScrollWheel");
-		if(deltaWheel < 0f && currentZoom < originalZoom+maxZoom){
-			gameObject.transform.Translate(0f, 0f, -.8f);
+	}
+
+	void checkForWheel(){
+		if (Input.GetAxis ("Mouse ScrollWheel") != 0) {
+			deltaZoom = Input.GetAxis("Mouse ScrollWheel");
+			zoom (-0.8f);
 		}
-		if(deltaWheel > 0f && currentZoom > originalZoom-maxZoom){
-			gameObject.transform.Translate(0f, 0f, .8f);
+	}
+
+
+	public void zoom(float distance){
+		if(distance < 0 && currentZoom < originalZoom+maxZoom){
+			gameObject.transform.Translate(0f, 0f, distance);
+		}
+		if(distance > 0 && currentZoom > originalZoom-maxZoom){
+			gameObject.transform.Translate(0f, 0f, distance);
 		}
 	}
 
 	public void resetZoom(){
-		deltaWheel = 0;
+		deltaZoom = 0;
 		currentZoom = gameObject.transform.position.y;
 		originalZoom = gameObject.transform.position.y;
 		maxZoom = 20;

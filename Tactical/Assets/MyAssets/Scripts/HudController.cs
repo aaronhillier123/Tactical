@@ -86,6 +86,7 @@ public class HudController : MonoBehaviour {
 	public void showStartHud(){
 		StartHud.transform.SetParent (canvas.transform);
 		StartHud.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+		StartHud.GetComponent<RectTransform> ().localScale = Vector3.one;
 	}
 
 	public void showGameHud(){
@@ -96,7 +97,8 @@ public class HudController : MonoBehaviour {
 
 	public void showWaitingScreen(){
 		WaitingHudObject.transform.SetParent (canvas.transform);
-		WaitingHudObject.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+		WaitingHudObject.GetComponent<RectTransform> ().localPosition = Vector3.zero;
+		WaitingHudObject.GetComponent<RectTransform> ().localScale = Vector3.one;
 
 	}
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayFab;
 using System.Linq;
+using UnityEngine.EventSystems;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Game : MonoBehaviour {
@@ -21,16 +22,17 @@ public class Game : MonoBehaviour {
 	//for click and drag differential
 	private float firstTime;
 	private float secondTime;
+	private Vector3 startPos = new Vector3();
 	private float timeDiff;
 	private bool mouseDown = false;
-	//private bool dragOccuring = false;
+	private bool dragOccuring = false;
 	private Vector3 previousMousePosition;
 
 	private bool barrierSelected = false;
 	private bool rotatingBarrier = false;
 	public bool over = false;
 	private BKnob selectedKnob;
-
+	private float clickOrDrag = .4f; 
 
 
 	void Start () {
@@ -65,9 +67,16 @@ public class Game : MonoBehaviour {
 		OnDrag ();
 		//On Drag or Click
 		if (Input.GetMouseButtonDown (0)) {
+			startPos = Input.mousePosition;
+			foreach (Coroutine c in CameraPan._instance.momentums) {
+				if (c != null) {
+					CameraPan._instance.StopCoroutine (c);
+				}
+			}
+			CameraPan._instance.momentum = Vector3.zero;
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
-			if (Physics.Raycast (ray, out hit, 300)) {
+			if (Physics.Raycast (ray, out hit, 1000)) {
 				if (hit.collider.CompareTag ("Barrier") && GameHandler._instance.getTurnNumber() == 0) {
 					if (hit.transform.parent.parent.gameObject.GetComponent<Barrier> ().team == PhotonNetwork.player.ID) {
 						myPlayer.setBarrierSelected(hit.collider.gameObject.GetComponent<BarrierPiece> ().myBarrier);
@@ -90,16 +99,19 @@ public class Game : MonoBehaviour {
 			timeDiff = Time.time - firstTime;
 		}
 		if (timeDiff > 0f) {
-			if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject ()) {
-				CameraPan._instnace.drag ();
-				//dragOccuring = true;
+			if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject () || !anyPointerOverObject()) {
+				//foreach (Coroutine c in CameraPan._instance.momentums) {
+				//	CameraPan._instance.StopCoroutine (c);
+				//}				//CameraPan._instance.momentum = Vector3.zero;
+				CameraPan._instance.drag ();
+				dragOccuring = true;
 			}
 		}
 		if (Input.GetMouseButtonUp (0)) {
 			mouseDown = false;
-			CameraPan._instnace.release ();
-			//CameraPan._instnace.dragging = false;
-			//dragOccuring = false;
+			CameraPan._instance.release ();
+			//CameraPan._instance.dragging = false;
+			dragOccuring = false;
 			barrierSelected = false;
 			rotatingBarrier = false;
 			if (selectedKnob != null) {
@@ -109,7 +121,8 @@ public class Game : MonoBehaviour {
 			if (myPlayer != null) {
 				myPlayer.setBarrierSelected (null);
 			}
-		if (timeDiff < .12f && over==false) {
+			Debug.Log (Vector3.Distance (startPos, Input.mousePosition) + " is distance");
+			if (timeDiff < clickOrDrag && over==false && Vector3.Distance(startPos, Input.mousePosition) < 5f) {
 				OnClick ();
 			}
 			timeDiff = 0;
@@ -118,13 +131,13 @@ public class Game : MonoBehaviour {
 		
 
 	void OnDrag(){
-		if (CameraPan._instnace.dragging== true) {
+		if (CameraPan._instance.dragging== true) {
 			if (barrierSelected == false && rotatingBarrier == false) {
 				//drag camera/screen with mouse
 
 				Vector3 camDifference = Camera.main.ScreenToViewportPoint (Input.mousePosition) - previousMousePosition;
 				//Camera.main.transform.parent.transform.Translate (camDifference.y * 30f, 0f, camDifference.x * -30f);
-				CameraPan._instnace.transform.Translate (camDifference.y * 30f, 0f, camDifference.x * -30f);
+				CameraPan._instance.transform.Translate (camDifference.y * 30f, 0f, camDifference.x * -30f);
 				previousMousePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 
 
@@ -134,7 +147,7 @@ public class Game : MonoBehaviour {
 				if (myPlayer.getBarrierSelected().placed == false) {
 					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 					RaycastHit hit;
-					if (Physics.Raycast (ray, out hit, 300)) {
+					if (Physics.Raycast (ray, out hit, 1000)) {
 						if (hit.collider.CompareTag ("Terrain")) {
 							//BarrierPiece myPiece = Game._instance.GetBarrierPiece (myPlayer.barrierSelected.id);
 							//myPiece.gameObject.transform.parent.parent.position = hit.point;
@@ -145,14 +158,31 @@ public class Game : MonoBehaviour {
 			}
 		}
 	}
+
+
+	private bool anyPointerOverObject(){
+		PointerEventData pointerData = new PointerEventData (EventSystem.current);
+		pointerData.position = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
+		List<RaycastResult> results = new List<RaycastResult> ();
+		EventSystem.current.RaycastAll (pointerData, results);
+		return results.Count > 0;
+	}
+
 	//if click happens
 	void OnClick (){
-		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject (-1)) {
-
+		if (anyPointerOverObject() || UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) {
+			
 		} else { 
+			Debug.Log ("ONCLICK");
+			foreach (Coroutine c in CameraPan._instance.momentums) {
+				if (c != null) {
+					CameraPan._instance.StopCoroutine (c);
+				}
+			}
+			CameraPan._instance.momentum = Vector3.zero;
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
-				if (Physics.Raycast (ray, out hit, 300)) {
+				if (Physics.Raycast (ray, out hit, 1000)) {
 				if (myPlayer.isTurn ()) {
 					
 					//if player is clicked
@@ -290,7 +320,10 @@ public class Game : MonoBehaviour {
 		if (myPlayer.getSelected () != null) {
 			myPlayer.getSelected ().giveAbility (ability);
 		}
-		HudController._instance.GameHud.Store.removeInfoPanel ();
+		Debug.Log ("GIVE ABILITY");
+		timeDiff = clickOrDrag;
+		HudController._instance.GameHud.Store.Invoke ("removeInfoPanel", .1f);
+		//HudController._instance.GameHud.Store.removeInfoPanel ();
 		HudController._instance.RefreshStore ();
 	}
 

@@ -57,7 +57,7 @@ public class GameHandler : MonoBehaviour {
 				newPlayer.CreateTroopAt (newPos, mySpawn.FacingOut, senderID, ((senderID-1) * Player.numberOfTroops) + i);
 			}
 			if (PhotonNetwork.player.ID == newPlayer.team) {
-				CameraPan._instnace.moveToObject (newPlayer.roster [0].gameObject);
+				CameraPan._instance.moveToObject (newPlayer.roster [0].gameObject);
 				if (GameHandler._instance.turnNumber == 0) {
 					HudController._instance.showStartHud ();
 				} else {
@@ -293,7 +293,7 @@ public class GameHandler : MonoBehaviour {
 				newTroop.setAnimation (11);
 			}
 			if (int.Parse (tsa [10]) == 1) 
-				t.MakeInvulnerable ();
+				newTroop.MakeInvulnerable ();
 			newTroop.SetUpdated (true);
 		}
 	}

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class CameraPan : MonoBehaviour {
 
-	public static CameraPan _instnace;
+	public static CameraPan _instance;
 	public bool dragging = false;
 	public Vector3 momentum = new Vector3();
 	public float LoseMomRate = 0.95f;
 	float startTime = 0;
 	Vector3 lastPosition = new Vector3();
+
+	public List<Coroutine> momentums = new List<Coroutine> ();
 
 	float xMax = 290f;
 	float xMin = 10f;
@@ -18,7 +20,7 @@ public class CameraPan : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_instnace = this;
+		_instance = this;
 		GameObject[] spawns = GameObject.FindGameObjectsWithTag ("Respawn");
 		foreach (GameObject g in spawns) {
 			if (g.GetComponent<SpawnArea> ().team == PhotonNetwork.player.ID) {
@@ -28,12 +30,13 @@ public class CameraPan : MonoBehaviour {
 				transform.position = new Vector3 (x, y, z);
 			}
 		}
-		InvokeRepeating ("UpdateMomentum", 0.1f, 0.02f);
+		//InvokeRepeating ("UpdateMomentum", 0.1f, 0.02f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		checkBounds ();
+		UpdateMomentum ();
 	}
 
 	public void checkBounds(){
@@ -74,13 +77,13 @@ public class CameraPan : MonoBehaviour {
 
 	public void release(){
 		dragging = false;
-		StartCoroutine (UseMomentum ());
+		momentums.Add(StartCoroutine (UseMomentum ()));
 		momentum = Vector3.zero;
 	}
 
 	public void drag(){
-		StopAllCoroutines ();
 		dragging = true;
+		CameraPan._instance.StopCoroutine (UseMomentum ());
 		startTime = Time.time;
 	}
 
@@ -101,7 +104,7 @@ public class CameraPan : MonoBehaviour {
 	}
 
 	public void moveToObject(GameObject t){
-		StopAllCoroutines ();
+		CameraPan._instance.StopAllCoroutines ();
 		Vector3 pos = t.transform.position;
 		Vector3 newPos = new Vector3 (pos.x - 8, gameObject.transform.position.y, pos.z + 5);
 		StartCoroutine (moveTo (newPos));
@@ -113,5 +116,6 @@ public class CameraPan : MonoBehaviour {
 			yield return null;
 		}
 		gameObject.transform.position = dest;
+		StopAllCoroutines ();
 	}
 }
