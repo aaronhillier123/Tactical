@@ -16,6 +16,7 @@ public class EventHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (PhotonNetwork.inRoom && gameStarted==false){
+			Debug.Log ("CREATING A NEW PLAYER FOR PLAYER" + PhotonNetwork.player.ID);
 			Player isPlayer = GameHandler._instance.getPlayer (PhotonNetwork.player.ID);
 			if (isPlayer == null) {
 

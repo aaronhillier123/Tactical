@@ -25,8 +25,8 @@ public class Player : MonoBehaviour {
 
 
 	//general player variables
-	public static int numberOfTroops = 1;
-	private int dogtags = 3;
+	public static int numberOfTroops = 5;
+	private int dogtags = 10;
 	public List<ControlPoint> myControlPoints;
 
 	//booleans for player states

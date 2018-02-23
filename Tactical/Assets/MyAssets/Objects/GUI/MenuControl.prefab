@@ -56,4 +56,8 @@ MonoBehaviour:
     type: 2}
   OptionsObject: {fileID: 1094366897451982, guid: a240ee8cce765aa4c8eeb5a5caeeac86,
     type: 2}
-  GameName: NewGame3
+  GameOverPanel: {fileID: 0}
+  DarkPanel: {fileID: 1248849398410352, guid: e024aa3c24820fc428f033ca49f06eac, type: 2}
+  running: 0
+  currentGames: []
+  GameName: NewGame1

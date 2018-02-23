@@ -349,7 +349,10 @@ public class GameHandler : MonoBehaviour {
 		
 
 	public void RaiseEndPlacements(){
-		PhotonNetwork.RaiseEvent(3, null, true, AllReceivers());
+		PhotonNetwork.RaiseEvent(3, null, true, new RaiseEventOptions(){
+			Receivers = ReceiverGroup.All,
+			ForwardToWebhook = true,
+			CachingOption = EventCaching.AddToRoomCache});
 		BarrierHandler._instance.PlaceAllBarriers ();
 		HudController._instance.removeStartHud ();
 		Game._instance.SendBarriersToNetwork ();
@@ -377,7 +380,7 @@ public class GameHandler : MonoBehaviour {
 			}
 		}
 		int gpc = GameHandler._instance.GamePlayers.Count - 1;
-		if (PlayersReady == GameHandler._instance.GamePlayers.Count-1) {
+		if (PlayersReady == PhotonNetwork.room.MaxPlayers-1) {
 			return true;
 		}
 		return false;

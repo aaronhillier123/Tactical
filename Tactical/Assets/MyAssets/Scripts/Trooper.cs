@@ -46,34 +46,23 @@ public class Trooper : MonoBehaviour {
 	public Vector3 destinationPosition;
 	public Quaternion currentRotation;
 	public List<int> abilities = new List<int> ();
+
 	//state of availability
 	private bool moving = false;
-
 	public bool frozen = false;
-
 	public bool covering = false;
-
-	[System.NonSerialized]
 	public bool takingCover = false;
 	public bool inFoxHole = false;
-	//bools for abilities
-	//[System.NonSerialized]
 	public bool hasGrenade = false;
-	//[System.NonSerialized]
 	public bool isSniper = false;
-	//[System.NonSerialized]
 	public bool isInvulnerable = false;
-	//[System.NonSerialized]
 	public bool canMarathon = false;
-	//[System.NonSerialized]
 	public bool hasDoubleShot = false;
-	//[System.NonSerialized]
 	public bool hasAirStrike = false;
 
 
 	void awake () {
 		myPlayer = GetComponentInParent<Player>();
-		//animator = gameObject.GetComponentInChildren<Animator> ();
 		assignColor (); 
 	}
 
@@ -131,7 +120,6 @@ public class Trooper : MonoBehaviour {
 		if (animator != null) {
 			animator.SetInteger ("AnimPar", anim);
 		} else {
-			Debug.Log ("no animator");
 		}
 	}
 
@@ -175,13 +163,6 @@ public class Trooper : MonoBehaviour {
 			transform.position = newPos;
 			rotateTo (point);
 			stop ();
-			/*
-			if (myPiece != null) {
-				Vector3 towardBarrier = (myPiece.transform.position - transform.position).normalized;
-				Debug.Log ("X" + towardBarrier.x + " y: " + towardBarrier.y + " z: " + towardBarrier.z);
-				transform.rotation = Quaternion.Euler (towardBarrier + new Vector3 (0f, 180f, 0f));
-			}
-			*/
 			transform.Rotate(new Vector3(0, 180f, 0));
 			animator.SetInteger ("AnimPar", 11);
 		}
@@ -197,7 +178,8 @@ public class Trooper : MonoBehaviour {
 
 	public void jumpBarrier(){
 		int currentAnimation = animator.GetInteger ("AnimPar");
-		animator.SetInteger ("AnimPar", 10);
+		animator.SetTrigger ("Jump");
+		transform.position += Vector3.up;
 		StartCoroutine(ContinueAnimation(0.8f, 10, currentAnimation));
 	}
 		
@@ -227,8 +209,7 @@ public class Trooper : MonoBehaviour {
 		if (EnemyTroop.inFoxHole) {
 			deduct += 0.5f;
 		}
-
-
+			
 		//Randomize hit based on distance and troop range
 		float distance = Vector3.Distance (transform.position, EnemyTroop.transform.position);
 		distance = distance + (distance * deduct);
@@ -236,22 +217,14 @@ public class Trooper : MonoBehaviour {
 		Vector3 enemypos = EnemyTroop.transform.position + new Vector3(0f, 3f, 0f);
 		Vector3 mypos = transform.position + new Vector3 (0f, 3f, 0f);
 
-
-
 		//determine if enemy is behind terrain or cover
 		RaycastHit hitcast;
-		Debug.Log ("DRAWING RAY from ");
 		Vector3 enemyWorldPos = EnemyTroop.transform.TransformPoint (Vector3.up * 3);
-		Debug.DrawLine (mypos, enemypos, Color.red, 3f, false);
-
 		if(Physics.Linecast(mypos, enemypos, out hitcast)){
 			if(hitcast.collider.CompareTag("Terrain") || hitcast.collider.CompareTag("NaturalCover")){
 				hit = 0;
-				Debug.Log ("HIT TERRAIN OR NATURAL COVER");
 			}
 		}
-
-
 		float[] targets = new float[3];
 		targets [0] = id;
 		targets [1] = EnemyTroop.id;
@@ -367,7 +340,6 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void RaiseAirstrike(Vector3 point){
-		Debug.Log ("Calling in airstrike");
 		float[] contentArray = new float[4] { id, point.x, point.y, point.z };
 		object content = (object)contentArray;
 		PhotonNetwork.RaiseEvent ((byte)12, content, true, new RaiseEventOptions () {
@@ -414,7 +386,6 @@ public class Trooper : MonoBehaviour {
 			yield return null;
 		}
 		transform.position = destination;
-		Debug.Log ("Making stop move to position");
 		stop ();
 		if (myPlayer.getSelected() == this && frozen == false) {
 			HudController._instance.CanAttack (true);
@@ -437,9 +408,8 @@ public class Trooper : MonoBehaviour {
 		StopAllCoroutines ();
 		CameraController._instance.setFollowedObject (gameObject, 0);
 		rotateTo (enemy.transform.position);
-		animator.SetInteger ("AnimPar", 2);
+		animator.SetTrigger ("Shoot");
 		StartCoroutine (ShootCoroutine (enemy, hit));
-		Invoke ("stop", 1f);
 	}
 
 	IEnumerator ShootCoroutine(Trooper enemy, int hit){
@@ -469,19 +439,18 @@ public class Trooper : MonoBehaviour {
 		}
 		HudController._instance.HitOrMiss (mybullet.transform.position, hit);
 		Destroy (mybullet);
-		enemy.Invoke ("stop", 1f);
 	}
 		
 	public void gotShot(){
 		StopAllCoroutines ();
-		animator.SetInteger ("AnimPar", 5);
+		animator.SetTrigger ("Hit");
 		decreaseHealth (100f);
 	}
 
 	public IEnumerator die(){
 		CameraController._instance.setFollowedObject (gameObject, 1);
 		unselect ();
-		animator.SetInteger ("AnimPar", 6);
+		animator.SetTrigger ("Die");
 		yield return new WaitForSeconds (2f);
 		myPlayer.roster.Remove (this);
 		Game._instance.allTroopers.Remove (this);
@@ -575,7 +544,6 @@ public class Trooper : MonoBehaviour {
 
 	public void giveNewTroop(bool give){
 		if (give) {
-			
 			GameObject[] spawns = GameObject.FindGameObjectsWithTag ("Respawn");
 			SpawnArea mySpawn = new SpawnArea ();
 			foreach (GameObject g in spawns) {
@@ -587,12 +555,9 @@ public class Trooper : MonoBehaviour {
 				Vector3 newPos = mySpawn.spawnPoints [myPlayer.roster.Count].position;
 				myPlayer.RaiseTroopAt (newPos, mySpawn.FacingOut, myPlayer.team, Game._instance.allTroopers.Count);
 			} else {
-				Debug.Log ("MAX TROOPS EXCEEDED");
 			}
 			abilities.Remove (7);
 		} else {
-
-
 		}
 	}
 
@@ -641,7 +606,7 @@ public class Trooper : MonoBehaviour {
 	public void throwGrenade(Vector3 target){
 		StopAllCoroutines ();
 		RemoveGLimit ();
-		animator.SetInteger ("AnimPar", 3);
+		animator.SetTrigger ("Throw");
 		StartCoroutine (throwCoroutine (target));
 		Invoke ("stop", 1f);
 	}
@@ -651,7 +616,7 @@ public class Trooper : MonoBehaviour {
 		abilities.Remove (0);
 		rotateTo (position);
 		CameraController._instance.setFollowedObject (gameObject, 0);
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (0.5f);
 		Vector3 groundPosition = toFloor (position);
 		Vector3 p = gameObject.transform.position + new Vector3(0f, 3f ,0f);
 		GameObject myGrenade = Instantiate (TroopController._instance.TroopObjects[1], p, Quaternion.identity); 
@@ -684,7 +649,6 @@ public class Trooper : MonoBehaviour {
 		Destroy (myGrenade);
 		yield return new WaitForSeconds (1f);
 		Destroy (ex);
-		Debug.Log ("making stop grenade throw");
 		stop ();
 		if (covering == true) {
 			animator.SetInteger ("AnimPar", 11);
@@ -693,13 +657,12 @@ public class Trooper : MonoBehaviour {
 		
 		
 	public void naded(){
-		animator.SetInteger ("AnimPar", 7);
+		animator.SetTrigger ("Naded");
 		Invoke ("stop", 1f);
 	}
 
 	public void stab(){
-		Debug.Log ("Stabbing");
-		animator.SetInteger ("AnimPar", 4);
+		animator.SetTrigger ("Knife");
 		Invoke ("stop", 1f);
 	}
 
@@ -723,7 +686,6 @@ public class Trooper : MonoBehaviour {
 		}
 		myPlayer.setSelected (this);
 		if (this.frozen == false) {
-			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.SelectedMats[team];
 			HudController._instance.CanAttack (true);
 		}
 		ShowWalkLimit ();
@@ -767,7 +729,6 @@ public class Trooper : MonoBehaviour {
 
 	public void goBack(float distance){
 		Vector3 v = GetComponent<Rigidbody> ().velocity;
-		Debug.Log ("IN GOBACK " + v.x + " " + v.y + " " + v.z + " ");
 		Vector3 direction = gameObject.transform.eulerAngles + new Vector3 (0, 180, 0);
 		Vector3 newPos = direction * distance;
 		gameObject.transform.Translate (newPos.x, 0, newPos.z);
@@ -782,22 +743,19 @@ public class Trooper : MonoBehaviour {
 		HudController._instance.AttackMode (false);	
 		HudController._instance.CanAttack (false);
 		if (this.frozen == false) {
-			transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
 		}
 	}
 
 	public void freeze(){
-		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.FrozenMats[team];
 		frozen = true;
 	}
 
 	public void unFreeze(){
-		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
 		frozen = false;
 	}
 
 	public void assignColor(){
-		transform.Find ("Trooper").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
+		transform.Find ("TS_Body_01_infantry").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
 	}
 
 	public void DidSomething(){
@@ -831,9 +789,7 @@ public class Trooper : MonoBehaviour {
 			Explosion myEx = ex.GetComponent<Explosion> ();
 			if (myEx != null) {
 				if (myEx.type == 1) {
-					Debug.Log ("GRENADE");
 				} else if (myEx.type == 2) {
-					Debug.Log ("AIRSTRIKE");
 				}
 			}
 			HudController._instance.showHealthBar (id);

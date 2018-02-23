@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.7993238, g: 0.73050445, b: 0.64088017, a: 1}
+  m_IndirectSpecularColor: {r: 0.7994692, g: 0.73066133, b: 0.6414367, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -670,7 +670,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 285644693}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114991521537524760, guid: 64a63eda500eac7478bfb89e7583df81,
+          type: 2}
+        m_MethodName: showDarkPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &285644693
@@ -1171,20 +1183,6 @@ Prefab:
     - target: {fileID: 4337401516398234, guid: 64a63eda500eac7478bfb89e7583df81, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991521537524760, guid: 64a63eda500eac7478bfb89e7583df81,
-        type: 2}
-      propertyPath: GameName
-      value: NewGame1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991521537524760, guid: 64a63eda500eac7478bfb89e7583df81,
-        type: 2}
-      propertyPath: running
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1442061510748362, guid: 64a63eda500eac7478bfb89e7583df81, type: 2}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 64a63eda500eac7478bfb89e7583df81, type: 2}
@@ -1935,8 +1933,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1577704227}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 361.5, y: 203.5, z: 0}
-  m_LocalScale: {x: 0.90375, y: 0.90375, z: 0.90375}
+  m_LocalPosition: {x: 362, y: 203.5, z: 0}
+  m_LocalScale: {x: 0.905, y: 0.905, z: 0.905}
   m_Children:
   - {fileID: 1054314709}
   - {fileID: 1713474725}

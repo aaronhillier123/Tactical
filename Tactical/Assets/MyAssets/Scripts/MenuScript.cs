@@ -17,7 +17,15 @@ public class GameListObject{
 	public string Message;
 }
 
+public class NetGame{
+	public List<string> players = new List<string> ();
+	public string id = "";
+	public bool inGame = false;
+}
+
 public class MenuScript : MonoBehaviour {
+
+	public static MenuScript _instance;
 
 	public byte Version = 1;
 	private string roomName = "";
@@ -26,31 +34,31 @@ public class MenuScript : MonoBehaviour {
 	public GameObject FriendsListObject;
 	public GameObject OptionsObject;
 	public GameObject GameOverPanel;
+	public GameObject DarkPanel;
 	public bool running = false;
 	private GameObject optionsPanel;
 
 	private string _message;
-
+	public List<string> currentGames = new List<string> ();
+	public List<string> currentInvites = new List<string> ();
 	private string _playFabPlayerIdCache;
 	public string GameName = "Tester10";
+	public int allowedGames = 10;
 
-	/*
-	private void AuthenticateWithPlayFab()  {
-		LogMessage("PlayFab authenticating using Custom ID...");
-		Debug.Log (PlayFabSettings.DeviceUniqueIdentifier + " is DUID");
-		PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest()
-			{
-				CreateAccount = true,
-				CustomId = PlayFabSettings.DeviceUniqueIdentifier+"EDITOR"
-			}, RequestPhotonToken, OnPlayFabError);
+	void Start () {
+		_instance = this;
+		if (!FB.IsInitialized) {
+			FB.Init (OnFacebookInitialized);
+		}
+		DontDestroyOnLoad (gameObject);
+		if (FindObjectsOfType (GetType ()).Length > 1) {
+			Destroy (gameObject);
+		}
+		PhotonNetwork.autoJoinLobby = false;
 	}
-	*/
 
 	private void RequestPhotonToken(LoginResult obj) {
-		LogMessage("PlayFab authenticated. Requesting photon token...");
-
 		_playFabPlayerIdCache = obj.PlayFabId;
-
 		PlayFabClientAPI.GetPhotonAuthenticationToken(new GetPhotonAuthenticationTokenRequest()
 			{
 				PhotonApplicationId = PhotonNetwork.PhotonServerSettings.AppID
@@ -59,27 +67,13 @@ public class MenuScript : MonoBehaviour {
 		
 	private void AuthenticateWithPhoton(GetPhotonAuthenticationTokenResult obj) {
 
-		/*
-		Debug.Log ("Authenting with Photon");
-		string aToken = AccessToken.CurrentAccessToken.TokenString;
-		string facebookid = AccessToken.CurrentAccessToken.UserId;
-		PhotonNetwork.AuthValues = new AuthenticationValues ();
-		PhotonNetwork.AuthValues.AuthType = CustomAuthenticationType.Facebook;
-		PhotonNetwork.AuthValues.UserId = facebookid;
-		PhotonNetwork.AuthValues.AddAuthParameter ("token", aToken);
-		PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
-		*/
-
 		var customAuth = new AuthenticationValues {
 			AuthType = CustomAuthenticationType.Custom
 		};
 
 		customAuth.AddAuthParameter ("username", _playFabPlayerIdCache);
-
 		customAuth.AddAuthParameter ("token", obj.PhotonCustomAuthenticationToken);
-
 		PhotonNetwork.AuthValues = customAuth;
-
 		PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
 	}
 
@@ -88,7 +82,6 @@ public class MenuScript : MonoBehaviour {
 			b.interactable = true;
 		}
 		if(running==false){
-			Debug.Log ("SENDING ALL EVENT ADDITIONS");
 			PhotonNetwork.OnEventCall += GameHandler.CreatePlayer; //1
 			PhotonNetwork.OnEventCall += Trooper.move; //2
 			PhotonNetwork.OnEventCall += GameHandler.EndPlacements;//3
@@ -106,15 +99,10 @@ public class MenuScript : MonoBehaviour {
 			running = true;
 		}
 		PhotonNetwork.JoinLobby ();
-
 	}
 
 	private void OnCustomAuthenticationFailed(string debugMessage){
-		Debug.LogErrorFormat ("Error with facebook auth: {0} ", debugMessage);
 	}
-
-
-
 
 	public void GetFriendsList(){
 		removeOptionsPanel ();
@@ -124,18 +112,14 @@ public class MenuScript : MonoBehaviour {
 	}
 
 	private void GotFriendsList(GetFriendsListResult result){
-		
 		List<Friend> friends = result.Friends;
-		Debug.Log ("HOW MANY FRIENDS?:" + friends.Count);
 		GameObject g = Instantiate (FriendsListObject,GameObject.Find ("Canvas").transform, false);
 		FriendsPanel fp = g.GetComponentInChildren<FriendsPanel> ();
 		fp.CreateFriend (friends);
 	}
 
 	public void LeaveRoom(){
-		Debug.Log ("CALLED LEAVE ROOM TRUE");
 		PhotonNetwork.networkingPeer.OpLeaveRoom (true);
-		//PhotonNetwork.LeaveRoom();
 	}
 
 	public void DoneWithGame(){
@@ -146,24 +130,22 @@ public class MenuScript : MonoBehaviour {
 			FunctionParameter = new {roomName = name},
 			GeneratePlayStreamEvent = true,
 		}, OnFinishedGame, OnFinishedGameError);
-			
 	}
 
 	public void OnFinishedGame(ExecuteCloudScriptResult result){
 
 	}
+
 	public void OnFinishedGameError(PlayFabError error){
 
 	}
 
 	void OnLeftRoom(){
-		//System.Threading.Thread.Sleep (1000);
 		SceneManager.LoadScene ("MainMenu");
 		SceneManager.UnloadSceneAsync ("GameScene");
 	}
 
 	private void FriendsListError(PlayFabError obj){
-		Debug.Log ("NOPE");
 	}
 
 	public void LoadGame(){
@@ -171,62 +153,47 @@ public class MenuScript : MonoBehaviour {
 	}
 
 	public static void OnGotGames(ExecuteCloudScriptResult result){
-		
 		List<string> myList = PlayFab.Json.JsonWrapper.DeserializeObject<List<string>> (result.FunctionResult.ToString());
-		MyGames._instance.SetGames (myList);
+		MenuScript._instance.currentGames = myList;
 	}
 
 	public static void OnGotInvites(ExecuteCloudScriptResult result){
 
-		List<string> myList = PlayFab.Json.JsonWrapper.DeserializeObject<List<string>> (result.FunctionResult.ToString());
-		MyGames._instance.SetInvites (myList);
+		List<string> myListi = PlayFab.Json.JsonWrapper.DeserializeObject<List<string>> (result.FunctionResult.ToString());
+		MenuScript._instance.currentInvites = myListi;
 	}
 
 	public static void OnErrorShared(PlayFabError error){
 	}
 
 	private void OnPlayFabError(PlayFabError obj) {
-		LogMessage(obj.ErrorMessage);
 	}
-
-	public void LogMessage(string message) {
-		Debug.Log("PlayFab + Photon Example: " + message);
-	}
-
-	// Use this for initialization
-	void Start () {
-		SetMessage ("Initializing Facebook...");
-		if (!FB.IsInitialized) {
-			FB.Init (OnFacebookInitialized);
-		}
-
-
-		DontDestroyOnLoad (gameObject);
-
-		if (FindObjectsOfType (GetType ()).Length > 1) {
-			Destroy (gameObject);
-		}
-		//ConnectToLobby ();
-		//AuthenticateWithPlayFab ();
-		PhotonNetwork.autoJoinLobby = false;
 		
-	}
-
 	private void OnFacebookInitialized(){
-
-		SetMessage ("Logging into facebook");
-
 		if (FB.IsLoggedIn) {
 			FB.LogOut ();
 		}
-
 		FB.LogInWithReadPermissions (null, OnFacebookLoggedIn);
-
 	}
 
 	public void removeOptionsPanel(){
 		if(optionsPanel!=null){
 			Destroy (optionsPanel.gameObject);
+		}
+	}
+
+	public void removeDarkPanel(){
+		GameObject g = GameObject.Find ("DarkPanel(Clone)");
+		if (g != null) {
+			Destroy (g);
+		}
+
+	}
+
+	public void showDarkPanel(){
+		GameObject g = GameObject.Find ("DarkPanel(Clone)");
+		if (g == null) {
+			g = Instantiate (DarkPanel, GameObject.Find ("Canvas").transform);
 		}
 	}
 
@@ -243,42 +210,21 @@ public class MenuScript : MonoBehaviour {
 		}
 	}
 
-
-
 	private void OnFacebookLoggedIn(ILoginResult result){
 		if (result == null || string.IsNullOrEmpty (result.Error)) {
-
-			SetMessage ("Facebook Auth Complete! Access Token: " + AccessToken.CurrentAccessToken.TokenString + "\nLogging into Playfab...");
-
 			PlayFabClientAPI.LoginWithFacebook (new LoginWithFacebookRequest {
 				CreateAccount = true,
 				AccessToken = AccessToken.CurrentAccessToken.TokenString
 			},
 				RequestPhotonToken, OnPlayfabFacebookAuthFailed);
-		
 		} else {
-			SetMessage ("Facebook Auth Failed: " + result.Error + "\n" + result.RawResult, true);
 		}
-
 	}
 
 	private void OnPlayfabFacebookAuthComplete(LoginResult result){
-		SetMessage ("Playfab Facebook Auth Complete. Session ticket: " + result.SessionTicket);
-
 	}
 
 	private void OnPlayfabFacebookAuthFailed(PlayFabError error){
-		SetMessage ("PlfayFab Facebook Auth Failed: " + error.GenerateErrorReport (), true);
-	}
-
-	public void SetMessage(string message, bool error=false)
-	{
-		_message = message;
-		if(error){
-			Debug.LogError (_message);
-		}else {
-			Debug.Log(_message);
-		}
 	}
 
 	public void ConnectToLobby(){
@@ -293,14 +239,42 @@ public class MenuScript : MonoBehaviour {
 		}, OnSentInvites, OnInviteError);
 
 	}
-
-
-
+		
 	public void OnSentInvites(ExecuteCloudScriptResult result){
 
 	}
+
 	public void OnInviteError(PlayFabError error){
 
+	}
+
+	public static void CloudGetEmptyGames(){
+
+		PlayFabClientAPI.ExecuteCloudScript (new ExecuteCloudScriptRequest () {
+			FunctionName = "GetEmptyGames",
+			FunctionParameter = new { name = "YOUR NAME"},
+			GeneratePlayStreamEvent = true,
+		}, OnGotEmptyGames, OnEmptyErrorShared);
+
+	}
+
+	private static void OnEmptyErrorShared(PlayFabError obj) {
+	}
+
+	public static void OnGotEmptyGames(ExecuteCloudScriptResult result){
+		MenuScript.CloudGetMyGames ();
+		List<string> allEmpty = PlayFab.Json.JsonWrapper.DeserializeObject<List<string>> (result.FunctionResult.ToString());
+		List<string> allOthers = allEmpty.Except (MenuScript._instance.currentGames).ToList();
+		Debug.Log (allEmpty.Count + " games are not full");
+		Debug.Log (allOthers.Count + " are nonfull that are not yours");
+		foreach (string s in allOthers) {
+			Debug.Log (s);
+		}
+		if (allOthers.Count > 0) {
+			MenuScript._instance.JoinGame (allOthers [0]);
+		} else {
+			MenuScript._instance.CreateGame ();
+		}
 	}
 
 	public static void CloudGetMyGames(){
@@ -324,28 +298,36 @@ public class MenuScript : MonoBehaviour {
 
 	public virtual void OnJoinedLobby()
 	{
-		Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList()");
-
-
+		CloudGetMyGames ();
+		CloudGetMyInvites ();
 	}
 		
 	public void CreateGame(){
 		
 		if (PhotonNetwork.insideLobby) {
-			SceneManager.LoadScene ("GameScene");
-			PhotonNetwork.CreateRoom(null, new RoomOptions () {
-				MaxPlayers = 4,
-				EmptyRoomTtl = 1000,
-				PlayerTtl = -1,
-				IsVisible = true
-			}, null);
+			CloudGetMyGames ();
+			if (MenuScript._instance.currentGames.Count < allowedGames) {
+				Debug.Log ("Current game count: " + currentGames.Count);
+				SceneManager.LoadScene ("GameScene");
+				PhotonNetwork.CreateRoom (null, new RoomOptions () {
+					MaxPlayers = 4,
+					EmptyRoomTtl = 1000,
+					PlayerTtl = -1,
+					IsVisible = true
+				}, null);
+			} else {
+				showDarkPanel ();
+			}
 		}
 	}
 
 	public void JoinGame(){
 		if (PhotonNetwork.insideLobby) {
-			SceneManager.LoadScene ("GameScene");
-			PhotonNetwork.JoinRandomRoom ();
+			if (MenuScript._instance.currentGames.Count < allowedGames) {
+				CloudGetEmptyGames ();
+			} else {
+				showDarkPanel ();
+			}
 		}
 	}
 
@@ -399,32 +381,54 @@ public class MenuScript : MonoBehaviour {
 	}
 
 	public virtual void OnReceivedRoomListUpdate(){
-			/*
-		if (PhotonNetwork.insideLobby) {
-			RoomInfo[] ro = PhotonNetwork.GetRoomList ();
-			foreach (RoomInfo r in ro) {
-				Debug.Log (r.Name);
-			}
-		}
-*/
 	}
-
-	// the following methods are implemented to give you some context. re-implement them as needed.
 
 	public virtual void OnFailedToConnectToPhoton(DisconnectCause cause)
 	{
-		Debug.LogError("Cause: " + cause);
 	}
 
 	public void OnJoinedRoom()
 	{
 	}
-
-
+		
 	public virtual void OnPhotonPlayerConnected(PhotonPlayer otherPlayer){
 	}
 
 	public virtual void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer){
+	}
+
+	public void initNetGame(string roomId, bool isGame){
+		NetGame ng = new NetGame ();
+		List<string> mems = new List<string> ();
+		Debug.Log ("DOING THING");
+		PlayFabClientAPI.GetSharedGroupData (new GetSharedGroupDataRequest () {
+			SharedGroupId = roomId,
+			GetMembers = true
+		}, result => {
+			for(int i=0; i<result.Members.Count; ++i){
+
+
+				PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest(){
+					PlayFabId = result.Members.ElementAt(i)
+				}, newresult => {
+					if(i == result.Members.Count-1){
+						ng.players.Add(newresult.AccountInfo.FacebookInfo.FullName);
+						Debug.Log("MEMBERCOUNT: " + result.Members.Count);
+						ng.players = result.Members;
+						ng.id = roomId;
+						ng.inGame = isGame;
+						MyGames._instance.currentNet = ng;
+						MyGames._instance.showGameDetails ();
+					} else {
+						ng.players.Add(newresult.AccountInfo.FacebookInfo.FullName);
+					}
+				}, error => {
+					Debug.Log("error getting account info");
+				});
+			}
+		}, (error) => {
+			Debug.Log("error getting members");
+		});
 	}
 
 }
