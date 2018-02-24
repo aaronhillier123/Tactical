@@ -164,6 +164,20 @@ public class MenuScript : MonoBehaviour {
 
 	}
 
+	void OnJoinedRoom(){
+		Debug.Log ("Player joined room");
+		foreach (PhotonPlayer p in PhotonNetwork.playerList) {
+			Debug.Log ("Player " + p.ID + " is in room");
+			Debug.Log ("Currently player " + GameHandler._instance.getPlayersTurn () + " is moving");
+		}
+	}
+
+	void OnPhotonPlayerConnected(PhotonPlayer p){
+		if (PhotonNetwork.player.ID == GameHandler._instance.getPlayersTurn ()) {
+			GameHandler._instance.refreshGameStates ();
+		}
+	}
+
 	void OnLeftRoom(){
 		SceneManager.LoadScene ("MainMenu");
 		SceneManager.UnloadSceneAsync ("GameScene");
@@ -410,13 +424,7 @@ public class MenuScript : MonoBehaviour {
 	public virtual void OnFailedToConnectToPhoton(DisconnectCause cause)
 	{
 	}
-
-	public void OnJoinedRoom()
-	{
-	}
 		
-	public virtual void OnPhotonPlayerConnected(PhotonPlayer otherPlayer){
-	}
 
 	public virtual void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer){
 	}

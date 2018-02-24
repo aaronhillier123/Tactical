@@ -20,7 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4625284196664998}
   - component: {fileID: 114571005790424026}
-  - component: {fileID: 136185070251980760}
+  - component: {fileID: 136844272510766712}
+  - component: {fileID: 65338046785950702}
+  - component: {fileID: 136345648475415488}
   m_Layer: 0
   m_Name: ControlPoint
   m_TagString: Untagged
@@ -37,7 +39,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4569695990291864}
   - component: {fileID: 33488115858461296}
-  - component: {fileID: 65606525510551470}
   - component: {fileID: 23170569046389770}
   m_Layer: 0
   m_Name: Flag
@@ -97,7 +98,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1264272886327696}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 124.4, y: 10, z: 17.2}
+  m_LocalPosition: {x: 124.4, y: 15, z: 17.2}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 4569695990291864}
@@ -187,18 +188,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1671782651704766}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65606525510551470
+--- !u!65 &65338046785950702
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1671782651704766}
+  m_GameObject: {fileID: 1264272886327696}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.2, y: 1.5, z: 1.5}
+  m_Center: {x: 0, y: 5, z: 0.8}
 --- !u!95 &95705103477277216
 Animator:
   serializedVersion: 3
@@ -227,16 +228,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8efe27483e3624e89af563f3dbef1adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 2
+  id: 9
   team: 0
-  FlagMaterials:
-  - {fileID: 2100000, guid: fdf7129378ef947019baf337cdbca408, type: 2}
+  myFlag: {fileID: 1671782651704766}
+  mats:
+  - {fileID: 2100000, guid: 5f7eaf6a75ebf82459a2c210b29409d6, type: 2}
   - {fileID: 2100000, guid: 5f7eaf6a75ebf82459a2c210b29409d6, type: 2}
   - {fileID: 2100000, guid: 6d0a2baba3730684f8e7c7e899375476, type: 2}
-  - {fileID: 2100000, guid: e78a005a08040204bbd327c449a99359, type: 2}
   - {fileID: 2100000, guid: 97683c0348d42934395a401978c85404, type: 2}
-  myFlag: {fileID: 1671782651704766}
---- !u!136 &136185070251980760
+  - {fileID: 2100000, guid: e78a005a08040204bbd327c449a99359, type: 2}
+--- !u!136 &136345648475415488
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -246,6 +247,19 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 1
-  m_Height: 7
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &136844272510766712
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1264272886327696}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 6
   m_Direction: 1
   m_Center: {x: 0, y: 3, z: 0}

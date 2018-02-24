@@ -10,6 +10,7 @@ public class ControlPoint : MonoBehaviour {
 	public Material[] mats = new Material[5];
 	// Use this for initialization
 	void Start () {
+
 	}
 	
 	// Update is called once per frame
@@ -40,7 +41,9 @@ public class ControlPoint : MonoBehaviour {
 				Player myPlayer = GameHandler._instance.getPlayer (currentTeam);
 				team = currentTeam;
 				myFlag.GetComponent<MeshRenderer> ().material = mats [team];
-				myPlayer.addControlPoint (this);
+				if (!myPlayer.myControlPoints.Contains (this)) {
+					myPlayer.addControlPoint (this);
+				}
 			} else {
 				team = currentTeam;
 				myFlag.GetComponent<MeshRenderer> ().material = mats [team];
@@ -64,6 +67,7 @@ public class ControlPoint : MonoBehaviour {
 		Debug.Log ("making stop control point");
 		troop.stop ();
 		if (troop.myPlayer.myControlPoints.Count > (Game._instance.allControlPoints ().Count / 2)) {
+			Debug.Log ("MyControlPoints: " + troop.myPlayer.myControlPoints.Count + " , Goal: " + Game._instance.allControlPoints ().Count);
 			PhotonNetwork.RaiseEvent ((byte)14, (object)troop.myPlayer.team, true, new RaiseEventOptions () {
 				ForwardToWebhook = true,
 				CachingOption = EventCaching.AddToRoomCache,

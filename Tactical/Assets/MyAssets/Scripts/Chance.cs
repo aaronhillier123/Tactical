@@ -22,7 +22,7 @@ public class Chance : MonoBehaviour {
 	void showOnHead(){
 		//Randomize hit based on distance and troop range
 		float distance = Vector3.Distance (shooter.transform.position, target.transform.position);
-		float percentOfHit = shooter.getRange () - distance;
+		float percentOfHit = 100 - ((distance / shooter.getRange ()) * 100);
 		Color colorKey = Color.green;
 
 		Vector3 enemypos = target.transform.position + new Vector3(0f, 3f, 0f);

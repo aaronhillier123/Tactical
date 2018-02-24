@@ -132,7 +132,7 @@ public class Trooper : MonoBehaviour {
 		jumping = false;
 		if (covering == false) {
 			animator.SetInteger ("AnimPar", 0);
-		}
+		} 
 	}
 
 	public void reset(){
@@ -223,10 +223,15 @@ public class Trooper : MonoBehaviour {
 		//Randomize hit based on distance and troop range
 		float distance = Vector3.Distance (transform.position, EnemyTroop.transform.position);
 		distance = distance + (distance * deduct);
+		Debug.Log ("Distance is " + distance + " and range is " + getRange ());
 		float hit = (Random.Range (0, getRange()) - distance) > 0 ? 1 : 0;
 		Vector3 enemypos = EnemyTroop.transform.position + new Vector3(0f, 3f, 0f);
 		Vector3 mypos = transform.position + new Vector3 (0f, 3f, 0f);
-
+		if (isSniper) {
+			isSniper = false;
+			abilities.Remove (1);
+			setRange (100f);
+		}
 		//determine if enemy is behind terrain or cover
 		RaycastHit hitcast;
 		Vector3 enemyWorldPos = EnemyTroop.transform.TransformPoint (Vector3.up * 3);
@@ -328,12 +333,12 @@ public class Trooper : MonoBehaviour {
 
 	public void RaiseGrenade(Vector3 point){
 		Vector3 floor = toFloor (point);
-		Vector3 landing = ((floor - initialPosition).normalized) * grenadeMax;
+		Vector3 landing = ((floor - currentPosition).normalized) * grenadeMax;
 		float[] contentsFloat = new float[4];
 		contentsFloat [0] = id;
 		if (Vector3.Distance (floor, transform.position) <= grenadeMax) {
 			//if the click point is within the troops walking distance
-			contentsFloat [1] = point.x;
+			contentsFloat [1] = floor.x;
 			contentsFloat [2] = floor.y;
 			contentsFloat [3] = floor.z;
 		} else {
@@ -778,8 +783,11 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void DidSomething(){
+		stop ();
 		unselect ();
 		resetDistance ();
+		select ();
+		stop ();
 	}
 
 	public IEnumerator stabTroop(Trooper t){
@@ -795,7 +803,9 @@ public class Trooper : MonoBehaviour {
 	void OnCollisionEnter(Collision coll){
 		Trooper t = coll.gameObject.GetComponent<Trooper> ();
 		if (t != null) {
-			if (t.team != PhotonNetwork.player.ID && moving==true) {
+			if (t.team != team && moving==true) {
+				covering = false;
+				myPiece = null;
 				StopAllCoroutines ();
 				unselect ();
 				setMaxDistance (2f);
