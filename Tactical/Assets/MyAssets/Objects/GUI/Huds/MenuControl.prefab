@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1455976841057552}
+  m_IsPrefabParent: 1
+--- !u!1 &1455976841057552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4914777361243060}
+  - component: {fileID: 114388633405997288}
+  m_Layer: 0
+  m_Name: MenuControl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4914777361243060
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1455976841057552}
+  m_LocalRotation: {x: -0, y: 0.61370003, z: -0, w: 0.78953934}
+  m_LocalPosition: {x: -16.7, y: -18, z: 20.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114388633405997288
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1455976841057552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d59731664f84d0f95fa5eb8a4bc8d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Version: 1
+  FriendsListObject: {fileID: 1354149433373808, guid: 6fa2b544a92a6cf4f9b4b2e8b135f797,
+    type: 2}
+  OptionsObject: {fileID: 1094366897451982, guid: a240ee8cce765aa4c8eeb5a5caeeac86,
+    type: 2}
+  GameOverPanel: {fileID: 0}
+  DarkPanel: {fileID: 1248849398410352, guid: e024aa3c24820fc428f033ca49f06eac, type: 2}
+  running: 0
+  currentGames: []
+  currentInvites: []
+  GameName: NewGame1
+  allowedGames: 10

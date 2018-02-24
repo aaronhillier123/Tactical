@@ -168,6 +168,7 @@
      <Compile Include="Assets\MyAssets\Scripts\JoinGamePanel.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MenuControlScript.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MenuScript.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\MessageScript.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Missile.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MyGames.cs" />
      <Compile Include="Assets\MyAssets\Scripts\NaturalCover.cs" />
@@ -349,6 +350,7 @@
      <Compile Include="Assets\PlayFabSdk\Shared\SignalR.NET20\Transports\ServerSentEventsTransport.cs" />
      <Compile Include="Assets\PlayFabSdk\Shared\SignalR.NET20\Transports\SseEvent.cs" />
      <Compile Include="Assets\ProjectorFolder\SelectableUnitComponent.cs" />
+     <Compile Include="Assets\TitleScreen.cs" />
      <None Include="Assets\PlayFabSdk\link.xml" />
      <None Include="Assets\Photon Unity Networking\link.xml" />
      <None Include="Assets\ToonSoldiers_demo\ToonSoldiers_demo.txt" />

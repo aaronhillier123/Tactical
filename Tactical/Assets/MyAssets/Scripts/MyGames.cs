@@ -37,10 +37,13 @@ public class MyGames : MonoBehaviour {
 
 	public void SetGames(List<string> games){
 		myGames = games;
+		foreach (GameObject g in GameObject.FindGameObjectsWithTag("GameSelect")) {
+			Destroy (g);
+		}
 		for(int i=0; i<myGames.Count; ++i) {
 			GameObject ButtonObject = Instantiate (SelectGameButton);
 			ButtonObject.transform.SetParent (content.transform, false);
-			ButtonObject.GetComponent<RectTransform>().anchoredPosition = new Vector3 (0, 120 - (30 * i), 0);
+			ButtonObject.GetComponent<RectTransform>().anchoredPosition = new Vector3 (0, 120 - (60 * i), 0);
 			Button button = ButtonObject.GetComponent<Button> ();
 			ButtonObject.transform.Find ("Text").GetComponent<Text> ().text = "GAME " + i.ToString();
 			string myString = myGames [i];
@@ -50,10 +53,13 @@ public class MyGames : MonoBehaviour {
 
 	public void SetInvites(List<string> invites){
 		myInvites = invites;
+		foreach (GameObject g in GameObject.FindGameObjectsWithTag("GameSelect")) {
+			Destroy (g);
+		}
 		for(int i=0; i<myInvites.Count; ++i) {
 			GameObject ButtonObject = Instantiate (SelectGameButton);
 			ButtonObject.transform.SetParent (content.transform, false);
-			ButtonObject.GetComponent<RectTransform>().anchoredPosition = new Vector3 (0, 120 - (30 * i), 0);
+			ButtonObject.GetComponent<RectTransform>().anchoredPosition = new Vector3 (0, 120 - (65 * i), 0);
 			Button button = ButtonObject.GetComponent<Button> ();
 			ButtonObject.transform.Find ("Text").GetComponent<Text> ().text = "INVITE " + i.ToString();
 			string myString = myInvites [i];

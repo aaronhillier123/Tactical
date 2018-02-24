@@ -50,11 +50,16 @@ public class Player : MonoBehaviour {
 	}
 	public void addDogTags(int d){
 		dogtags = dogtags + d;
+
 		HudController._instance.updateDogTags (dogtags);
+		HudController._instance.RefreshStore ();
+
 	}
 	public void setDogTags(int d){
 		dogtags = d;
 		HudController._instance.updateDogTags (dogtags);
+		HudController._instance.RefreshStore ();
+
 	}
 	public bool isAttacking(){
 		return attacking;
@@ -71,7 +76,12 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		List<ControlPoint> cps = Game._instance.allControlPoints ();
+		foreach (ControlPoint c in cps) {
+			if (c.team == team && !myControlPoints.Contains (c)) {
+				myControlPoints.Add (c);
+			}
+		}
 	}
 
 	// Update is called once per frame
@@ -81,6 +91,7 @@ public class Player : MonoBehaviour {
 	public void spendDogTags(int amount){
 		dogtags -= amount;
 		HudController._instance.updateDogTags (dogtags);
+		HudController._instance.RefreshStore ();
 	}
 
 	//create a new troop at a certain location

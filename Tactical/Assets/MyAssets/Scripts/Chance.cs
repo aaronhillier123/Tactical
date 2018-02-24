@@ -40,6 +40,12 @@ public class Chance : MonoBehaviour {
 			}
 		}
 
+		//if target is in foxhole
+		if (target.inFoxHole) {
+			colorKey = Color.yellow;
+			percentOfHit = percentOfHit / 2;
+		}
+
 		//determine if enemy is behind terrain or cover
 		RaycastHit hitcast;
 
@@ -48,6 +54,10 @@ public class Chance : MonoBehaviour {
 				percentOfHit = 0;
 				colorKey = Color.red;
 			}
+		}
+
+		if (percentOfHit < 0) {
+			percentOfHit = 0;
 		}
 
 		Vector2 chancePos = Camera.main.WorldToScreenPoint (enemypos);

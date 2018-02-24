@@ -46,6 +46,12 @@ public class MenuScript : MonoBehaviour {
 	public int allowedGames = 10;
 
 	void Start () {
+
+		if (GameObject.FindObjectsOfType<MenuScript> ().Length > 1) {
+			Destroy (gameObject);
+		}
+
+
 		_instance = this;
 		if (!FB.IsInitialized) {
 			FB.Init (OnFacebookInitialized);
@@ -55,6 +61,17 @@ public class MenuScript : MonoBehaviour {
 			Destroy (gameObject);
 		}
 		PhotonNetwork.autoJoinLobby = false;
+	}
+
+	private void reload(){
+
+		if (!FB.IsInitialized) {
+			FB.Init (OnFacebookInitialized);
+		}
+
+		if (FindObjectsOfType (GetType ()).Length > 1) {
+			Destroy (gameObject);
+		}
 	}
 
 	private void RequestPhotonToken(LoginResult obj) {
@@ -98,6 +115,7 @@ public class MenuScript : MonoBehaviour {
 			PhotonNetwork.OnEventCall += GameHandler.EndGame;//14
 			running = true;
 		}
+
 		PhotonNetwork.JoinLobby ();
 	}
 
@@ -120,6 +138,12 @@ public class MenuScript : MonoBehaviour {
 
 	public void LeaveRoom(){
 		PhotonNetwork.networkingPeer.OpLeaveRoom (true);
+	}
+
+	public void goToMenu(){
+		SceneManager.LoadScene ("MainMenu");
+		SceneManager.UnloadSceneAsync ("MyGamesScene");
+		reload ();
 	}
 
 	public void DoneWithGame(){
@@ -398,37 +422,31 @@ public class MenuScript : MonoBehaviour {
 	}
 
 	public void initNetGame(string roomId, bool isGame){
-		NetGame ng = new NetGame ();
-		List<string> mems = new List<string> ();
-		Debug.Log ("DOING THING");
-		PlayFabClientAPI.GetSharedGroupData (new GetSharedGroupDataRequest () {
-			SharedGroupId = roomId,
-			GetMembers = true
-		}, result => {
-			for(int i=0; i<result.Members.Count; ++i){
+		try{
+			NetGame ng = new NetGame ();
+			List<string> mems = new List<string> ();
+			Debug.Log ("DOING THING");
+			PlayFabClientAPI.GetSharedGroupData (new GetSharedGroupDataRequest () {
+				SharedGroupId = roomId,
+				GetMembers = true
+			}, result => {
+				Debug.Log("Getting Names");
+				string names = "";
+				if(result.Data.ContainsKey("Names")){
+					names = result.Data["Names"].Value;
+				}
+				List<string> playerNames = PlayFab.Json.JsonWrapper.DeserializeObject<List<string>> (names);
 
-
-				PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest(){
-					PlayFabId = result.Members.ElementAt(i)
-				}, newresult => {
-					if(i == result.Members.Count-1){
-						ng.players.Add(newresult.AccountInfo.FacebookInfo.FullName);
-						Debug.Log("MEMBERCOUNT: " + result.Members.Count);
-						ng.players = result.Members;
-						ng.id = roomId;
-						ng.inGame = isGame;
-						MyGames._instance.currentNet = ng;
-						MyGames._instance.showGameDetails ();
-					} else {
-						ng.players.Add(newresult.AccountInfo.FacebookInfo.FullName);
-					}
-				}, error => {
-					Debug.Log("error getting account info");
-				});
-			}
-		}, (error) => {
-			Debug.Log("error getting members");
-		});
+				ng.players = playerNames;
+				ng.id = roomId;
+				ng.inGame = isGame;
+				MyGames._instance.currentNet = ng;
+				MyGames._instance.showGameDetails();
+			}, (error) => {
+				Debug.Log("error getting members");
+			});
+		} catch{
+		}
 	}
 
 }

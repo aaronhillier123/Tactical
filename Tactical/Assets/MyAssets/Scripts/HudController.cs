@@ -15,7 +15,6 @@ public class HudController : MonoBehaviour {
 
 	public GameObject GameHudObject;
 	public GameObject StartHudObject;
-	public GameObject WaitingHudObject;
 	public Canvas canvas;
 
 	public Hud GameHud;
@@ -66,7 +65,8 @@ public class HudController : MonoBehaviour {
 	}
 
 	public void EndTurn(){
-		HudController._instance.showWaitingScreen ();
+		//HudController._instance.showWaitingScreen ();
+		MessageScript._instance.setText ("Turn is over. Waiting for other players");
 		AttackMode (false);
 		GameHud.EndTurn ();
 	}
@@ -96,14 +96,12 @@ public class HudController : MonoBehaviour {
 	}
 
 	public void showWaitingScreen(){
-		WaitingHudObject.transform.SetParent (canvas.transform);
-		WaitingHudObject.GetComponent<RectTransform> ().localPosition = Vector3.zero;
-		WaitingHudObject.GetComponent<RectTransform> ().localScale = Vector3.one;
+		
 
 	}
 
 	public void removeWaitingScreen(){
-		WaitingHudObject.transform.SetParent (null);
+		
 	}
 
 	public void BeginGame(){

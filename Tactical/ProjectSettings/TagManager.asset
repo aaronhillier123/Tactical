@@ -13,6 +13,7 @@ TagManager:
   - Rotate
   - Prelimb
   - FulBar
+  - GameSelect
   layers:
   - Default
   - TransparentFX

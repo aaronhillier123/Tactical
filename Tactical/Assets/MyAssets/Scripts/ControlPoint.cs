@@ -6,11 +6,10 @@ public class ControlPoint : MonoBehaviour {
 
 	public int id;
 	public int team;
-	public Material[] FlagMaterials = new Material[5];
 	public GameObject myFlag;
+	public Material[] mats = new Material[5];
 	// Use this for initialization
 	void Start () {
-		team = 0;
 	}
 	
 	// Update is called once per frame
@@ -35,23 +34,28 @@ public class ControlPoint : MonoBehaviour {
 		}
 	}
 
-	public void setTeam(int currentTeam, int noNeed){
+	public void setTeam(int currentTeam, int initial){
 		if (currentTeam != 0) {
-			Player myPlayer = GameHandler._instance.getPlayer (currentTeam);
-			team = currentTeam;
-			myFlag.GetComponent<MeshRenderer> ().material = FlagMaterials [team];
-			myPlayer.addControlPoint (this);
+			if (initial == 0) {
+				Player myPlayer = GameHandler._instance.getPlayer (currentTeam);
+				team = currentTeam;
+				myFlag.GetComponent<MeshRenderer> ().material = mats [team];
+				myPlayer.addControlPoint (this);
+			} else {
+				team = currentTeam;
+				myFlag.GetComponent<MeshRenderer> ().material = mats [team];
+			}
 		}
 	}
 
 	public IEnumerator changeFlag(Trooper troop){
-		
+		troop.DidSomething ();
 		Vector3 og = myFlag.transform.position;
 		while(myFlag.transform.position.y > Game._instance.floor){
 				myFlag.transform.Translate (0f, -.2f, 0f);
 				yield return null;
 		}
-		myFlag.GetComponent<MeshRenderer> ().material = FlagMaterials[team];
+		myFlag.GetComponent<MeshRenderer> ().material = mats[team];
 		while (myFlag.transform.position.y <= og.y) {
 			myFlag.transform.Translate (0f, .2f, 0f);
 			yield return null;
@@ -59,6 +63,13 @@ public class ControlPoint : MonoBehaviour {
 		myFlag.transform.position = og;
 		Debug.Log ("making stop control point");
 		troop.stop ();
+		if (troop.myPlayer.myControlPoints.Count > (Game._instance.allControlPoints ().Count / 2)) {
+			PhotonNetwork.RaiseEvent ((byte)14, (object)troop.myPlayer.team, true, new RaiseEventOptions () {
+				ForwardToWebhook = true,
+				CachingOption = EventCaching.AddToRoomCache,
+				Receivers = ReceiverGroup.All,
+			});
+		}
 	}
 
 	void OnTriggerEnter(Collider coll){

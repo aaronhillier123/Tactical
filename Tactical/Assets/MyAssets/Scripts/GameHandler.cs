@@ -67,15 +67,27 @@ public class GameHandler : MonoBehaviour {
 		}
 	}
 
+	public int getNextTurn(int prevTurn){
+		int nextTurn = getTurn(prevTurn);
+		while (GameHandler._instance.getPlayer(nextTurn).roster.Count < 1) {
+			nextTurn = getTurn (nextTurn);
+		}
+		return nextTurn;
+	}
+
+	public int getTurn(int prev){
+		int newturn = 0;
+		if (prev == PhotonNetwork.room.MaxPlayers || prev==0) {
+			newturn = 1;
+		} else {
+			newturn = prev + 1;
+		}
+		return newturn;
+	}
 
 	public void RaiseTurnChange(){
 		int lastturn = GameHandler._instance.playersTurn;
-		int newturn = lastturn;
-		if (lastturn == PhotonNetwork.room.PlayerCount || lastturn==0) {
-			newturn = 1;
-		} else {
-			newturn++;
-		}
+		int newturn = getNextTurn (lastturn);
 		int[] turns = new int[]{ lastturn, newturn };
 		object turnObject = (object)turns;
 		GameHandler._instance.refreshGameStates();
@@ -393,6 +405,7 @@ public class GameHandler : MonoBehaviour {
 			int lastTurn = turns [0];
 			int newTurn = turns [1];
 			GameHandler._instance.playersTurn = newTurn;
+			MessageScript._instance.setText ("Waiting for player " + newTurn + " to move");
 			if (lastTurn == PhotonNetwork.player.ID) {
 				Game._instance.EndTurn ();
 			}
@@ -461,6 +474,9 @@ public class GameHandler : MonoBehaviour {
 	public static void EndPlacements(byte id, object content, int SenderID){
 		if(id == 3){
 			GameHandler._instance.getPlayer (SenderID).setReady(true);
+			if (PhotonNetwork.player.ID == SenderID) {
+				MessageScript._instance.setText ("Waiting for other players to join");
+			}
 		}
 	}
 		

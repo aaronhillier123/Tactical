@@ -11,7 +11,7 @@ public class TroopController : MonoBehaviour {
 	public Material[] TroopMats = new Material[5];
 	public Material[] FrozenMats = new Material[5];
 	public Material[] ShieldMats = new Material[5];
-
+	public Material[] Limits = new Material[5];
 	// Use this for initialization
 	void Start () {
 		_instance = this;

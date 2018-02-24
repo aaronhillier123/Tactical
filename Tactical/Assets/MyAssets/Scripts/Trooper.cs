@@ -59,6 +59,7 @@ public class Trooper : MonoBehaviour {
 	public bool canMarathon = false;
 	public bool hasDoubleShot = false;
 	public bool hasAirStrike = false;
+	public bool jumping = false;
 
 
 	void awake () {
@@ -87,6 +88,9 @@ public class Trooper : MonoBehaviour {
 	}
 	public void setMaxDistance(float m){
 		maxDistance = m;
+		if (maxDistance < 2) {
+			maxDistance = 2;
+		}
 	}
 	public float getMaxDistance(){
 		return maxDistance;
@@ -125,13 +129,14 @@ public class Trooper : MonoBehaviour {
 
 	public void stop(){
 		moving = false;
+		jumping = false;
 		if (covering == false) {
 			animator.SetInteger ("AnimPar", 0);
 		}
 	}
 
 	public void reset(){
-		maxDistance = 50f;
+		setMaxDistance(50f);
 		initialPosition = transform.position;
 		hasGrenade = false;
 		isSniper = false;
@@ -174,16 +179,21 @@ public class Trooper : MonoBehaviour {
 			Debug.Log ("THIS IS WHERE");
 			animator.SetInteger ("AnimPar", animation);
 		}
+		jumping = false;
 	}
 
 	public void jumpBarrier(){
-		int currentAnimation = animator.GetInteger ("AnimPar");
-		animator.SetTrigger ("Jump");
-		transform.position += Vector3.up;
-		StartCoroutine(ContinueAnimation(0.8f, 10, currentAnimation));
+		if (jumping == false) {
+			jumping = true;
+			int currentAnimation = animator.GetInteger ("AnimPar");
+			animator.SetTrigger ("Jump");
+			transform.position += Vector3.up * 4;
+			StartCoroutine (ContinueAnimation (0.8f, 10, currentAnimation));
+		}
 	}
 		
 	public void RaiseAttack(Trooper EnemyTroop){
+		MessageScript._instance.setPreviousText ();
 		myPlayer.setAttacking(false);
 		if (hasDoubleShot == false) {
 			freeze ();
@@ -277,9 +287,9 @@ public class Trooper : MonoBehaviour {
 			Vector3 newPos = new Vector3 (newPosx, newPosy, newPosz);
 			Trooper myTroop = Game._instance.GetTroop (selectedID);
 			if (cover == 1) {
-				myTroop.covering = true;
+				myTroop.takingCover = true;
 			} else {
-				myTroop.covering = false;
+				myTroop.takingCover = false;
 			}
 			myTroop.StopAllCoroutines ();
 			myTroop.StartCoroutine (myTroop.moveToPosition (newPos, 10f)); 
@@ -380,7 +390,7 @@ public class Trooper : MonoBehaviour {
 			myPiece = null;
 		}
 		myPiece = null;
-		while(Vector3.Distance(transform.position, destination) > 1f)
+		while(Vector3.Distance(transform.position, destination) > 2f)
 		{
 			transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
 			yield return null;
@@ -401,7 +411,7 @@ public class Trooper : MonoBehaviour {
 	public void resetDistance(){
 		float newDis = maxDistance - (Vector3.Distance(initialPosition, transform.position));
 		initialPosition = transform.position;
-		maxDistance = newDis;
+		setMaxDistance (newDis);
 		}
 		
 	public void shoot(Trooper enemy, int hit){
@@ -444,7 +454,7 @@ public class Trooper : MonoBehaviour {
 	public void gotShot(){
 		StopAllCoroutines ();
 		animator.SetTrigger ("Hit");
-		decreaseHealth (100f);
+		decreaseHealth (40f);
 	}
 
 	public IEnumerator die(){
@@ -463,6 +473,7 @@ public class Trooper : MonoBehaviour {
 		
 	public void giveGrenade(bool give){
 		if (give) {
+			MessageScript._instance.setText ("Click on location to throw grenade");
 			hasGrenade = true;
 			ShowGrenadeLimit ();
 		} else {
@@ -518,7 +529,11 @@ public class Trooper : MonoBehaviour {
 
 	public void giveDoubleShot(bool give){
 		if (give) {
-			hasDoubleShot = true;
+			if (frozen == true) {
+				frozen = false;
+			} else {
+				hasDoubleShot = true;
+			}
 		} else {
 			hasDoubleShot = false;
 		}
@@ -526,6 +541,7 @@ public class Trooper : MonoBehaviour {
 
 	public void giveAirstrike(bool give){
 		if (give) {
+			MessageScript._instance.setText ("Click on location to call airstrike");
 			hasAirStrike = true;
 		} else {
 			hasAirStrike = false;
@@ -544,6 +560,7 @@ public class Trooper : MonoBehaviour {
 
 	public void giveNewTroop(bool give){
 		if (give) {
+			MessageScript._instance.setText ("New Troop Added");
 			GameObject[] spawns = GameObject.FindGameObjectsWithTag ("Respawn");
 			SpawnArea mySpawn = new SpawnArea ();
 			foreach (GameObject g in spawns) {
@@ -562,16 +579,17 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void giveAbility(int ability){
-
 		bool give = abilities.Contains (ability);
 
 		if (give) {
+			MessageScript._instance.setText ("Item Sold");
 			myPlayer.addDogTags (HudController._instance.GameHud.Store.ItemPrices [ability]);
 			abilities.Remove (ability);
 		} else {
 			myPlayer.spendDogTags (HudController._instance.GameHud.Store.ItemPrices [ability]);
 			abilities.Add (ability);
 		}
+		HudController._instance.RefreshStore ();
 		HudController._instance.RefreshStore ();
 		switch(ability){
 		case 0:
@@ -684,6 +702,7 @@ public class Trooper : MonoBehaviour {
 		if (myPlayer.getSelected() != null) {
 			myPlayer.getSelected().unselect ();
 		}
+		MessageScript._instance.setText ("Click on map to move trooper to locatoin");
 		myPlayer.setSelected (this);
 		if (this.frozen == false) {
 			HudController._instance.CanAttack (true);
@@ -767,7 +786,7 @@ public class Trooper : MonoBehaviour {
 		
 		rotateTo (t.currentPosition);
 		stab ();
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (0.5f);
 		t.decreaseHealth (100f);
 
 	}
@@ -776,8 +795,11 @@ public class Trooper : MonoBehaviour {
 	void OnCollisionEnter(Collision coll){
 		Trooper t = coll.gameObject.GetComponent<Trooper> ();
 		if (t != null) {
-			if (t.team != PhotonNetwork.player.ID) {
+			if (t.team != PhotonNetwork.player.ID && moving==true) {
 				StopAllCoroutines ();
+				unselect ();
+				setMaxDistance (2f);
+				initialPosition = transform.position;
 				StartCoroutine (stabTroop (t));
 			}
 		}
@@ -789,13 +811,14 @@ public class Trooper : MonoBehaviour {
 			Explosion myEx = ex.GetComponent<Explosion> ();
 			if (myEx != null) {
 				if (myEx.type == 1) {
+					decreaseHealth (60f);
 				} else if (myEx.type == 2) {
+					decreaseHealth (100f);
 				}
 			}
 			HudController._instance.showHealthBar (id);
 			rotateTo (ex.transform.position);
 			naded ();
-			decreaseHealth (20f);
 		}
 	}
 }

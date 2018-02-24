@@ -62,6 +62,7 @@ public class Hud : MonoBehaviour {
 
 	public void AttackMode(bool attack){
 		if (attack == true) {
+			MessageScript._instance.setText ("Click on enemy troop to attack");
 			Trooper a = Game._instance.myPlayer.getSelected ();
 			HudController._instance.showAllChances (a);
 			GamePlay.Attack.image.color = Color.green;

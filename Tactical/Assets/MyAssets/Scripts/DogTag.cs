@@ -25,6 +25,7 @@ public class DogTag : MonoBehaviour {
 		Trooper myTroop = coll.gameObject.GetComponent<Trooper> ();
 		if (myTroop != null) {
 			myTroop.myPlayer.addDogTags(1);
+			myTroop.DidSomething ();
 			HudController._instance.updateDogTags (myTroop.myPlayer.getDogTags());
 			Game._instance.allDogTags.Remove (this);
 			Destroy (gameObject);

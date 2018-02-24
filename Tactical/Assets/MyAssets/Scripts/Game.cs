@@ -293,8 +293,8 @@ public class Game : MonoBehaviour {
 		foreach (Trooper t in Game._instance.myPlayer.roster) {
 			t.reset ();
 		}
-			
-
+		myPlayer.addDogTags (myPlayer.myControlPoints.Count);
+		MessageScript._instance.setText ("Click on a trooper to select it");
 		if (Game._instance.myPlayer.roster.Count == 0) {
 			GameHandler._instance.RaiseTurnChange ();
 		} else {
