@@ -89,7 +89,7 @@ public class Hud : MonoBehaviour {
 		if (myPlayer.lookingAt >= myPlayer.roster.Count) {
 			myPlayer.lookingAt = 0;
 		}
-		CameraPan._instance.moveToObject(myPlayer.roster [myPlayer.lookingAt].gameObject);
+		CameraPan._instance.moveToObject(myPlayer.roster [myPlayer.lookingAt].gameObject, false);
 	}
 
 

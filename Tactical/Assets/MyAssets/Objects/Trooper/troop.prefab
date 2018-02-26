@@ -503,6 +503,7 @@ GameObject:
   - component: {fileID: 114388020317523276}
   - component: {fileID: 136574984713318504}
   - component: {fileID: 54522705533117734}
+  - component: {fileID: 136777264389926324}
   m_Layer: 0
   m_Name: troop
   m_TagString: Player
@@ -1672,6 +1673,7 @@ MonoBehaviour:
   abilities: 
   frozen: 0
   covering: 0
+  takingCover: 0
   inFoxHole: 0
   hasGrenade: 0
   isSniper: 0
@@ -1679,6 +1681,7 @@ MonoBehaviour:
   canMarathon: 0
   hasDoubleShot: 0
   hasAirStrike: 0
+  jumping: 0
 --- !u!136 &136574984713318504
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1690,6 +1693,19 @@ CapsuleCollider:
   m_Enabled: 1
   m_Radius: 0.7
   m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!136 &136777264389926324
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1626413628017448}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!137 &137012174684024180

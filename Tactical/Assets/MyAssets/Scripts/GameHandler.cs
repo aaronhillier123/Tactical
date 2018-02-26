@@ -57,7 +57,7 @@ public class GameHandler : MonoBehaviour {
 				newPlayer.CreateTroopAt (newPos, mySpawn.FacingOut, senderID, ((senderID-1) * Player.numberOfTroops) + i);
 			}
 			if (PhotonNetwork.player.ID == newPlayer.team) {
-				CameraPan._instance.moveToObject (newPlayer.roster [0].gameObject);
+				CameraPan._instance.moveToObject (newPlayer.roster [0].gameObject, false);
 				if (GameHandler._instance.turnNumber == 0) {
 					HudController._instance.showStartHud ();
 				} else {
@@ -276,7 +276,6 @@ public class GameHandler : MonoBehaviour {
 			t.transform.eulerAngles = new Vector3 (rx, ry, rz);
 			if (int.Parse (tsa [9]) != -1) {
 				t.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
-				t.covering = true;
 				t.setAnimation (11);
 			}
 			if (int.Parse (tsa [10]) == 1) {
@@ -299,7 +298,6 @@ public class GameHandler : MonoBehaviour {
 			Trooper newTroop = Game._instance.GetTroop (newid);
 			if (int.Parse (tsa [9]) != -1) {
 				newTroop.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
-				newTroop.covering = true;
 				newTroop.transform.Rotate (new Vector3 (0, 180f, 0));
 				Debug.Log ("setting to cover");
 				newTroop.setAnimation (11);
@@ -428,47 +426,43 @@ public class GameHandler : MonoBehaviour {
 	}
 
 	public void CheckForEnd(){
-		int playersLeft = 0;
-		int winner = 0;
-		foreach (Player p in GameHandler._instance.GamePlayers) {
-			if (p.roster.Count > 0) {
-				playersLeft++;
-				winner = p.team;
+		foreach(Player p in GameHandler._instance.GamePlayers){
+			if (p.roster.Count == 0 && p.lost != true && PhotonNetwork.player.ID == GameHandler._instance.getPlayersTurn()) {
+				PhotonNetwork.RaiseEvent ((byte)14, (object)p.team, true, new RaiseEventOptions () {
+					Receivers = ReceiverGroup.All,
+					ForwardToWebhook = true, 
+					CachingOption = EventCaching.AddToRoomCache,
+				});
 			}
-		}
-		if (playersLeft == 1) {
-			PhotonNetwork.RaiseEvent ((byte)14, (object)winner, true, new RaiseEventOptions () {
-				Receivers = ReceiverGroup.All,
-				ForwardToWebhook = true, 
-				CachingOption = EventCaching.AddToRoomCache,
-			});
 		}
 	}
 
 	public void showGameOver(int win){
+		Button[] allButons = GameObject.FindObjectsOfType<Button> ();
+		foreach (Button b in allButons) {
+			b.interactable = false;
+		}
 		GameObject winObject = Instantiate (GameOverPanel, GameObject.Find ("Canvas").transform, false);
 		winObject.GetComponent<GameOver> ().show (win);
 
 	}
 
-	public static void EndGame(byte id, object content, int senderID){
+	public static void playerLost(byte id, object content, int senderID){
 		if (id == 14) {
-			Game._instance.over = true;
-			int winner = (int)content;
-			Button[] allButons = GameObject.FindObjectsOfType<Button> ();
-			foreach (Button b in allButons) {
-				b.interactable = false;
+			Player losingPlayer = GameHandler._instance.getPlayer((int)content);
+			losingPlayer.lost = true;
+			int remainingPlayers = 0;
+			foreach (Player p in GameHandler._instance.GamePlayers) {
+				if (p.lost == false) {
+					++remainingPlayers;
+				}
 			}
-			HudController._instance.removeWaitingScreen ();
-			if (PhotonNetwork.player.ID == winner) {
-				GameHandler._instance.showGameOver (1);
-
-			} else {
-				///you are loser
-				GameHandler._instance.showGameOver(0);
+			if (PhotonNetwork.player.ID == losingPlayer.team && remainingPlayers > 1) {
+				GameHandler._instance.showGameOver (0);
+			} else if (remainingPlayers == 1 && GameHandler._instance.getPlayer(PhotonNetwork.player.ID).lost==false) {
+				GameHandler._instance.showGameOver(1);
 			}
 		}
-
 	}
 
 	public static void EndPlacements(byte id, object content, int SenderID){

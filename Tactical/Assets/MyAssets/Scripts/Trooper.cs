@@ -421,14 +421,16 @@ public class Trooper : MonoBehaviour {
 		
 	public void shoot(Trooper enemy, int hit){
 		StopAllCoroutines ();
-		CameraController._instance.setFollowedObject (gameObject, 0);
+		CameraPan._instance.moveToObject (gameObject, false);
 		rotateTo (enemy.transform.position);
-		animator.SetTrigger ("Shoot");
+		//animator.SetTrigger ("Shoot");
 		StartCoroutine (ShootCoroutine (enemy, hit));
 	}
 
 	IEnumerator ShootCoroutine(Trooper enemy, int hit){
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (0.8f);
+		animator.SetTrigger ("Shoot");
+		yield return new WaitForSeconds (0.5f);
 		Vector3 startpos = transform.position + new Vector3 (0, 5, 0);
 		Vector3 enemyPos = enemy.transform.position + new Vector3 (0, 5, 0);
 		GameObject mybullet = Instantiate (TroopController._instance.TroopObjects[0], startpos, Quaternion.identity);
@@ -686,7 +688,7 @@ public class Trooper : MonoBehaviour {
 
 	public void stab(){
 		animator.SetTrigger ("Knife");
-		Invoke ("stop", 1f);
+		stop ();
 	}
 
 	public Vector3 midPoint(Vector3 start, Vector3 finish){
@@ -790,11 +792,11 @@ public class Trooper : MonoBehaviour {
 		stop ();
 	}
 
-	public IEnumerator stabTroop(Trooper t){
+	public void stabTroop(Trooper t){
 		
 		rotateTo (t.currentPosition);
 		stab ();
-		yield return new WaitForSeconds (0.5f);
+		//yield return new WaitForSeconds (0.5f);
 		t.decreaseHealth (100f);
 
 	}
@@ -810,7 +812,8 @@ public class Trooper : MonoBehaviour {
 				unselect ();
 				setMaxDistance (2f);
 				initialPosition = transform.position;
-				StartCoroutine (stabTroop (t));
+				//StartCoroutine (stabTroop (t));
+				stabTroop(t);
 			}
 		}
 	}

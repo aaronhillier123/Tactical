@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (follow != null) {
-			cp.moveToObject (follow);
+			cp.moveToObject (follow, true);
 		} else {
 			follow = null;
 		}

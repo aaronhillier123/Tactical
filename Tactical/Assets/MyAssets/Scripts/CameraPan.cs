@@ -103,11 +103,29 @@ public class CameraPan : MonoBehaviour {
 		gameObject.transform.Translate ( 0.25f, 0f, 0);
 	}
 
-	public void moveToObject(GameObject t){
+	public void moveToObject(GameObject t, bool instant){
 		CameraPan._instance.StopAllCoroutines ();
 		Vector3 pos = t.transform.position;
 		Vector3 newPos = new Vector3 (pos.x - 8, gameObject.transform.position.y, pos.z + 5);
-		StartCoroutine (moveTo (newPos));
+		if (instant == false) {
+			StartCoroutine (moveTo (newPos, 1f));
+		} else {
+			StartCoroutine (moveTo (newPos));
+		}
+
+	}
+
+	public IEnumerator moveTo(Vector3 dest, float time){
+
+		float elapsedTime = 0;
+		Vector3 initPos = transform.position;
+		while (elapsedTime < time) {
+			transform.position = Vector3.Lerp (initPos, dest, (elapsedTime / time));
+			elapsedTime += Time.deltaTime;
+			yield return null;
+		}
+		gameObject.transform.position = dest;
+		StopAllCoroutines ();
 	}
 
 	public IEnumerator moveTo(Vector3 dest){
@@ -118,4 +136,5 @@ public class CameraPan : MonoBehaviour {
 		gameObject.transform.position = dest;
 		StopAllCoroutines ();
 	}
+
 }

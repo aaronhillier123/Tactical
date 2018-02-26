@@ -30,7 +30,7 @@ public class MenuScript : MonoBehaviour {
 	public byte Version = 1;
 	private string roomName = "";
 	private List<string> players;
-
+	private byte maxPlayers = 4;
 	public GameObject FriendsListObject;
 	public GameObject OptionsObject;
 	public GameObject GameOverPanel;
@@ -112,7 +112,7 @@ public class MenuScript : MonoBehaviour {
 			PhotonNetwork.OnEventCall += Player.airStrike; //12
 			PhotonNetwork.OnEventCall += Game.BeginGame;//11
 			PhotonNetwork.OnEventCall += Player.NetworkTroopAt;//13
-			PhotonNetwork.OnEventCall += GameHandler.EndGame;//14
+			PhotonNetwork.OnEventCall += GameHandler.playerLost;//14
 			running = true;
 		}
 
@@ -348,7 +348,7 @@ public class MenuScript : MonoBehaviour {
 				Debug.Log ("Current game count: " + currentGames.Count);
 				SceneManager.LoadScene ("GameScene");
 				PhotonNetwork.CreateRoom (null, new RoomOptions () {
-					MaxPlayers = 4,
+					MaxPlayers = maxPlayers,
 					EmptyRoomTtl = 1000,
 					PlayerTtl = -1,
 					IsVisible = true
@@ -397,7 +397,7 @@ public class MenuScript : MonoBehaviour {
 
 	public virtual void OnPhotonJoinRoomFailed(){
 		PhotonNetwork.CreateRoom(GameName, new RoomOptions () {
-			MaxPlayers = 4,
+			MaxPlayers = maxPlayers,
 			EmptyRoomTtl = 1000,
 			PlayerTtl = -1,
 			IsVisible = true
@@ -407,7 +407,7 @@ public class MenuScript : MonoBehaviour {
 	public virtual void OnPhotonRandomJoinFailed()
 	{
 		PhotonNetwork.CreateRoom(null, new RoomOptions () {
-			MaxPlayers = 4,
+			MaxPlayers = maxPlayers,
 			EmptyRoomTtl = 1000,
 			PlayerTtl = -1,
 			IsVisible = true
