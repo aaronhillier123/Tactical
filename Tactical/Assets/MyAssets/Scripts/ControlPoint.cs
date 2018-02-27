@@ -28,7 +28,6 @@ public class ControlPoint : MonoBehaviour {
 			myTroop.myPlayer.addControlPoint (this);
 			myTroop.myPlayer.addDogTags (2);
 			HudController._instance.updateDogTags (myTroop.myPlayer.getDogTags());
-			myTroop.flagPull ();
 			StartCoroutine (changeFlag(myTroop));
 			team = myTroop.team;
 		} else {
@@ -53,6 +52,7 @@ public class ControlPoint : MonoBehaviour {
 
 	public IEnumerator changeFlag(Trooper troop){
 		troop.DidSomething ();
+		troop.flagPull ();
 		Vector3 og = myFlag.transform.position;
 		while(myFlag.transform.position.y > Game._instance.floor){
 				myFlag.transform.Translate (0f, -.2f, 0f);
@@ -65,14 +65,15 @@ public class ControlPoint : MonoBehaviour {
 		}
 		myFlag.transform.position = og;
 		Debug.Log ("making stop control point");
-		troop.stop ();
 		if (troop.myPlayer.myControlPoints.Count > (Game._instance.allControlPoints ().Count / 2)) {
 			Debug.Log ("MyControlPoints: " + troop.myPlayer.myControlPoints.Count + " , Goal: " + Game._instance.allControlPoints ().Count);
-			PhotonNetwork.RaiseEvent ((byte)14, (object)troop.myPlayer.team, true, new RaiseEventOptions () {
-				ForwardToWebhook = true,
-				CachingOption = EventCaching.AddToRoomCache,
-				Receivers = ReceiverGroup.All,
-			});
+			if (PhotonNetwork.player.ID == troop.myPlayer.team) {
+				PhotonNetwork.RaiseEvent ((byte)17, (object)troop.myPlayer.team, true, new RaiseEventOptions () {
+					ForwardToWebhook = true,
+					CachingOption = EventCaching.AddToRoomCache,
+					Receivers = ReceiverGroup.All,
+				});
+			}
 		}
 	}
 

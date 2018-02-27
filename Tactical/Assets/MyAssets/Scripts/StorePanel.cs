@@ -62,11 +62,10 @@ public class StorePanel : MonoBehaviour {
 				List<int> abs = t.GetAbilities ();
 				if (abs.Contains (i)) {
 					ItemButtons [i].GetComponent<Image> ().color = Color.green;
+					ItemButtons [i].interactable = true;
 				} else {
 					ItemButtons [i].GetComponent<Image> ().color = Color.yellow;
 				}
-
-
 			}
 		}
 	}

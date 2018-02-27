@@ -43,7 +43,7 @@ public class MenuScript : MonoBehaviour {
 	public List<string> currentInvites = new List<string> ();
 	private string _playFabPlayerIdCache;
 	public string GameName = "Tester10";
-	public int allowedGames = 10;
+	public int allowedGames = 3;
 
 	void Start () {
 
@@ -96,7 +96,9 @@ public class MenuScript : MonoBehaviour {
 
 	private void OnConnectedToMaster(){
 		foreach (Button b in GameObject.FindObjectsOfType<Button>()) {
-			b.interactable = true;
+			if (b.name != "MyGamesBtn") {
+				b.interactable = true;
+			}
 		}
 		if(running==false){
 			PhotonNetwork.OnEventCall += GameHandler.CreatePlayer; //1
@@ -107,12 +109,14 @@ public class MenuScript : MonoBehaviour {
 			PhotonNetwork.OnEventCall += Player.throwGrenade; //6
 			PhotonNetwork.OnEventCall += Trooper.RaiseInvulnerable; //7
 			PhotonNetwork.OnEventCall += Trooper.RaiseNotInvulnerable;//8
-			PhotonNetwork.OnEventCall += Game.raiseBarrier; //15
 			PhotonNetwork.OnEventCall += GameHandler.SyncGameState;//9
 			PhotonNetwork.OnEventCall += Player.airStrike; //12
 			PhotonNetwork.OnEventCall += Game.BeginGame;//11
 			PhotonNetwork.OnEventCall += Player.NetworkTroopAt;//13
 			PhotonNetwork.OnEventCall += GameHandler.playerLost;//14
+			PhotonNetwork.OnEventCall += Game.raiseBarrier; //15
+			PhotonNetwork.OnEventCall += GameHandler.playerWon;//16
+			PhotonNetwork.OnEventCall += GameHandler.winByControlPoints;//17
 			running = true;
 		}
 
@@ -191,8 +195,14 @@ public class MenuScript : MonoBehaviour {
 	}
 
 	public static void OnGotGames(ExecuteCloudScriptResult result){
+		try{
 		List<string> myList = PlayFab.Json.JsonWrapper.DeserializeObject<List<string>> (result.FunctionResult.ToString());
-		MenuScript._instance.currentGames = myList;
+		if (myList != null) {
+			MenuScript._instance.currentGames = myList;
+		}
+		GameObject.Find ("MyGamesBtn").GetComponent<Button> ().interactable = true;
+		} catch{
+		}
 	}
 
 	public static void OnGotInvites(ExecuteCloudScriptResult result){

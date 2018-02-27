@@ -90,7 +90,7 @@ public class GameHandler : MonoBehaviour {
 		int newturn = getNextTurn (lastturn);
 		int[] turns = new int[]{ lastturn, newturn };
 		object turnObject = (object)turns;
-		GameHandler._instance.refreshGameStates();
+
 		//Raise Turn Change
 
 		//SetDogTagsForPlayer
@@ -100,6 +100,8 @@ public class GameHandler : MonoBehaviour {
 		PlayerHt.Add ("DogTags", myTags);
 		Debug.Log ("Sending new properties");
 		PhotonNetwork.player.SetCustomProperties (PlayerHt, null, true);
+
+		GameHandler._instance.refreshGameStates();
 
 		PhotonNetwork.RaiseEvent(5, null, true, new RaiseEventOptions(){
 			Receivers = ReceiverGroup.All,
@@ -144,6 +146,11 @@ public class GameHandler : MonoBehaviour {
 						gamestate += "-1/";
 				}
 				if (t.isInvulnerable) {
+					gamestate += "1/";
+				} else {
+					gamestate += "0/";
+				}
+				if (t.frozen) {
 					gamestate += "1";
 				} else {
 					gamestate += "0";
@@ -167,11 +174,14 @@ public class GameHandler : MonoBehaviour {
 		string myName = "Player" + PhotonNetwork.player.ID.ToString ();
 		object myTagsOb;
 		int myTags = 3;
+		Debug.Log ("Trying to get value from " + myName);
 		if (ht.TryGetValue (myName, out myTagsOb)) {
 			myTags = (int)myTagsOb;
 			Debug.Log ("my tag number is " + myTags);
 		}
-
+		foreach (string k in ht.Keys) {
+			Debug.Log (k + " is a key");
+		}
 		Debug.Log ("Setting dog tags to " + myTags);
 
 		Game._instance.myPlayer.setDogTags (myTags);
@@ -283,6 +293,10 @@ public class GameHandler : MonoBehaviour {
 			} else {
 				t.makeNotInvulnerable ();
 			}
+			if (int.Parse (tsa [11]) == 1) {
+				t.freeze ();
+			} else {
+			}
 			t.SetUpdated (true);
 		} else {
 			//if troop doesnt exists, create a troop at specs
@@ -348,12 +362,15 @@ public class GameHandler : MonoBehaviour {
 
 		int myTags = Game._instance.myPlayer.getDogTags ();
 		string myName = "Player" + PhotonNetwork.player.ID.ToString ();
-		Hashtable ht = new Hashtable ();
-		ht.Add ("Troops", troopstate);
-		ht.Add ("Dogs", dogstate);
-		ht.Add ("Turn", turnNumber);
-		ht.Add ("Cps", cpState);
-		ht.Add (myName, myTags);
+		Debug.Log ("added " + myTags + " toooooooo " + myName + " tags");
+
+		Hashtable ht = PhotonNetwork.room.CustomProperties;
+		ht ["Troops"] = troopstate;
+		ht ["Dogs"] = dogstate;
+		ht ["Turn"] = GameHandler._instance.getTurnNumber();
+		ht ["Cps"] = cpState;
+		ht [myName] = myTags;
+		Debug.Log ("added " + myTags + " TOOOOOOO " + myName + " tags");
 		return ht;
 	}
 		
@@ -426,7 +443,11 @@ public class GameHandler : MonoBehaviour {
 	}
 
 	public void CheckForEnd(){
+		List<int> remaining = new List<int> ();
 		foreach(Player p in GameHandler._instance.GamePlayers){
+			if (p.roster.Count > 0) {
+				remaining.Add (p.team);
+			}
 			if (p.roster.Count == 0 && p.lost != true && PhotonNetwork.player.ID == GameHandler._instance.getPlayersTurn()) {
 				PhotonNetwork.RaiseEvent ((byte)14, (object)p.team, true, new RaiseEventOptions () {
 					Receivers = ReceiverGroup.All,
@@ -434,6 +455,13 @@ public class GameHandler : MonoBehaviour {
 					CachingOption = EventCaching.AddToRoomCache,
 				});
 			}
+		}
+		if (remaining.Count == 1) {
+			PhotonNetwork.RaiseEvent ((byte)16, (object)remaining[0], true, new RaiseEventOptions () {
+				Receivers = ReceiverGroup.All,
+				ForwardToWebhook = true, 
+				CachingOption = EventCaching.AddToRoomCache,
+			});
 		}
 	}
 
@@ -451,16 +479,30 @@ public class GameHandler : MonoBehaviour {
 		if (id == 14) {
 			Player losingPlayer = GameHandler._instance.getPlayer((int)content);
 			losingPlayer.lost = true;
-			int remainingPlayers = 0;
-			foreach (Player p in GameHandler._instance.GamePlayers) {
-				if (p.lost == false) {
-					++remainingPlayers;
-				}
-			}
-			if (PhotonNetwork.player.ID == losingPlayer.team && remainingPlayers > 1) {
+			if (PhotonNetwork.player.ID == losingPlayer.team) {
 				GameHandler._instance.showGameOver (0);
-			} else if (remainingPlayers == 1 && GameHandler._instance.getPlayer(PhotonNetwork.player.ID).lost==false) {
-				GameHandler._instance.showGameOver(1);
+			}
+		}
+	}
+
+	public static void playerWon(byte id, object content, int senderID){
+		if (id == 16) {
+			Player winningPlayer = GameHandler._instance.getPlayer((int)content);
+			if (PhotonNetwork.player.ID == winningPlayer.team) {
+				GameHandler._instance.showGameOver (1);
+			}
+		}
+	}
+
+	public static void winByControlPoints(byte id, object content, int senderID){
+		if (id == 17) {
+			int playerid = (int)content;
+			foreach (Player p in GameHandler._instance.GamePlayers) {
+				if (p.lost == false && p.team != playerid && PhotonNetwork.player.ID == p.team) {
+					GameHandler._instance.showGameOver (0);
+				} else if (p.lost == false && p.team == playerid && PhotonNetwork.player.ID == p.team) {
+					GameHandler._instance.showGameOver (1);
+				}
 			}
 		}
 	}

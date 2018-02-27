@@ -65,7 +65,7 @@ public class HudController : MonoBehaviour {
 	}
 
 	public void EndTurn(){
-		//HudController._instance.showWaitingScreen ();
+		RefreshStore ();
 		MessageScript._instance.setText ("Turn is over. Waiting for other players");
 		AttackMode (false);
 		GameHud.EndTurn ();

@@ -28,7 +28,7 @@ public class Trooper : MonoBehaviour {
 
 	private GameObject partSys;
 	private int animInt;
-	private float maxDistance = 50f;
+	private float maxDistance = 45f;
 	private float health = 100;
 	private BarrierPiece myPiece;
 	private Vector3 initialPosition;
@@ -156,7 +156,7 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void flagPull(){
-		animator.SetInteger ("AnimPar", 8);
+		animator.SetTrigger("Flag");
 	}
 		
 	public void takeCover(Vector3 dir){
@@ -170,6 +170,9 @@ public class Trooper : MonoBehaviour {
 			stop ();
 			transform.Rotate(new Vector3(0, 180f, 0));
 			animator.SetInteger ("AnimPar", 11);
+			if (myPlayer.getSelected () == this) {
+				myPlayer.selectTrooper (this);
+			}
 		}
 	}
 
@@ -266,7 +269,9 @@ public class Trooper : MonoBehaviour {
 	public void MakeInvulnerable(){
 		if (isInvulnerable == false) {
 			isInvulnerable = true;
-			GameObject myShield = Instantiate (TroopController._instance.TroopObjects [3], gameObject.transform);
+			GameObject myShield = Instantiate (TroopController._instance.TroopObjects [3], gameObject.transform, true);
+			myShield.transform.localPosition = new Vector3 (0, 1f, 0);
+			myShield.transform.localScale = new Vector3 (2f, 3f, 2f);
 			myShield.GetComponent<MeshRenderer> ().material = TroopController._instance.ShieldMats [team];
 		}
 	}
@@ -366,6 +371,7 @@ public class Trooper : MonoBehaviour {
 	public void CallAirstrike(Vector3 point){
 		hasAirStrike = false;
 		abilities.Remove (5);
+		HudController._instance.RefreshStore ();
 		DidSomething ();
 		stab ();
 		Vector3 skyPoint = point + new Vector3 (0f, 100f, 0f);
@@ -456,6 +462,7 @@ public class Trooper : MonoBehaviour {
 		}
 		HudController._instance.HitOrMiss (mybullet.transform.position, hit);
 		Destroy (mybullet);
+		GameHandler._instance.refreshGameStates ();
 	}
 		
 	public void gotShot(){
@@ -519,15 +526,15 @@ public class Trooper : MonoBehaviour {
 	public void giveMarathon(bool give){
 		if (give) {
 			canMarathon = true;
-			maxDistance += 50;
+			maxDistance += 25;
 			resetDistance ();
 			select ();
 		} else {
 			canMarathon = false;
-			maxDistance -= 50;
+			maxDistance -= 25;
 			if (Vector3.Distance (currentPosition, initialPosition) > maxDistance) {
 				transform.position = initialPosition;
-				myPlayer.spendDogTags (1);
+				myPlayer.spendDogTags (3);
 			}
 			resetDistance ();
 			select ();
@@ -577,7 +584,8 @@ public class Trooper : MonoBehaviour {
 			}
 			if (myPlayer.roster.Count < mySpawn.spawnPoints.Count) {
 				Vector3 newPos = mySpawn.spawnPoints [myPlayer.roster.Count].position;
-				myPlayer.RaiseTroopAt (newPos, mySpawn.FacingOut, myPlayer.team, Game._instance.allTroopers.Count);
+				int newId = Game._instance.generateNewId ();
+				myPlayer.RaiseTroopAt (newPos, mySpawn.FacingOut, myPlayer.team, newId);
 			} else {
 			}
 			abilities.Remove (7);
@@ -639,6 +647,7 @@ public class Trooper : MonoBehaviour {
 	public IEnumerator throwCoroutine(Vector3 position){
 		hasGrenade = false;
 		abilities.Remove (0);
+		HudController._instance.RefreshStore ();
 		rotateTo (position);
 		CameraController._instance.setFollowedObject (gameObject, 0);
 		yield return new WaitForSeconds (0.5f);
@@ -696,12 +705,14 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void decreaseHealth(float dec){
-		HudController._instance.showHealthBar (id);
-		health -= dec;
-		if (health <= 0) {
-			StartCoroutine (die ());
-		} else {
-			Invoke ("stop", 1f);
+		if (!isInvulnerable) {
+			HudController._instance.showHealthBar (id);
+			health -= dec;
+			if (health <= 0) {
+				StartCoroutine (die ());
+			} else {
+				Invoke ("stop", 1f);
+			}
 		}
 	}
 		
@@ -727,7 +738,7 @@ public class Trooper : MonoBehaviour {
 		if (team == PhotonNetwork.player.ID) {
 			GameObject limiter = Instantiate (TroopController._instance.TroopObjects [5], initialPosition, Quaternion.identity, transform);
 			limit = limiter;
-			limit.GetComponent<Projector> ().orthographicSize = maxDistance * 2;
+			limit.GetComponent<Projector> ().orthographicSize = maxDistance * 1.9f;
 			limit.transform.SetParent (null);
 			limit.transform.rotation = Quaternion.Euler (90f, 0, 0);
 		}
@@ -785,11 +796,9 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void DidSomething(){
-		stop ();
 		unselect ();
 		resetDistance ();
 		select ();
-		stop ();
 	}
 
 	public void stabTroop(Trooper t){
@@ -804,8 +813,8 @@ public class Trooper : MonoBehaviour {
 
 	void OnCollisionEnter(Collision coll){
 		Trooper t = coll.gameObject.GetComponent<Trooper> ();
-		if (t != null) {
-			if (t.team != team && moving==true) {
+		if (t != null && t.health > 0) {
+			if (t.team != team && team == GameHandler._instance.getPlayersTurn()) {
 				covering = false;
 				myPiece = null;
 				StopAllCoroutines ();

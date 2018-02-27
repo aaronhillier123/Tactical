@@ -121,7 +121,6 @@ public class Game : MonoBehaviour {
 			if (myPlayer != null) {
 				myPlayer.setBarrierSelected (null);
 			}
-			Debug.Log (Vector3.Distance (startPos, Input.mousePosition) + " is distance");
 			if (timeDiff < clickOrDrag && over==false && Vector3.Distance(startPos, Input.mousePosition) < 5f) {
 				OnClick ();
 			}
@@ -173,7 +172,6 @@ public class Game : MonoBehaviour {
 		if (anyPointerOverObject() || UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) {
 			
 		} else { 
-			Debug.Log ("ONCLICK");
 			foreach (Coroutine c in CameraPan._instance.momentums) {
 				if (c != null) {
 					CameraPan._instance.StopCoroutine (c);
@@ -228,16 +226,18 @@ public class Game : MonoBehaviour {
 								myPlayer.getSelected ().hasAirStrike = false;
 								myPlayer.getSelected ().RaiseAirstrike (hit.point);
 							}else {
-								//regular player movement
-								if (hit.collider.CompareTag ("Barrier")) {
-									myPlayer.getSelected ().takingCover = true;
-									myPlayer.getSelected ().RaiseMovement (hit.point, 1, 0);
-								} else if (hit.collider.CompareTag ("Terrain")) {
-									myPlayer.getSelected ().takingCover = false;
-									myPlayer.getSelected ().RaiseMovement (hit.point, 0, 1);
-								} else {
-									myPlayer.getSelected ().takingCover = false;
-									myPlayer.getSelected ().RaiseMovement (hit.point, 0, 0);
+								if (!hit.collider.CompareTag ("Background")) {
+									//regular player movement
+									if (hit.collider.CompareTag ("Barrier")) {
+										myPlayer.getSelected ().takingCover = true;
+										myPlayer.getSelected ().RaiseMovement (hit.point, 1, 0);
+									} else if (hit.collider.CompareTag ("Terrain")) {
+										myPlayer.getSelected ().takingCover = false;
+										myPlayer.getSelected ().RaiseMovement (hit.point, 0, 1);
+									} else {
+										myPlayer.getSelected ().takingCover = false;
+										myPlayer.getSelected ().RaiseMovement (hit.point, 0, 0);
+									}
 								}
 							}
 						}
@@ -258,7 +258,16 @@ public class Game : MonoBehaviour {
 		return nmt;
 	}
 		
-
+	public int generateNewId(){
+		int max = 0;
+		foreach (Trooper t in allTroopers) {
+			if (t.id > max) {
+				max = t.id;
+			}
+		}
+		max += max;
+		return max;
+	}
 
 	public ControlPoint getConrolPoint(int idd){
 		ControlPoint[] allObs = GameObject.FindObjectsOfType (typeof(ControlPoint)) as ControlPoint[];
@@ -278,7 +287,6 @@ public class Game : MonoBehaviour {
 	public static void BeginGame(byte id, object content, int senderID){
 
 		if (id == 11 && senderID == PhotonNetwork.player.ID) {
-			Debug.Log ("begining game!");
 			Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
 			Vector3 newPos = Camera.main.transform.position;
 			Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);
@@ -294,6 +302,7 @@ public class Game : MonoBehaviour {
 			t.reset ();
 		}
 		myPlayer.addDogTags (myPlayer.myControlPoints.Count);
+		Debug.Log ("added " + myPlayer.myControlPoints.Count + " dog tags");
 		MessageScript._instance.setText ("Click on a trooper to select it");
 		if (Game._instance.myPlayer.roster.Count == 0) {
 			GameHandler._instance.RaiseTurnChange ();
@@ -320,7 +329,6 @@ public class Game : MonoBehaviour {
 		if (myPlayer.getSelected () != null) {
 			myPlayer.getSelected ().giveAbility (ability);
 		}
-		Debug.Log ("GIVE ABILITY");
 		timeDiff = clickOrDrag;
 		HudController._instance.GameHud.Store.Invoke ("removeInfoPanel", .1f);
 		//HudController._instance.GameHud.Store.removeInfoPanel ();
