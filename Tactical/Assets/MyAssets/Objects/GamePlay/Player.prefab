@@ -53,7 +53,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 0
   lookingAt: 0
-  TrooperObject: {fileID: 1626413628017448, guid: f71717bc405cb744a9aee864e34e4e7f,
+  TrooperObject: {fileID: 1626413628017448, guid: 9dacf7fe8139fd14193bd8e7b030fcca,
+    type: 2}
+  DogtagObject: {fileID: 1308086822204186, guid: 84abcd626e60340858b1d8b65aeb169a,
     type: 2}
   roster: []
   myControlPoints: []
+  ready: 0
+  lost: 0

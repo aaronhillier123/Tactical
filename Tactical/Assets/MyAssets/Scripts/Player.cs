@@ -14,11 +14,11 @@ public class Player : MonoBehaviour {
 	//Prefabs needed
 
 	public GameObject TrooperObject;
+	public GameObject DogtagObject;
 
 	//all troops in player roster
 
 	public List<Trooper> roster = new List<Trooper>();
-
 
 	private Trooper Selected;
 	private Barrier barrierSelected;
@@ -83,13 +83,12 @@ public class Player : MonoBehaviour {
 			}
 		}
 	}
-
-	// Update is called once per frame
-	void Update () {
-	}
-
+		
 	public void spendDogTags(int amount){
 		dogtags -= amount;
+		if (dogtags < 0) {
+			dogtags = 0;
+		}
 		HudController._instance.updateDogTags (dogtags);
 		HudController._instance.RefreshStore ();
 	}
@@ -149,47 +148,11 @@ public class Player : MonoBehaviour {
 		myControlPoints.Remove (cp);
 	}
 		
-
-
-	//network attack function
-	public static void attack(byte id, object content, int senderID){
-		if (id == 4) {
-			//unpack objects for attacker and target
-			float[] contents = (float[])content;
-			Trooper myTroop = Game._instance.GetTroop ((int)contents [0]);
-			Trooper Enemy = Game._instance.GetTroop ((int)contents [1]);
-			int hit = (int)contents [2];
-			myTroop.shoot (Enemy, hit);
-			}
-		}
-
-	public void CreateDogTagAt(Vector3 pos, int dogId){
-		GameObject newDogTag = Instantiate (TroopController._instance.TroopObjects[4], pos, Quaternion.identity);
+	public void createDogTagAt(Vector3 pos, int dogId){
+		GameObject newDogTag = Instantiate (DogtagObject, pos, Quaternion.identity);
 		DogTag dt = newDogTag.GetComponent<DogTag> ();
 		dt.id = dogId;
 		Game._instance.allDogTags.Add(newDogTag.GetComponent<DogTag>());
-	}
-
-
-
-	//network grenade function
-	public static void throwGrenade(byte id, object content, int senderID){
-		if (id == 6) {
-			float[] conList = (float[])content;
-			Trooper myTroop = Game._instance.GetTroop ((int)conList[0]);
-			Vector3 newPos = new Vector3 (conList[1], conList[2], conList[3]);
-			myTroop.throwGrenade (newPos);
-		}
-	}
-
-	public static void airStrike(byte id, object content, int senderID){
-		if (id == 12) {
-			Debug.Log ("In airstrike network function");
-			float[] cA = (float[])content;
-			Vector3 point = new Vector3 (cA [1], cA [2], cA [3]);
-			Trooper t = Game._instance.GetTroop( (int)cA [0]);
-			t.CallAirstrike(point);
-		}
 	}
 
 	public void selectTrooper(Trooper a){

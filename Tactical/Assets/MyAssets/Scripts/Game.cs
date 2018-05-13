@@ -37,22 +37,7 @@ public class Game : MonoBehaviour {
 
 	void Start () {
 		_instance = this;
-		/*
-		PhotonNetwork.OnEventCall += GameHandler.CreatePlayer; //1
-		PhotonNetwork.OnEventCall += Trooper.move; //2
-		PhotonNetwork.OnEventCall += GameHandler.EndPlacements;//3
-		PhotonNetwork.OnEventCall += Player.attack; //4
-		PhotonNetwork.OnEventCall += GameHandler.setTurn; //5
-		PhotonNetwork.OnEventCall += Player.throwGrenade; //6
-		PhotonNetwork.OnEventCall += Trooper.RaiseInvulnerable; //7
-		PhotonNetwork.OnEventCall += Trooper.RaiseNotInvulnerable;//8
-		PhotonNetwork.OnEventCall += Game.raiseBarrier; //15
-		PhotonNetwork.OnEventCall += GameHandler.SyncGameState;//9
-		PhotonNetwork.OnEventCall += Player.airStrike; //12
-		PhotonNetwork.OnEventCall += Game.BeginGame;//11
-		PhotonNetwork.OnEventCall += Player.NetworkTroopAt;//13
-		PhotonNetwork.OnEventCall += GameHandler.EndGame;//14
-		*/
+
 	}
 	
 	// Update is called once per frame
@@ -182,51 +167,34 @@ public class Game : MonoBehaviour {
 			RaycastHit hit;
 				if (Physics.Raycast (ray, out hit, 1000)) {
 				if (myPlayer.isTurn ()) {
-					
-					//if player is clicked
+					//if a trooper is clicked
 					if (hit.collider.CompareTag ("Player")) {
 						Trooper clickedOn = hit.collider.gameObject.GetComponent<Trooper> ();
 						if (myPlayer.team == clickedOn.team) {
-								
 							//if it is an ally trooper
 							myPlayer.selectTrooper (clickedOn);
 						} else {
 							//if it is an enemy player
 							if (myPlayer.getSelected() != null) {
-										
-								if (myPlayer.isAttacking () == true) {
-									//if current player is attacking
-									myPlayer.getSelected ().RaiseAttack (clickedOn);
-						
-								} else if (myPlayer.getSelected ().hasGrenade) {
-									//if current player is not attacking and player is carrying a grenade
-
-									myPlayer.getSelected ().RaiseGrenade (hit.point);
-
-								} else if (myPlayer.getSelected ().hasAirStrike) {
-									myPlayer.getSelected ().hasAirStrike = false;
-									myPlayer.getSelected ().RaiseAirstrike (hit.point);
-
-								} else {
-									HudController._instance.showHealthBar (clickedOn.id);
-									myPlayer.getSelected ().takingCover = false;
-									myPlayer.getSelected ().RaiseMovement (hit.point, 0, 0);
+								if (myPlayer.getSelected().activeAbility!=null) {
+									//if current player has an active ability
+									Debug.Log("hit pos is " + hit.point);
+									myPlayer.getSelected ().executeAbility (hit.point);
 								}
 							}
 						}
-							
 					} else {
 						//if player clicked on terrain/ground
 						if (myPlayer.getSelected() != null) {
 							//if player is selected
-							if (myPlayer.getSelected ().hasGrenade) {
-								//if grenade is equipped
-								myPlayer.getSelected ().RaiseGrenade (hit.point);
-							} else if (myPlayer.getSelected ().hasAirStrike) {
-								myPlayer.getSelected ().hasAirStrike = false;
-								myPlayer.getSelected ().RaiseAirstrike (hit.point);
-							}else {
+							if (myPlayer.getSelected ().activeAbility != null) {
+								//if current player has an active ability
+								Debug.Log ("hit pos is " + hit.point);
+								myPlayer.getSelected ().executeAbility (hit.point);
+							} else {
 								if (!hit.collider.CompareTag ("Background")) {
+									Debug.Log ("should move");
+
 									//regular player movement
 									if (hit.collider.CompareTag ("Barrier")) {
 										myPlayer.getSelected ().takingCover = true;
@@ -246,6 +214,7 @@ public class Game : MonoBehaviour {
 			}
 		}
 	}
+
 
 	//list of all troopers who are NOT a specifc player's
 	public List<Trooper> notMyTroopers(Player p){
@@ -327,6 +296,7 @@ public class Game : MonoBehaviour {
 		
 	public void giveAbility(int ability){
 		if (myPlayer.getSelected () != null) {
+			Debug.Log ("giving ability " + ability);
 			myPlayer.getSelected ().giveAbility (ability);
 		}
 		timeDiff = clickOrDrag;
@@ -379,6 +349,10 @@ public class Game : MonoBehaviour {
 		return null;
 	}
 
+	public static Vector3 midPoint(Vector3 start, Vector3 finish){
+		return (start + finish) / 2;
+	}
+
 	public DogTag GetTag(int id){
 		foreach (DogTag dg in allDogTags) {
 			if (dg.id == id) {
@@ -388,4 +362,42 @@ public class Game : MonoBehaviour {
 			return null;
 	}
 
+	public float getChanceOfHit(Trooper shooter, Trooper target){
+		float distance = Vector3.Distance (shooter.transform.position, target.transform.position);
+		float percentOfHit = 100 - ((distance / shooter.getRange ()) * 100);
+
+
+		Vector3 enemypos = target.transform.position + new Vector3(0f, 3f, 0f);
+		Vector3 mypos = shooter.transform.position + new Vector3 (0f, 3f, 0f);
+
+		//under cover may be blocked by barrier
+		if (target.getPiece() != null) {
+			Vector3 enemyCenter = target.GetComponent<CapsuleCollider> ().bounds.center;
+			Vector3 barrierCenter = target.getPiece().GetComponent<BoxCollider> ().bounds.center;
+			float DistanceToEnemy = Vector3.Distance (transform.position, enemyCenter);
+			float DistanceToBarrier = Vector3.Distance (transform.position, barrierCenter);
+			if (DistanceToEnemy > DistanceToBarrier) {
+				percentOfHit = percentOfHit / 2;
+			}
+		}
+
+		//if target is in foxhole
+		if (target.inFoxHole) {
+			percentOfHit = percentOfHit / 2;
+		}
+
+		//determine if enemy is behind terrain or cover
+		RaycastHit hitcast;
+
+		if(Physics.Linecast(mypos, enemypos, out hitcast)){
+			if(hitcast.collider.CompareTag("Terrain") || hitcast.collider.CompareTag("NaturalCover")){
+				percentOfHit = 0;
+			}
+		}
+
+		if (percentOfHit < 0) {
+			percentOfHit = 0;
+		}
+		return percentOfHit;
+	}
 }

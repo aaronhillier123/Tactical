@@ -30,19 +30,15 @@ public class HudController : MonoBehaviour {
 		GameHud = GameHudObject.GetComponent<Hud> ();
 		StartHud = StartHudObject.GetComponent<StartHud> ();
 	}
+		
 
-	public void showInfoPanel(int item){
-		GameHud.showInfoPanel (item);
-	}
-
-	public void removeInfoPanel(){
-		GameHud.removeInfoPanel ();
-	}
 
 	public void AttackMode(bool attack){
 		if(GameHud.GetComponent<Hud>() != null){
-			myPlayer.setAttacking (attack);
-			GameHud.AttackMode(attack);
+			if (myPlayer.getSelected () != null && attack) {
+				Debug.Log ("attack mode");
+				myPlayer.getSelected ().giveAbility (0);
+			}
 		}
 	}
 

@@ -1663,25 +1663,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 973a6d582edd01943adff5ebd8ca301d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveOutline: {fileID: 166266, guid: dc884a6ec589ce249acc9b5326859165, type: 2}
+  Bullet: {fileID: 1428396279656420, guid: 9f6c2bbcf7afa4a6b8a13ffc8236f592, type: 2}
   animator: {fileID: 95922183692251136}
+  maxMoveDistance: 25
+  maxHealth: 100
+  health: 100
+  shootRange: 100
+  throwMax: 35
+  raceAbilities:
+  - {fileID: 1404407520911596, guid: 56d747a8c48623945abf5e3bd6ae1a17, type: 2}
+  - {fileID: 1806930169628668, guid: d2ff8486de13c874aad252030e5c8f09, type: 2}
+  - {fileID: 1113767277608000, guid: 2a3a9bf86f864e24ab7fab8e3964338c, type: 2}
+  - {fileID: 1299185538946254, guid: 217953f8f4cdcaf48afb72b42939bab4, type: 2}
+  - {fileID: 1499906951239796, guid: f59ba35721668eb48834d5d4e75e7342, type: 2}
+  currentAbilities: []
+  activeAbility: {fileID: 0}
   id: 0
   team: 0
   myPlayer: {fileID: 0}
   currentPosition: {x: 0, y: 0, z: 0}
   destinationPosition: {x: 0, y: 0, z: 0}
   currentRotation: {x: 0, y: 0, z: 0, w: 0}
-  abilities: 
+  target: {fileID: 0}
   frozen: 0
   covering: 0
   takingCover: 0
   inFoxHole: 0
-  hasGrenade: 0
-  isSniper: 0
-  isInvulnerable: 0
-  canMarathon: 0
-  hasDoubleShot: 0
-  hasAirStrike: 0
   jumping: 0
+  isInvulnerable: 0
 --- !u!136 &136574984713318504
 CapsuleCollider:
   m_ObjectHideFlags: 1

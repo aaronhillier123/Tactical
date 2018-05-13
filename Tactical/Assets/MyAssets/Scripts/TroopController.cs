@@ -12,6 +12,8 @@ public class TroopController : MonoBehaviour {
 	public Material[] FrozenMats = new Material[5];
 	public Material[] ShieldMats = new Material[5];
 	public Material[] Limits = new Material[5];
+	public List<GameObject> Abilities = new List<GameObject> ();
+	public List<Sprite> AbilitySprites = new List<Sprite> ();
 	// Use this for initialization
 	void Start () {
 		_instance = this;
@@ -19,6 +21,5 @@ public class TroopController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
 	}
 }

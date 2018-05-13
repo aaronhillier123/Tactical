@@ -26,15 +26,7 @@ public class Hud : MonoBehaviour {
 	void Update () {
 		
 	}
-
-	public void showInfoPanel(int item){
-		Store.removeInfoPanel ();
-		Store.ShowInfoPanel(item);
-	}
-
-	public void removeInfoPanel(){
-		Store.removeInfoPanel ();
-	}
+		
 
 	public void StartTurn(){
 		AttackMode (false);

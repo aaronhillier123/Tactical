@@ -19,14 +19,10 @@ public class GameHandler : MonoBehaviour {
 	private int turnNumber = 0;
 	private bool GamePhase = false;
 	public GameObject GameOverPanel;
-
+	public int abilityInterval = 0;
 
 	void Start () {
 		_instance = this;
-	}
-
-	void Update () {
-		
 	}
 
 	//create and initialize a global player
@@ -98,7 +94,6 @@ public class GameHandler : MonoBehaviour {
 		Player myPlayer = GameHandler._instance.getPlayer (PhotonNetwork.player.ID);
 		int myTags = myPlayer.getDogTags ();
 		PlayerHt.Add ("DogTags", myTags);
-		Debug.Log ("Sending new properties");
 		PhotonNetwork.player.SetCustomProperties (PlayerHt, null, true);
 
 		GameHandler._instance.refreshGameStates();
@@ -174,17 +169,20 @@ public class GameHandler : MonoBehaviour {
 		string myName = "Player" + PhotonNetwork.player.ID.ToString ();
 		object myTagsOb;
 		int myTags = 3;
-		Debug.Log ("Trying to get value from " + myName);
 		if (ht.TryGetValue (myName, out myTagsOb)) {
 			myTags = (int)myTagsOb;
-			Debug.Log ("my tag number is " + myTags);
 		}
 		foreach (string k in ht.Keys) {
-			Debug.Log (k + " is a key");
 		}
-		Debug.Log ("Setting dog tags to " + myTags);
 
 		Game._instance.myPlayer.setDogTags (myTags);
+	}
+
+	public void setAbilityInterval(Hashtable ht){
+		object abIntervalOb;
+		if (ht.TryGetValue ("abilityInterval", out abIntervalOb)) {
+			abilityInterval = (int)abIntervalOb;
+		}
 	}
 
 	public void UpdateCpState(Hashtable ht){
@@ -289,7 +287,7 @@ public class GameHandler : MonoBehaviour {
 				t.setAnimation (11);
 			}
 			if (int.Parse (tsa [10]) == 1) {
-				t.MakeInvulnerable ();
+				t.makeInvulnerable ();
 			} else {
 				t.makeNotInvulnerable ();
 			}
@@ -313,11 +311,10 @@ public class GameHandler : MonoBehaviour {
 			if (int.Parse (tsa [9]) != -1) {
 				newTroop.setPiece (BarrierHandler._instance.getPiece (int.Parse (tsa [9])));
 				newTroop.transform.Rotate (new Vector3 (0, 180f, 0));
-				Debug.Log ("setting to cover");
 				newTroop.setAnimation (11);
 			}
 			if (int.Parse (tsa [10]) == 1) 
-				newTroop.MakeInvulnerable ();
+				newTroop.makeInvulnerable ();
 			newTroop.SetUpdated (true);
 		}
 	}
@@ -339,7 +336,7 @@ public class GameHandler : MonoBehaviour {
 			float z = float.Parse (tsa [3]);
 			int newid = int.Parse (tsa [0]);
 
-			Game._instance.myPlayer.CreateDogTagAt (new Vector3 (x, y, z), newid);
+			Game._instance.myPlayer.createDogTagAt (new Vector3 (x, y, z), newid);
 			Game._instance.GetTag (newid).updated = true;
 		}
 	}
@@ -359,18 +356,15 @@ public class GameHandler : MonoBehaviour {
 		string troopstate = TroopState ();
 		string dogstate = dogState ();
 		string cpState = CpState ();
-
 		int myTags = Game._instance.myPlayer.getDogTags ();
 		string myName = "Player" + PhotonNetwork.player.ID.ToString ();
-		Debug.Log ("added " + myTags + " toooooooo " + myName + " tags");
-
 		Hashtable ht = PhotonNetwork.room.CustomProperties;
 		ht ["Troops"] = troopstate;
 		ht ["Dogs"] = dogstate;
 		ht ["Turn"] = GameHandler._instance.getTurnNumber();
 		ht ["Cps"] = cpState;
+		ht ["abilityInterval"] = _instance.abilityInterval;
 		ht [myName] = myTags;
-		Debug.Log ("added " + myTags + " TOOOOOOO " + myName + " tags");
 		return ht;
 	}
 		
@@ -384,7 +378,6 @@ public class GameHandler : MonoBehaviour {
 		HudController._instance.removeStartHud ();
 		Game._instance.SendBarriersToNetwork ();
 		BarrierHandler._instance.RemoveAllPrelimbs ();
-		Debug.Log ("ENDING ALL PLACEMENTS");
 		PhotonNetwork.RaiseEvent (11, null, true, new RaiseEventOptions () {
 			CachingOption = EventCaching.AddToRoomCache,
 			Receivers = ReceiverGroup.All,
@@ -433,12 +426,12 @@ public class GameHandler : MonoBehaviour {
 	public static void SyncGameState(byte id, object content, int SenderID){
 		if (id == 9) {
 			Hashtable ht = (Hashtable)content;
-			Debug.Log ("sending new properties 2");
 			PhotonNetwork.room.SetCustomProperties (ht, null, true);
 			GameHandler._instance.UpdateTroopState (ht);
 			GameHandler._instance.UpdateDogState (ht);
 			GameHandler._instance.UpdateCpState (ht);
 			GameHandler._instance.setMyTags (ht);
+			GameHandler._instance.setAbilityInterval (ht);
 		}
 	}
 

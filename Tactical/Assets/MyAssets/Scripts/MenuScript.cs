@@ -30,7 +30,7 @@ public class MenuScript : MonoBehaviour {
 	public byte Version = 1;
 	private string roomName = "";
 	private List<string> players;
-	private byte maxPlayers = 4;
+	public byte maxPlayers = 4;
 	public GameObject FriendsListObject;
 	public GameObject OptionsObject;
 	public GameObject GameOverPanel;
@@ -43,7 +43,7 @@ public class MenuScript : MonoBehaviour {
 	public List<string> currentInvites = new List<string> ();
 	private string _playFabPlayerIdCache;
 	public string GameName = "Tester10";
-	public int allowedGames = 3;
+	public int allowedGames = 10;
 
 	void Start () {
 
@@ -104,13 +104,12 @@ public class MenuScript : MonoBehaviour {
 			PhotonNetwork.OnEventCall += GameHandler.CreatePlayer; //1
 			PhotonNetwork.OnEventCall += Trooper.move; //2
 			PhotonNetwork.OnEventCall += GameHandler.EndPlacements;//3
-			PhotonNetwork.OnEventCall += Player.attack; //4
+			PhotonNetwork.OnEventCall += Shoot.takeTheShot;//4
+			PhotonNetwork.OnEventCall += Trooper.networkExecuteAbility; //20
+			PhotonNetwork.OnEventCall += Trooper.networkGiveAbility; //21
+			PhotonNetwork.OnEventCall += Trooper.networkRemoveAbility; //22
 			PhotonNetwork.OnEventCall += GameHandler.setTurn; //5
-			PhotonNetwork.OnEventCall += Player.throwGrenade; //6
-			PhotonNetwork.OnEventCall += Trooper.RaiseInvulnerable; //7
-			PhotonNetwork.OnEventCall += Trooper.RaiseNotInvulnerable;//8
 			PhotonNetwork.OnEventCall += GameHandler.SyncGameState;//9
-			PhotonNetwork.OnEventCall += Player.airStrike; //12
 			PhotonNetwork.OnEventCall += Game.BeginGame;//11
 			PhotonNetwork.OnEventCall += Player.NetworkTroopAt;//13
 			PhotonNetwork.OnEventCall += GameHandler.playerLost;//14
@@ -169,10 +168,7 @@ public class MenuScript : MonoBehaviour {
 	}
 
 	void OnJoinedRoom(){
-		Debug.Log ("Player joined room");
 		foreach (PhotonPlayer p in PhotonNetwork.playerList) {
-			Debug.Log ("Player " + p.ID + " is in room");
-			Debug.Log ("Currently player " + GameHandler._instance.getPlayersTurn () + " is moving");
 		}
 	}
 
@@ -443,12 +439,10 @@ public class MenuScript : MonoBehaviour {
 		try{
 			NetGame ng = new NetGame ();
 			List<string> mems = new List<string> ();
-			Debug.Log ("DOING THING");
 			PlayFabClientAPI.GetSharedGroupData (new GetSharedGroupDataRequest () {
 				SharedGroupId = roomId,
 				GetMembers = true
 			}, result => {
-				Debug.Log("Getting Names");
 				string names = "";
 				if(result.Data.ContainsKey("Names")){
 					names = result.Data["Names"].Value;
@@ -461,7 +455,6 @@ public class MenuScript : MonoBehaviour {
 				MyGames._instance.currentNet = ng;
 				MyGames._instance.showGameDetails();
 			}, (error) => {
-				Debug.Log("error getting members");
 			});
 		} catch{
 		}

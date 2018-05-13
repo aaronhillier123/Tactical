@@ -89,7 +89,6 @@ MonoBehaviour:
     type: 2}
   GameHudObject: {fileID: 0}
   StartHudObject: {fileID: 0}
-  WaitingHudObject: {fileID: 0}
   canvas: {fileID: 0}
   GameHud: {fileID: 0}
   StartHud: {fileID: 0}
@@ -124,6 +123,7 @@ MonoBehaviour:
   floor: 54
   allTroopers: []
   allDogTags: []
+  over: 0
 --- !u!114 &114580300703801790
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -152,11 +152,11 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bf20bd776c30842babcc69926ce5752d, type: 2}
   - {fileID: 2100000, guid: 2ba978b17ffd74356ae352ea745a6cac, type: 2}
   TroopMats:
-  - {fileID: 2100000, guid: 6ec2005a1f895024991bdbc1e8a4d012, type: 2}
-  - {fileID: 2100000, guid: 6ec2005a1f895024991bdbc1e8a4d012, type: 2}
-  - {fileID: 2100000, guid: 4b6c878f4f07ca842b7cc30b94705e7e, type: 2}
-  - {fileID: 2100000, guid: 32617fec794715646acf1a2d43d9131f, type: 2}
-  - {fileID: 2100000, guid: bea9556460c91ac44b9c3d8087f2b450, type: 2}
+  - {fileID: 2100000, guid: 5d1bfd22e7fe7e14c8a95db8f332a3ae, type: 2}
+  - {fileID: 2100000, guid: c2c258a5c8a13e240a1f598657d70330, type: 2}
+  - {fileID: 2100000, guid: b599c004b71afff4d9318c349bbb7d53, type: 2}
+  - {fileID: 2100000, guid: 9a9740cc973bfe844b5608d85a64fa11, type: 2}
+  - {fileID: 2100000, guid: 7ea467a8a39159544a49e880768006bc, type: 2}
   FrozenMats:
   - {fileID: 2100000, guid: 2672bef6a473249828bbdabe70fd68e1, type: 2}
   - {fileID: 2100000, guid: 2672bef6a473249828bbdabe70fd68e1, type: 2}
@@ -169,6 +169,27 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 23c1bb8cfc910445d81434d72229577d, type: 2}
   - {fileID: 2100000, guid: d5bafca59035846bb84217125e4624f2, type: 2}
   - {fileID: 2100000, guid: 93a5c5e769f8c47b7aeafa8ff4039703, type: 2}
+  Limits:
+  - {fileID: 2100000, guid: e5dc6f8b23307498e855af1e48b62df4, type: 2}
+  - {fileID: 2100000, guid: e5dc6f8b23307498e855af1e48b62df4, type: 2}
+  - {fileID: 2100000, guid: 0d96b589887dc469c9b79a6e6b1b07ec, type: 2}
+  - {fileID: 2100000, guid: 0118de853e0384e64a2b09306859bd5d, type: 2}
+  - {fileID: 2100000, guid: d2dfab064ce4e4cdfaca82e966571955, type: 2}
+  Abilities:
+  - {fileID: 1404407520911596, guid: 56d747a8c48623945abf5e3bd6ae1a17, type: 2}
+  - {fileID: 1806930169628668, guid: d2ff8486de13c874aad252030e5c8f09, type: 2}
+  - {fileID: 1113767277608000, guid: 2a3a9bf86f864e24ab7fab8e3964338c, type: 2}
+  - {fileID: 1299185538946254, guid: 217953f8f4cdcaf48afb72b42939bab4, type: 2}
+  - {fileID: 1499906951239796, guid: f59ba35721668eb48834d5d4e75e7342, type: 2}
+  AbilitySprites:
+  - {fileID: 21300000, guid: bb30490d8c4d47243b4a31fee1247828, type: 3}
+  - {fileID: 21300000, guid: 31afb024abd20439fa82f9b131be8b07, type: 3}
+  - {fileID: 21300000, guid: bc73176de691892478694604d03f656c, type: 3}
+  - {fileID: 21300000, guid: d934d4b67594443649b6e4c9bd2c3edd, type: 3}
+  - {fileID: 21300000, guid: 91e42b3175374ef4e963af5b08e5e494, type: 3}
+  - {fileID: 21300000, guid: c77a2d5575851804b8336bfe2abdf469, type: 3}
+  - {fileID: 21300000, guid: 661a107211346ad43bef96c96d464e6c, type: 3}
+  - {fileID: 21300000, guid: 95c2b4bdd3daaca4abff9e761b2010bc, type: 3}
 --- !u!114 &114729294860979986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -183,3 +204,6 @@ MonoBehaviour:
   GamePlayers: []
   PlayerObject: {fileID: 1279923269432950, guid: 4842888ad7e7ebc44b674aa63427a1d8,
     type: 2}
+  GameOverPanel: {fileID: 1507793173541908, guid: 4c2d76f50e04aee4ba33eb86056d4281,
+    type: 2}
+  abilityInterval: 0
