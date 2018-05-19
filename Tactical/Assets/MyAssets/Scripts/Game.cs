@@ -175,11 +175,21 @@ public class Game : MonoBehaviour {
 							myPlayer.selectTrooper (clickedOn);
 						} else {
 							//if it is an enemy player
+							Debug.Log("enemyTroop clicked");
 							if (myPlayer.getSelected() != null) {
+								Debug.Log("selected not null");
+
 								if (myPlayer.getSelected().activeAbility!=null) {
-									//if current player has an active ability
-									Debug.Log("hit pos is " + hit.point);
-									myPlayer.getSelected ().executeAbility (hit.point);
+									if (myPlayer.getSelected ().activeAbility.GetComponent<Ability> ().passive == false) {
+										Debug.Log("active ability");
+
+										//if current player has an active ability
+										myPlayer.getSelected ().executeAbility (hit.point);
+									} else {
+										Debug.Log("passive ability");
+
+										myPlayer.getSelected ().activeAbility.GetComponent<Ability> ().passiveExecute (hit);
+									}
 								}
 							}
 						}
@@ -187,10 +197,12 @@ public class Game : MonoBehaviour {
 						//if player clicked on terrain/ground
 						if (myPlayer.getSelected() != null) {
 							//if player is selected
-							if (myPlayer.getSelected ().activeAbility != null && myPlayer.getSelected().activeAbility.GetComponent<Ability>().passive==false) {
-								//if current player has an active ability
-								Debug.Log ("hit pos is " + hit.point);
-								myPlayer.getSelected ().executeAbility (hit.point);
+							if (myPlayer.getSelected ().activeAbility != null) {
+								if(myPlayer.getSelected().activeAbility.GetComponent<Ability>().passive==false){//if current player has an active ability
+									myPlayer.getSelected ().executeAbility (hit.point);
+								} else {
+									myPlayer.getSelected ().activeAbility.GetComponent<Ability> ().passiveExecute (hit);
+								}
 							} else {
 								if (!hit.collider.CompareTag ("Background")) {
 									Debug.Log ("should move");

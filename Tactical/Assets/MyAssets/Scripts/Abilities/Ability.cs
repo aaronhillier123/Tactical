@@ -16,7 +16,11 @@ public abstract class Ability : MonoBehaviour {
 
 	public int phase = 0;
 	public bool hasControl = false;
+	void Update(){
+		inspect ();
+	}
 
+	public abstract void inspect ();
 	public void giveControl (){
 		hasControl = true;
 		myTroop.activeAbility = gameObject;
@@ -24,6 +28,7 @@ public abstract class Ability : MonoBehaviour {
 	public abstract void removeControl();
 	public abstract void execute (Vector3 target);
 	public abstract void sell ();
+	public abstract void passiveExecute(RaycastHit hit);
 	public void terminate(){
 		myTroop.removeAbility (id);
 	}

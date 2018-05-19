@@ -6854,8 +6854,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1088996816}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 358.5, y: 201.5, z: 0}
-  m_LocalScale: {x: 0.89625, y: 0.89625, z: 0.89625}
+  m_LocalPosition: {x: 357.5, y: 201, z: 0}
+  m_LocalScale: {x: 0.89375, y: 0.89375, z: 0.89375}
   m_Children:
   - {fileID: 1431875872}
   - {fileID: 1853575123}
@@ -8013,6 +8013,16 @@ Prefab:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 1088996819}
+    - target: {fileID: 114580300703801790, guid: 8ec38f3944f13b64bbdcca49e5c15ab7,
+        type: 2}
+      propertyPath: highlights.Array.data[0]
+      value: 
+      objectReference: {fileID: 4800000, guid: c95bf64c6ae6947edb31b5840312be9d, type: 3}
+    - target: {fileID: 114580300703801790, guid: 8ec38f3944f13b64bbdcca49e5c15ab7,
+        type: 2}
+      propertyPath: outlined
+      value: 
+      objectReference: {fileID: 4800000, guid: c95bf64c6ae6947edb31b5840312be9d, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8ec38f3944f13b64bbdcca49e5c15ab7, type: 2}
   m_IsPrefabParent: 0

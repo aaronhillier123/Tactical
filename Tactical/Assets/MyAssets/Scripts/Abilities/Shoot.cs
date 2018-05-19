@@ -37,6 +37,7 @@ public class Shoot : Ability {
 		} else if (phase == 2) {
 			if (PhotonNetwork.player.ID == myTroop.myPlayer.team) {
 				Destroy (attackPanelObject);
+				myTroop.target.setOutlineColor (4);
 				HudController._instance.showGameHud ();
 				float randomHit = Random.Range (0, 100f);
 				int hit = 0;
@@ -63,7 +64,14 @@ public class Shoot : Ability {
 	public override void sell(){
 	}
 
+	public override void passiveExecute (RaycastHit hit){
+		if (hit.collider.CompareTag ("Player")) {
+			attackPanelObject.GetComponent<AttackPanel> ().selectTroop (hit.collider.gameObject.GetComponent<Trooper> ());
+		}
+	}
 
+	public override void inspect(){
+	}
 
 	public static void takeTheShot(byte id, object content, int senderId){
 		if (id == 4) {

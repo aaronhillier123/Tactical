@@ -13,6 +13,12 @@ public class MarineGrenade : Ability{
 	void awake(){
 		
 	}
+
+	public override void inspect(){
+	}
+
+	public override void passiveExecute (RaycastHit hit){
+	}
 		
 	public override void execute (Vector3 target)
 	{

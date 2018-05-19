@@ -1666,9 +1666,10 @@ MonoBehaviour:
   MoveOutline: {fileID: 166266, guid: dc884a6ec589ce249acc9b5326859165, type: 2}
   Bullet: {fileID: 1428396279656420, guid: 9f6c2bbcf7afa4a6b8a13ffc8236f592, type: 2}
   animator: {fileID: 95922183692251136}
+  body: {fileID: 0}
+  Head: {fileID: 0}
   maxMoveDistance: 25
   maxHealth: 100
-  health: 100
   shootRange: 100
   throwMax: 35
   raceAbilities:
@@ -1692,6 +1693,7 @@ MonoBehaviour:
   inFoxHole: 0
   jumping: 0
   isInvulnerable: 0
+  shooting: 0
 --- !u!136 &136574984713318504
 CapsuleCollider:
   m_ObjectHideFlags: 1

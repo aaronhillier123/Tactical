@@ -15,9 +15,15 @@ public class FirstAid : Ability {
 	{
 		if (phase == 0) {
 			GameObject healObject = Instantiate (models [0], myTroop.currentPosition, Quaternion.identity, myTroop.gameObject.transform);
-			myTroop.health = myTroop.getMaxHealth ();
+			myTroop.setHealth(myTroop.getMaxHealth ());
 			terminate ();
 		} 
+	}
+
+	public override void passiveExecute (RaycastHit hit){
+	}
+
+	public override void inspect(){
 	}
 
 	public override void sell ()

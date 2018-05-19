@@ -28,6 +28,7 @@ public class AttackPanel : MonoBehaviour {
 			MessageScript._instance.setText ("There are no enemy troops in range!");
 			cancelAttack ();
 		} else {
+			inRange [troopIndex].gameObject.GetComponent<Trooper> ().setOutlineColor (4);
 			if (troopIndex == (inRange.Count - 1)) {
 				troopIndex = 0;
 			} else {
@@ -35,9 +36,23 @@ public class AttackPanel : MonoBehaviour {
 			}
 			myTroop.target = inRange [troopIndex];
 			troopInfo.text = "Possible Targets: " + inRange.Count + "\n";
-			troopInfo.text += getTroopString (myTroop.target);
+			troopInfo.text += getTroopString (myTroop.target, true);
+			inRange [troopIndex].gameObject.GetComponent<Trooper> ().setOutlineColor (1);
 			CameraPan._instance.moveToObject (inRange [troopIndex].gameObject, false);
 		}
+	}
+
+	public void selectTroop(Trooper t){
+		myTroop.target.setOutlineColor (4);
+		myTroop.target = t;
+		t.setOutlineColor (1);
+		troopInfo.text = "Possible Targets: " + inRange.Count + "\n";
+		bool isInRange = inRange.Contains (t);
+		if (isInRange) {
+			troopIndex = inRange.IndexOf (t);
+		}
+		troopInfo.text += getTroopString (myTroop.target, isInRange);
+		CameraPan._instance.moveToObject (t.gameObject, true);
 	}
 
 	public void previousTroop(){
@@ -48,13 +63,17 @@ public class AttackPanel : MonoBehaviour {
 		}
 		myTroop.target = inRange [troopIndex];
 		troopInfo.text = "Possible Targets: " + inRange.Count + "\n";
-		troopInfo.text += getTroopString (myTroop.target);
+		troopInfo.text += getTroopString (myTroop.target, true);
 		CameraPan._instance.moveToObject (inRange [troopIndex].gameObject, false);
 	}
 
-	public string getTroopString(Trooper t){
+	public string getTroopString(Trooper t, bool isInRange){
 		string troopString = "";
-		troopString += "Troop " + troopIndex + " of " + inRange.Count + "\n";
+		if (isInRange) {
+			troopString += "Troop " + troopIndex + " of " + inRange.Count + "\n";
+		} else {
+			troopString += "Troop not in range\n";
+		}
 		troopString += "Team: " + t.team + "\n";
 		troopString += "Health: " + t.getHealth () + "/" + t.getMaxHealth () + "\n";
 		troopString += "Distance: " + Vector3.Distance (myTroop.transform.position, t.transform.position) + "\n";

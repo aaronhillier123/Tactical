@@ -24,7 +24,13 @@ public class Invulnerable : Ability {
 		}
 		++phase;
 	}
-		
+
+	public override void passiveExecute (RaycastHit hit){
+	}
+
+	public override void inspect(){
+	}
+
 	public override void removeControl (){
 		phase = 0;
 		hasControl = false;

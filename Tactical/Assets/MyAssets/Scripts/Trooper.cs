@@ -16,6 +16,8 @@ public class Trooper : MonoBehaviour {
 
 	//animation
 	public Animator animator;
+	public SkinnedMeshRenderer body;
+	public SkinnedMeshRenderer Head;
 	//0 - idle
 	//1 - run
 	//2 - shoot
@@ -30,9 +32,10 @@ public class Trooper : MonoBehaviour {
 
 	protected int animInt;
 
-	public float maxMoveDistance = 25;
+	public float maxMoveDistance = 50;
 	public float maxHealth = 100;
-	public float health = 100;
+	private float moveDistance = 50;
+	private float health = 100;
 
 	public float shootRange = 100;
 	public float throwMax = 40;
@@ -65,13 +68,15 @@ public class Trooper : MonoBehaviour {
 	public bool inFoxHole = false;
 	public bool jumping = false;
 	public bool isInvulnerable = false;
+	public bool shooting = false;
 
 	void awake () {
 		myPlayer = GetComponentInParent<Player>();
+		body.material.shader = TroopController._instance.outlined;
 		assignColor (); 
 	}
 
-	void update(){
+	void Update(){
 		if (moving == false) {
 			currentPosition = transform.position;
 		} else {
@@ -105,14 +110,14 @@ public class Trooper : MonoBehaviour {
 	public float getGrenadeMax(){
 		return throwMax;
 	}
-	public void setMaxDistance(float m){
-		maxMoveDistance = m;
-		if (maxMoveDistance < 2) {
-			maxMoveDistance = 2;
+	public void setMoveDistance(float m){
+		moveDistance = m;
+		if (moveDistance < 2) {
+			moveDistance = 2;
 		}
 	}
-	public float getMaxDistance(){
-		return maxMoveDistance;
+	public float getMoveDistance(){
+		return moveDistance;
 	}
 	public void SetUpdated(bool ud){
 		updated = ud;
@@ -131,6 +136,9 @@ public class Trooper : MonoBehaviour {
 	}
 	public float getHealth(){
 		return health;
+	}
+	public void setHealth(float h){
+		health = h;
 	}
 	public float getMaxHealth(){
 		return maxHealth;
@@ -152,7 +160,7 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void reset(){
-		setMaxDistance(50f);
+		setMoveDistance(maxMoveDistance);
 		initialPosition = transform.position;
 		currentAbilities.Clear ();
 		giveAbility (0);
@@ -161,6 +169,7 @@ public class Trooper : MonoBehaviour {
 		} else {
 		}
 		unFreeze ();
+		setOutlineColor (3);
 	}
 		
 	public void flagPull(){
@@ -208,8 +217,8 @@ public class Trooper : MonoBehaviour {
 	public void RaiseMovement(Vector3 point, int cover, int terrain){
 		HudController._instance.AttackMode (false);
 		float[] contents = new float[6];
-		bool inRange = (Vector3.Distance (point, initialPosition) <= maxMoveDistance);
-		point = (inRange) ? point : initialPosition + (((point - initialPosition).normalized) * maxMoveDistance);
+		bool inRange = (Vector3.Distance (point, initialPosition) <= moveDistance);
+		point = (inRange) ? point : initialPosition + (((point - initialPosition).normalized) * moveDistance);
 		contents [0] = (float)id;
 		contents [1] = point.x;
 		contents [2] = point.y;
@@ -259,15 +268,16 @@ public class Trooper : MonoBehaviour {
 	}
 		
 	public void resetDistance(){
-		float newDis = maxMoveDistance - (Vector3.Distance(initialPosition, transform.position));
+		float newDis = moveDistance - (Vector3.Distance(initialPosition, transform.position));
 		initialPosition = transform.position;
-		setMaxDistance (newDis);
+		setMoveDistance (newDis);
 		}
 		
 	public void shoot(Trooper enemy, int hit){
 		StopAllCoroutines ();
 		CameraPan._instance.moveToObject (gameObject, false);
 		rotateTo (enemy.transform.position);
+		shooting = true;
 		StartCoroutine (ShootCoroutine (enemy, hit));
 	}
 
@@ -298,6 +308,7 @@ public class Trooper : MonoBehaviour {
 		if (enemy.myPiece != null) {
 			hit = 2;
 		}
+		shooting = false;
 		HudController._instance.HitOrMiss (mybullet.transform.position, hit);
 		Destroy (mybullet);
 		GameHandler._instance.refreshGameStates ();
@@ -341,7 +352,7 @@ public class Trooper : MonoBehaviour {
 			ForwardToWebhook = true
 		});
 	}
-
+		
 	public void removeAbility(int abilityId){
 		int[] content = new int[]{id, abilityId};
 	
@@ -465,6 +476,7 @@ public class Trooper : MonoBehaviour {
 			myPlayer.getSelected().unselect ();
 		}
 		MessageScript._instance.setText ("Click on map to move trooper to location");
+		setOutlineColor (0);
 		myPlayer.setSelected (this);
 		if (this.frozen == false) {
 			HudController._instance.CanAttack (true);
@@ -483,7 +495,7 @@ public class Trooper : MonoBehaviour {
 		if (team == PhotonNetwork.player.ID) {
 			GameObject limiter = Instantiate (MoveOutline, initialPosition, Quaternion.identity, transform);
 			limit = limiter;
-			limit.GetComponent<Projector> ().orthographicSize = maxMoveDistance * 1.9f;
+			limit.GetComponent<Projector> ().orthographicSize = moveDistance * 1.9f;
 			limit.transform.SetParent (null);
 			limit.transform.rotation = Quaternion.Euler (90f, 0, 0);
 		}
@@ -506,7 +518,7 @@ public class Trooper : MonoBehaviour {
 		if (myPlayer.getSelected() == this) {
 			myPlayer.setSelected (null);
 		}
-
+		setOutlineColor (4);
 		RemoveWalkLimit ();
 		HudController._instance.AttackMode (false);	
 		HudController._instance.CanAttack (false);
@@ -523,7 +535,8 @@ public class Trooper : MonoBehaviour {
 	}
 
 	public void assignColor(){
-		transform.Find ("TS_Body_01_infantry").GetComponent<SkinnedMeshRenderer> ().material = TroopController._instance.TroopMats[team];
+		body.material = TroopController._instance.TroopMats[team];
+		Head.material =TroopController._instance.TroopMats[team];
 	}
 
 	public void DidSomething(){
@@ -546,7 +559,7 @@ public class Trooper : MonoBehaviour {
 				myPiece = null;
 				StopAllCoroutines ();
 				unselect ();
-				setMaxDistance (2f);
+				setMoveDistance (2f);
 				initialPosition = transform.position;
 				//StartCoroutine (stabTroop (t));
 				stabTroop(t);
@@ -577,5 +590,30 @@ public class Trooper : MonoBehaviour {
 		}
 		activeAbility = null;
 	}
+
+	public void setOutlineColor(int color){
+		body.material.SetFloat ("_Outline", 0.15f);
+		Head.material.SetFloat ("_Outline", 0.15f);
+
+		switch(color){
+			case 0:
+				body.material.SetColor ("_OutlineColor", Color.green);
+				Head.material.SetColor ("_OutlineColor", Color.green);
+				break;
+			case 1:
+				body.material.SetColor ("_OutlineColor", Color.yellow);
+				Head.material.SetColor ("_OutlineColor", Color.yellow);
+				break;
+			case 2:
+				body.material.SetColor ("_OutlineColor", Color.red);
+				Head.material.SetColor ("_OutlineColor", Color.red);
+				break;
+			default:
+				body.material.SetColor ("_OutlineColor", Color.clear);
+				Head.material.SetColor ("_OutlineColor", Color.clear);
+				break;
+		}
+	}
+
 
 }

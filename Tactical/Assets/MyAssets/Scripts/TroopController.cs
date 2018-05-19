@@ -12,6 +12,7 @@ public class TroopController : MonoBehaviour {
 	public Material[] FrozenMats = new Material[5];
 	public Material[] ShieldMats = new Material[5];
 	public Material[] Limits = new Material[5];
+	public Shader outlined;
 	public List<GameObject> Abilities = new List<GameObject> ();
 	public List<Sprite> AbilitySprites = new List<Sprite> ();
 	// Use this for initialization

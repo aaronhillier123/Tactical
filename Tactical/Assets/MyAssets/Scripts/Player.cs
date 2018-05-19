@@ -104,6 +104,8 @@ public class Player : MonoBehaviour {
 			firstTroop.myPlayer = GameHandler._instance.getPlayer (troopTeam);
 			firstTroop.setInPos(firstTroop.gameObject.transform.position);
 			firstTroop.assignColor ();
+			firstTroop.body.material.shader = TroopController._instance.outlined;
+			firstTroop.Head.material.shader = TroopController._instance.outlined;
 			Game._instance.allTroopers.Add (firstTroop);
 			roster.Add (firstTroop);
 		}

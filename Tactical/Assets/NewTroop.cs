@@ -35,6 +35,12 @@ public class NewTroop : Ability {
 		terminate ();
 	}
 
+	public override void inspect(){
+	}
+
+	public override void passiveExecute (RaycastHit hit){
+	}
+
 	public override void sell ()
 	{
 		myTroop.myPlayer.addDogTags (price);

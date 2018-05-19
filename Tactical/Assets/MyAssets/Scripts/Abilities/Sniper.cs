@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Sniper : Ability
 {
+
+	public bool shot = false;
 	public override void execute (Vector3 target)
 	{
 		if (phase == 0) {
@@ -14,11 +16,20 @@ public class Sniper : Ability
 		}
 	}
 
+	public override void passiveExecute (RaycastHit hit){
+	}
+
 	public override void removeControl (){
 		phase = 0;
 		hasControl = false;
 	}
 		
+	public override void inspect(){
+		if (myTroop.shooting && shot == false) {
+			shot = true;
+			terminate ();
+		}
+	}
 
 	public override void sell(){
 		MessageScript._instance.setText (name+ " Sold!");

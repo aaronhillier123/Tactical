@@ -33,6 +33,12 @@ public class MarineAirStrike : Ability {
 			missile.GetComponent<Missile> ().myTroop = myTroop;
 		}
 	}
+
+	public override void passiveExecute (RaycastHit hit){
+	}
+
+	public override void inspect(){
+	}
 	public override void sell ()
 	{
 		MessageScript._instance.setText (name+ " Sold!");
