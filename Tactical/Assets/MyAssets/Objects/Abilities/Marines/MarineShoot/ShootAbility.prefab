@@ -55,9 +55,10 @@ MonoBehaviour:
   description: Shoot a projectile at a target
   price: 0
   id: 0
-  art: {fileID: 0}
+  art: {fileID: 21300000, guid: f8ef142394096134586c68180b2bfefd, type: 3}
   models:
   - {fileID: 1600584831152726, guid: 13ebdfbf2a8da3c4ba0eb709d2a9dd97, type: 2}
+  passive: 1
   myTroop: {fileID: 0}
   phase: 0
   hasControl: 0

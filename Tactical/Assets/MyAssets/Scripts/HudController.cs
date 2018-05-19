@@ -36,15 +36,27 @@ public class HudController : MonoBehaviour {
 	public void AttackMode(bool attack){
 		if(GameHud.GetComponent<Hud>() != null){
 			if (myPlayer.getSelected () != null && attack) {
-				Debug.Log ("attack mode");
-				myPlayer.getSelected ().giveAbility (0);
+				if (myPlayer.getSelected ().indexOfCurrentAbility (0) != -1) {
+					myPlayer.getSelected ().activeAbility = myPlayer.getSelected ().currentAbilities [myPlayer.getSelected ().indexOfCurrentAbility (0)];
+					myPlayer.getSelected ().executeAbility (Vector3.zero);
+				} else {
+					MessageScript._instance.setText ("This Troop cannot attack");
+				}
 			}
 		}
 	}
 
 	public void CanAttack(bool attack){
 		if(GameHud.GetComponent<Hud>() != null){
-			GameHud.CanAttack (attack);
+			if (myPlayer.getSelected () != null) {
+				if (myPlayer.getSelected ().indexOfCurrentAbility (0) != -1) {
+					GameHud.CanAttack (attack);
+				} else {
+					GameHud.CanAttack (false);
+				}
+			} else {
+				GameHud.CanAttack (false);
+			}
 		}
 	}
 
@@ -160,6 +172,10 @@ public class HudController : MonoBehaviour {
 			}
 		}
 	}
+
+	public void refreshAbilityPanel(Trooper t){
+			GameHud.refreshAbilityPanel (t);
+		}
 
 	//show all percentages of hits from selected troop to other players' troops
 	public void showChance(Trooper shooter, Trooper target){

@@ -53,7 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Grenade
   description: Throw an explosive device that detonates, injuring any trooper nearby.
-  price: 1
+  price: 0
   id: 1
   art: {fileID: 21300000, guid: bb30490d8c4d47243b4a31fee1247828, type: 3}
   models:

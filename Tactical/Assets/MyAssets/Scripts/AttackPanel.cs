@@ -77,7 +77,7 @@ public class AttackPanel : MonoBehaviour {
 
 	public void cancelAttack(){
 		parentAbility.removeControl();
-		myTroop.removeAbility (0);
+		//myTroop.removeAbility (0);
 		CameraPan._instance.moveToObject (myTroop.gameObject, false);
 	}
 

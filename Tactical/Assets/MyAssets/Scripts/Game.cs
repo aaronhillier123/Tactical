@@ -187,7 +187,7 @@ public class Game : MonoBehaviour {
 						//if player clicked on terrain/ground
 						if (myPlayer.getSelected() != null) {
 							//if player is selected
-							if (myPlayer.getSelected ().activeAbility != null) {
+							if (myPlayer.getSelected ().activeAbility != null && myPlayer.getSelected().activeAbility.GetComponent<Ability>().passive==false) {
 								//if current player has an active ability
 								Debug.Log ("hit pos is " + hit.point);
 								myPlayer.getSelected ().executeAbility (hit.point);
@@ -256,10 +256,7 @@ public class Game : MonoBehaviour {
 	public static void BeginGame(byte id, object content, int senderID){
 
 		if (id == 11 && senderID == PhotonNetwork.player.ID) {
-			Camera.main.transform.Rotate (new Vector3 (-45, 0, 0));
-			Vector3 newPos = Camera.main.transform.position;
-			Camera.main.transform.position = new Vector3 (newPos.x, 80, newPos.z);
-			GameObject.Find ("Main Camera").GetComponent<CameraZoom> ().resetZoom ();
+			CameraController._instance.normalView ();
 			HudController._instance.GameHud.nextTroopPan ();
 			HudController._instance.BeginGame ();
 		}

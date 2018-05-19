@@ -1677,6 +1677,9 @@ MonoBehaviour:
   - {fileID: 1113767277608000, guid: 2a3a9bf86f864e24ab7fab8e3964338c, type: 2}
   - {fileID: 1299185538946254, guid: 217953f8f4cdcaf48afb72b42939bab4, type: 2}
   - {fileID: 1499906951239796, guid: f59ba35721668eb48834d5d4e75e7342, type: 2}
+  - {fileID: 1177803219886924, guid: 41b3f9a1c5a77a143ac770076d22deae, type: 2}
+  - {fileID: 1789646672387654, guid: 7a9ea11dc58597a4598e1220583a252a, type: 2}
+  - {fileID: 1575153712710524, guid: 9e947f41afbdca94a84d5057bf5a050a, type: 2}
   currentAbilities: []
   activeAbility: {fileID: 0}
   id: 0

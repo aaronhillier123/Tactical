@@ -123,7 +123,7 @@ public class Trooper : MonoBehaviour {
 	public List<GameObject> GetAbilities(){
 		return currentAbilities;
 	}
-	public void AddAbility(GameObject a){
+	private void AddAbility(GameObject a){
 		currentAbilities.Add(a);
 	}
 	public bool isMoving(){
@@ -155,6 +155,7 @@ public class Trooper : MonoBehaviour {
 		setMaxDistance(50f);
 		initialPosition = transform.position;
 		currentAbilities.Clear ();
+		giveAbility (0);
 		if (indexOfCurrentAbility(5) != -1) {
 			
 		} else {
@@ -352,7 +353,6 @@ public class Trooper : MonoBehaviour {
 	}
 		
 	public void giveAbility(int ability){
-
 		int[] content = new int[]{id, ability};
 		content [0] = id;
 		content [1] = ability;
@@ -371,15 +371,10 @@ public class Trooper : MonoBehaviour {
 			Trooper myTroop = Game._instance.GetTroop (troopId);
 			Player troopPlayer = myTroop.myPlayer;
 			int indexOfAbility = myTroop.indexOfCurrentAbility (abilityId);
-
+			myTroop.clearActiveAbility ();
 			//remove if troop already has ability
 			if (indexOfAbility != -1) {
-				MessageScript._instance.setText (myTroop.currentAbilities[indexOfAbility].GetComponent<Ability> ().name + " Sold!");
-				troopPlayer.addDogTags (myTroop.currentAbilities[indexOfAbility].GetComponent<Ability> ().price);
-				GameObject oldAbility = myTroop.currentAbilities [indexOfAbility];
-				oldAbility.GetComponent<Ability> ().removeControl ();
-				myTroop.currentAbilities.RemoveAt (indexOfAbility);
-				Destroy (oldAbility);
+				
 			} else {
 				//else give ability and execute phase 0
 				int raceIndex = myTroop.indexOfRaceAbility (abilityId);
@@ -390,6 +385,9 @@ public class Trooper : MonoBehaviour {
 				myTroop.AddAbility (newAbility);
 				myTroop.activeAbility = newAbility;
 				newAbility.GetComponent<Ability> ().execute (Vector3.zero);
+				if (myTroop.team == PhotonNetwork.player.ID) {
+					HudController._instance.refreshAbilityPanel (myTroop);
+				}
 			}
 			HudController._instance.RefreshStore ();
 		}
@@ -403,10 +401,13 @@ public class Trooper : MonoBehaviour {
 			Trooper myTroop = Game._instance.GetTroop (troopId);
 			Player troopPlayer = myTroop.myPlayer;
 			int indexOfAbility = myTroop.indexOfCurrentAbility (abilityId);
-
 			GameObject oldAbility = myTroop.currentAbilities [indexOfAbility];
+			myTroop.clearActiveAbility ();
 			myTroop.currentAbilities.RemoveAt (indexOfAbility);
 			Destroy (oldAbility);
+			if (PhotonNetwork.player.ID == senderId) {
+				HudController._instance.refreshAbilityPanel (myTroop);
+			}
 		}
 	}
 
@@ -416,7 +417,8 @@ public class Trooper : MonoBehaviour {
 			int[] contentArray = (int[])content;
 			int troopId = (int)contentArray [0];
 			Vector3 target = new Vector3 ((float)contentArray [1], (float)contentArray [2], (float)contentArray [3]);
-			Game._instance.GetTroop (troopId).activeAbility.GetComponent<Ability> ().execute (target);
+			Ability currentAbility = Game._instance.GetTroop (troopId).activeAbility.GetComponent<Ability> ();
+			currentAbility.execute (target);
 		}
 	}
 
@@ -469,6 +471,7 @@ public class Trooper : MonoBehaviour {
 		}
 		ShowWalkLimit ();
 		HudController._instance.RefreshStore ();
+		HudController._instance.refreshAbilityPanel (this);
 		}
 
 	public void rotateTo(Vector3 point){
@@ -568,5 +571,11 @@ public class Trooper : MonoBehaviour {
 		}
 	}
 		
+	public void clearActiveAbility(){
+		foreach (GameObject g in currentAbilities) {
+			g.GetComponent<Ability> ().removeControl ();
+		}
+		activeAbility = null;
+	}
 
 }

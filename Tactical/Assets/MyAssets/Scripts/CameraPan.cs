@@ -106,7 +106,7 @@ public class CameraPan : MonoBehaviour {
 	public void moveToObject(GameObject t, bool instant){
 		CameraPan._instance.StopAllCoroutines ();
 		Vector3 pos = t.transform.position;
-		Vector3 newPos = new Vector3 (pos.x - 8, gameObject.transform.position.y, pos.z + 5);
+		Vector3 newPos = new Vector3 (pos.x + 25, gameObject.transform.position.y, pos.z + 5);
 		if (instant == false) {
 			StartCoroutine (moveTo (newPos, 1f));
 		} else {

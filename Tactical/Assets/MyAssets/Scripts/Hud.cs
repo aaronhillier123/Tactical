@@ -11,14 +11,17 @@ public class Hud : MonoBehaviour {
 	public GameObject StorePanelObject;
 	public GameObject GamePlayPanelObject;
 	public GameObject ChatPanel;
+	public GameObject AbilityPanelObject;
 
 
 	public GamePlayPanel GamePlay;
 	public StorePanel Store;
+	public AbilityPanel abilityPanel;
 
 	void Start () {
 		GamePlay = GamePlayPanelObject.GetComponent<GamePlayPanel> ();
 		Store = StorePanelObject.GetComponent<StorePanel> ();
+		abilityPanel = AbilityPanelObject.GetComponent<AbilityPanel> ();
 	}
 
 
@@ -49,7 +52,10 @@ public class Hud : MonoBehaviour {
 			GamePlay.Attack.interactable = false;
 			GamePlay.Attack.image.color = new Color(255f / 255f, 163f/255f, 36f/255f, 255f/255f);
 		}
+	}
 
+	public void refreshAbilityPanel(Trooper t){
+		abilityPanel.refreshAbilityPanel (t);
 	}
 
 	public void AttackMode(bool attack){

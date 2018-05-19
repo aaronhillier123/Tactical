@@ -11,8 +11,7 @@ public class MarineGrenade : Ability{
 	private GameObject currentLimit;
 
 	void awake(){
-		name = "Grenade";
-		description = "Throw an explosive device that detonates and injures nearby troops!";
+		
 	}
 		
 	public override void execute (Vector3 target)
@@ -38,14 +37,19 @@ public class MarineGrenade : Ability{
 	}
 
 	public override void removeControl (){
+		Debug.Log ("remove control");
 		Destroy (currentLimit);
 		phase = 0;
 		hasControl = false;
 	}
 
-	public override void giveControl(){
-		myTroop.activeAbility = gameObject;
-		hasControl = true;
+	public override void sell(){
+		MessageScript._instance.setText (name+ " Sold!");
+		myTroop.myPlayer.addDogTags (price);
+		myTroop.removeAbility (id);
+		myTroop.clearActiveAbility ();
+		phase = 0;
+		hasControl = false;
 	}
 
 	public IEnumerator throwCoroutine(Trooper t, Vector3 position){

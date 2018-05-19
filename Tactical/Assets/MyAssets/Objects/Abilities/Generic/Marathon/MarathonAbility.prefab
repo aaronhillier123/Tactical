@@ -53,10 +53,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Marathon
   description: Increase distance that this troop can travel by 25 units.
-  price: 1
+  price: 0
   id: 2
   art: {fileID: 21300000, guid: d934d4b67594443649b6e4c9bd2c3edd, type: 3}
   models: []
+  passive: 1
   myTroop: {fileID: 0}
   phase: 0
   hasControl: 0

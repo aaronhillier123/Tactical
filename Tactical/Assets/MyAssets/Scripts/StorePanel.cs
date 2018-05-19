@@ -12,6 +12,7 @@ public class StorePanel : MonoBehaviour {
 	public GameObject viewPort;
 	private Player myPlayer;
 	private Trooper myTroop;
+	private List<GameObject> itemButtons = new List<GameObject> ();
 	// Use this for initialization
 	void Start () {
 		
@@ -21,17 +22,28 @@ public class StorePanel : MonoBehaviour {
 		if (myPlayer != null) {
 			if (myPlayer.getSelected () != null) {
 				myTroop = myPlayer.getSelected ();
-				content.GetComponent<RectTransform> ().sizeDelta = new Vector2(0, (50 * myTroop.raceAbilities.Count));
+				int storeCount = myTroop.raceAbilities.Count - myTroop.currentAbilities.Count;
+
+				content.GetComponent<RectTransform> ().sizeDelta = new Vector2(0, (50 * ((storeCount)+1)));
 				content.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, 0);
-				for(int i=1; i<myTroop.raceAbilities.Count; ++i) {
-					GameObject newButtonObject = Instantiate (itemButton, new Vector3 (0, 60 * (i-1), 0), Quaternion.identity, content.transform);
-					newButtonObject.GetComponent<RectTransform>().anchoredPosition = new Vector3 (0, 140 - (55 * i), 0);
-					ItemButton newButton = newButtonObject.GetComponent<ItemButton> ();
-					newButton.myAbility = myTroop.raceAbilities [i].GetComponent<Ability> ();
-					newButton.myTroop = myTroop;
-					newButton.init ();
-					if (newButton.myAbility.price <= myPlayer.getDogTags ()) {
-						newButton.gameObject.GetComponent<Button> ().interactable = true;
+				int j = 0;
+				foreach (GameObject g in itemButtons) {
+					Destroy (g);
+				}
+				for(int i=0; i<myTroop.raceAbilities.Count; ++i) {
+					if (myTroop.indexOfCurrentAbility (myTroop.raceAbilities [i].GetComponent<Ability> ().id) == -1) {
+						GameObject newButtonObject = Instantiate (itemButton, new Vector3 (0, 60 * (j - 1), 0), Quaternion.identity, content.transform);
+						float halfHeight = ((float)storeCount / 2f) * 50;
+						newButtonObject.GetComponent<RectTransform> ().anchoredPosition = new Vector3 (0, halfHeight - (55 * j), 0);
+						ItemButton newButton = newButtonObject.GetComponent<ItemButton> ();
+						newButton.myAbility = myTroop.raceAbilities [i].GetComponent<Ability> ();
+						newButton.myTroop = myTroop;
+						newButton.init ();
+						if (newButton.myAbility.price <= myPlayer.getDogTags ()) {
+							newButton.gameObject.GetComponent<Button> ().interactable = true;
+						}
+						itemButtons.Add (newButtonObject);
+						j++;
 					}
 				}
 			}

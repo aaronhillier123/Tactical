@@ -6,10 +6,7 @@ public class Shoot : Ability {
 
 	private GameObject attackPanelObject;
 
-	public override void giveControl ()
-	{
-		hasControl = true;
-	}
+
 
 	public override void removeControl ()
 	{
@@ -22,6 +19,9 @@ public class Shoot : Ability {
 	public override void execute (Vector3 target)
 	{
 		if (phase == 0) {
+			phase++;
+		}
+		if (phase == 1) {
 			if (PhotonNetwork.player.ID == myTroop.myPlayer.team) {
 				List<Trooper> shootable = generateShootList ();
 				HudController._instance.removeGameHud ();
@@ -34,8 +34,10 @@ public class Shoot : Ability {
 				attackPanel.nextTroop ();
 			}
 			++phase;
-		} else if (phase == 1) {
+		} else if (phase == 2) {
 			if (PhotonNetwork.player.ID == myTroop.myPlayer.team) {
+				Destroy (attackPanelObject);
+				HudController._instance.showGameHud ();
 				float randomHit = Random.Range (0, 100f);
 				int hit = 0;
 				if (randomHit <= Game._instance.getChanceOfHit (myTroop, myTroop.target)) {
@@ -53,9 +55,15 @@ public class Shoot : Ability {
 					ForwardToWebhook = true
 				});
 			}
+			myTroop.clearActiveAbility ();
 			myTroop.removeAbility (id);
 		}
 	}
+
+	public override void sell(){
+	}
+
+
 
 	public static void takeTheShot(byte id, object content, int senderId){
 		if (id == 4) {

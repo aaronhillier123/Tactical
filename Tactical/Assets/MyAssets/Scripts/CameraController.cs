@@ -27,6 +27,16 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
+	public void aerialView(){
+		Camera.main.transform.rotation =  Quaternion.Euler (90, 90, 180);
+		Camera.main.transform.localPosition = new Vector3 (0, 30, 0);
+	}
+
+	public void normalView(){
+		Camera.main.transform.rotation =  Quaternion.Euler (135, 90, 180);
+		Camera.main.transform.localPosition = new Vector3 (0, 0, 0);
+	}
+
 	public void setFollowedObject(GameObject ob, int release){
 		cp.StopAllCoroutines ();
 		follow = ob;

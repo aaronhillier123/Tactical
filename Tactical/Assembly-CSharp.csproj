@@ -51,7 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\AttackPanel.cs" />
+     <Compile Include="Assets\AirStrikePanel.cs" />
      <Compile Include="Assets\DecalSystem\Plugins\DecalSystem\Decal.cs" />
      <Compile Include="Assets\DecalSystem\Plugins\DecalSystem\Utils\DecalBuilder.cs" />
      <Compile Include="Assets\DecalSystem\Plugins\DecalSystem\Utils\DecalUtils.cs" />
@@ -141,15 +141,18 @@
      <Compile Include="Assets\Facebook\Scripts\Utils\IFacebookLogger.cs" />
      <Compile Include="Assets\Facebook\Scripts\Utils\MiniJson.cs" />
      <Compile Include="Assets\Facebook\Scripts\Utils\Utilities.cs" />
-     <Compile Include="Assets\Invulnerable.cs" />
-     <Compile Include="Assets\ItemButton.cs" />
-     <Compile Include="Assets\ItemPanel.cs" />
+     <Compile Include="Assets\MarineAirStrike.cs" />
+     <Compile Include="Assets\MyAssets\Objects\Abilities\Generic\First Aid\FirstAid.cs" />
      <Compile Include="Assets\MyAssets\Objects\Races\Marine.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Abilities\Ability.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\Abilities\Invulnerable.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Abilities\Marathon.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Abilities\MarineGrenade.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\Abilities\Shoot.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Abilities\Sniper.cs" />
      <Compile Include="Assets\MyAssets\Scripts\AbilityObjects\Grenade.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\AbilityPanel.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\AttackPanel.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Barrier.cs" />
      <Compile Include="Assets\MyAssets\Scripts\BarrierHandler.cs" />
      <Compile Include="Assets\MyAssets\Scripts\BarrierPiece.cs" />
@@ -175,6 +178,8 @@
      <Compile Include="Assets\MyAssets\Scripts\HitMiss.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Hud.cs" />
      <Compile Include="Assets\MyAssets\Scripts\HudController.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\ItemButton.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\ItemPanel.cs" />
      <Compile Include="Assets\MyAssets\Scripts\JoinGamePanel.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MenuControlScript.cs" />
      <Compile Include="Assets\MyAssets\Scripts\MenuScript.cs" />
@@ -195,6 +200,7 @@
      <Compile Include="Assets\MyAssets\Scripts\Trooper.cs" />
      <Compile Include="Assets\MyAssets\Scripts\WaitForPlayers.cs" />
      <Compile Include="Assets\MyAssets\Scripts\WaitingText.cs" />
+     <Compile Include="Assets\NewTroop.cs" />
      <Compile Include="Assets\Photon Unity Networking\PhotonChatApi\ChatChannel.cs" />
      <Compile Include="Assets\Photon Unity Networking\PhotonChatApi\ChatClient.cs" />
      <Compile Include="Assets\Photon Unity Networking\PhotonChatApi\ChatDisconnectCause.cs" />
@@ -361,7 +367,6 @@
      <Compile Include="Assets\PlayFabSdk\Shared\SignalR.NET20\Transports\ServerSentEventsTransport.cs" />
      <Compile Include="Assets\PlayFabSdk\Shared\SignalR.NET20\Transports\SseEvent.cs" />
      <Compile Include="Assets\ProjectorFolder\SelectableUnitComponent.cs" />
-     <Compile Include="Assets\Shoot.cs" />
      <None Include="Assets\PlayFabSdk\link.xml" />
      <None Include="Assets\Photon Unity Networking\link.xml" />
      <None Include="Assets\ToonSoldiers_demo\ToonSoldiers_demo.txt" />
